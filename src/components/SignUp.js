@@ -112,7 +112,6 @@ const SignUpLink = () =>
     <Link to={routes.SIGN_UP}>Sign Up</Link>
   </p>
 
-export default SignUpPage;
 export default withRouter(SignUpPage);
 
 export {
