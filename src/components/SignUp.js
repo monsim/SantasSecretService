@@ -3,13 +3,12 @@ import {
   Link,
   withRouter,
 } from 'react-router-dom';
-import { auth, db} from '../firebase';
+import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
 
 const SignUpPage = ({ history }) =>
   <div>
     <h1>SignUp</h1>
-    <SignUpForm />
     <SignUpForm history={history} />
   </div>
 
@@ -45,7 +44,6 @@ class SignUpForm extends Component {
 
     auth.doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
-
         // Create a user in your own accessible Firebase Database too
         db.doCreateUser(authUser.user.uid, username, email)
           .then(() => {
@@ -55,7 +53,6 @@ class SignUpForm extends Component {
           .catch(error => {
             this.setState(byPropKey('error', error));
           });
-
       })
       .catch(error => {
         this.setState(byPropKey('error', error));
@@ -74,10 +71,10 @@ class SignUpForm extends Component {
     } = this.state;
 
     const isInvalid =
-      passwordOne !== passwordTwo ||
-      passwordOne === '' ||
-      email === '' ||
-      username === '';
+    passwordOne !== passwordTwo ||
+    passwordOne === '' ||
+    email === '' ||
+    username === '';
 
     return (
       <form onSubmit={this.onSubmit}>
@@ -109,22 +106,22 @@ class SignUpForm extends Component {
           Sign Up
         </button>
 
-        {error && <p>{error.message}</p>}
+        { error && <p>{error.message}</p> }
       </form>
     );
   }
 }
 
 const SignUpLink = () =>
-  <p>
-    Don't have an account?
+    <p>
+        Don't have an account?
     {' '}
-    <Link to={routes.SIGN_UP}>Sign Up</Link>
-  </p>
+        <Link to={routes.SIGN_UP}>Sign Up</Link>
+    </p>
 
 export default withRouter(SignUpPage);
 
 export {
-  SignUpForm,
-  SignUpLink,
+    SignUpForm,
+    SignUpLink,
 };

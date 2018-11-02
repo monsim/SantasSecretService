@@ -20,7 +20,6 @@ class HomePage extends Component {
 
   render() {
     const { users } = this.state;
-
     return (
       <div>
         <h1>Home</h1>
@@ -41,6 +40,8 @@ const UserList = ({ users }) =>
     )}
   </div>
   
+const authCondition = (authUser) => !!authUser;
+
 const authCondition = (authUser) => !!authUser;
 
 export default withAuthorization(authCondition)(HomePage);
