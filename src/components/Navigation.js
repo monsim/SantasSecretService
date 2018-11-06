@@ -5,6 +5,12 @@ import AuthUserContext from './AuthUserContext';
 import SignOutButton from './SignOut';
 import * as routes from '../constants/routes';
 
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+
+
 const Navigation = () =>
   <AuthUserContext.Consumer>
     {authUser => authUser
@@ -15,17 +21,29 @@ const Navigation = () =>
 
 
 const NavigationAuth = () =>
-  <ul>
-    <li><Link to={routes.LANDING}>Landing</Link></li>
-    <li><Link to={routes.HOME}>Home</Link></li>
-    <li><Link to={routes.ACCOUNT}>Account</Link></li>
-    <li><SignOutButton /></li>
-  </ul>
+  <AppBar color="default">
+    <Tabs>
+      <TabContainer><Link to={routes.LANDING}><Tab label="Landing" /></Link></TabContainer>
+      <TabContainer><Link to={routes.HOME}><Tab label="Home" /></Link></TabContainer>
+      <TabContainer><Link to={routes.ACCOUNT}><Tab label="Account" /></Link></TabContainer>
+      <TabContainer><SignOutButton /></TabContainer>
+    </Tabs>
+  </AppBar>
 
 const NavigationNonAuth = () =>
-  <ul>
-    <li><Link to={routes.LANDING}>Landing</Link></li>
-    <li><Link to={routes.SIGN_IN}>Sign In</Link></li>
-  </ul>
+  <AppBar color="default" position={'relative'}>
+    <Tabs>
+      <TabContainer><Link to={routes.LANDING}><Tab label="Landing" /></Link></TabContainer>
+      <TabContainer><Link to={routes.SIGN_IN}><Tab label="Sign In" /></Link></TabContainer>
+    </Tabs>
+  </AppBar>
+
+function TabContainer(props) {
+  return (
+    <Typography component="div" style={{ padding: 4 }}>
+      {props.children}
+    </Typography>
+  );
+}
 
 export default Navigation;
