@@ -12,7 +12,7 @@ const INITIAL_STATE = {
     //username: '', can we get this from current session??
     //email: '',
     groups: '',
-  };
+};
 
 
 class CreateGroupPage extends Component {
@@ -27,22 +27,20 @@ class CreateGroupPage extends Component {
             history,
         } = this.props;
 
-        auth.doCreateUserWithEmailAndPassword(email, passwordOne)
-            .then(authUser => {
-                //authUser is the result of the promise from doCreateUserWithEmailAndPassword
-                // Create a user in your own accessible Firebase Database too
-                db.doCreateUser(authUser.user.uid, username, email)
-                    .then(() => {
-                        this.setState({ ...INITIAL_STATE });
-                        history.push(routes.HOME);
-                    })
-                    .catch(error => {
-                        this.setState(byPropKey('error', error));
-                    });
+
+        //authUser is the result of the promise from doCreateUserWithEmailAndPassword
+        // Create a user in your own accessible Firebase Database too
+        db.doCreateGroup("groupName", "leader")
+            .then(() => {
+                // console.log("hello!");
+                this.setState({ ...INITIAL_STATE });
+                history.push(routes.HOME);
             })
             .catch(error => {
-                this.setState(byPropKey('error', error));
+                // this.setState(byPropKey('error', error));
             });
+
+
 
         event.preventDefault();
     }
@@ -57,34 +55,37 @@ class CreateGroupPage extends Component {
                         <Grid item style={{ paddingBottom: 40 }}>
                             <h1>Create A Group</h1>
                         </Grid>
+                     
+                        <TextField
+                            // id="standard-search"
+                            label="Group Name"
+                            //   type="search"
+                            //   className={classes.textField}
+                            margin="normal"
+                        />
+                        <TextField
+                            id="standard-search"
+                            label="Price Limit"
+                            //   type="search"
+                            //   className={classes.textField}
+                            margin="normal"
+                        />
+                        <TextField
+                            id="standard-search"
+                            label="Pick Date"
+                            //   type="search"
+                            //   className={classes.textField}
+                            margin="normal"
+                        />
 
-                        <Grid item xs={6}>
-                            <TextField
-                                id="standard-search"
-                                label="Group Name"
-                                //   type="search"
-                                //   className={classes.textField}
-                                margin="normal"
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                id="standard-search"
-                                label="Price Limit"
-                                //   type="search"
-                                //   className={classes.textField}
-                                margin="normal"
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                id="standard-search"
-                                label="Pick Date"
-                                //   type="search"
-                                //   className={classes.textField}
-                                margin="normal"
-                            />
-                        </Grid>
+                        <TextField
+                            id="standard-search"
+                            label="Archive Date"
+                            //   type="search"
+                            //   className={classes.textField}
+                            margin="normal"
+                        />
+
                         <Grid item xs={6} style={{ paddingBottom: 20 }}>
                             <Button variant="contained" color="primary" size="large"><Link to={routes.HOME}>Create</Link></Button>
                         </Grid>

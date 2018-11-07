@@ -9,9 +9,10 @@ export const doCreateUser = (id, username, email) =>
   });
 
 
-  export const doCreateGroup = (id, name, leader) =>
-  db.ref(`groups/${id}`).set({
-    name,
+  export const doCreateGroup = (groupName, leader) =>
+  db.ref(`groups`).push().set({
+      
+    groupName,
     leader,
   });
 
