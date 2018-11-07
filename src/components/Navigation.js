@@ -19,11 +19,6 @@ const Navigation = () =>
     }
   </AuthUserContext.Consumer>
 
-<<<<<<< HEAD
-=======
-
-//only shows up if you're logged in
->>>>>>> 37a506a775c38695efffc47b0819af50450a690e
 const NavigationAuth = () =>
   <AppBar color="default">
     <Tabs>
@@ -31,6 +26,7 @@ const NavigationAuth = () =>
       <TabContainer><Link to={routes.HOME}><Tab label="Home" /></Link></TabContainer>
       <TabContainer><Link to={routes.ACCOUNT}><Tab label="Account" /></Link></TabContainer>
       <TabContainer><Link to={routes.CREATE_GROUP}><Tab label="Create Group" /></Link></TabContainer>
+      <TabContainer><Link to={routes.JOIN_GROUP}><Tab label="Join Group" /></Link></TabContainer>
       <TabContainer><SignOutButton /></TabContainer>
     </Tabs>
   </AppBar>
