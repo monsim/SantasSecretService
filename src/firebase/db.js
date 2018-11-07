@@ -8,6 +8,13 @@ export const doCreateUser = (id, username, email) =>
     email,
   });
 
+
+  export const doCreateGroup = (id, name, leader) =>
+  db.ref(`groups/${id}`).set({
+    name,
+    leader,
+  });
+
 export const onceGetUsers = () =>
   db.ref('users').once('value');
 
