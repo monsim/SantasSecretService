@@ -42,7 +42,7 @@ const CreateGroupPage = () =>
         />
       </Grid>
       <Grid item xs={6} style={{paddingBottom: 20}}>
-        <Button variant="contained" color="primary" size="large"><Link to={routes.SIGN_IN}>Create</Link></Button>
+        <Button variant="contained" color="primary" size="large"><Link to={routes.HOME}>Create</Link></Button>
       </Grid>
       <Grid item style={{paddingTop: 50}}>
         <img src={process.env.PUBLIC_URL + '/hushhush.png'} alt="logo" style={{width: 200, height: 200}}/>
