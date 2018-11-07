@@ -4,8 +4,8 @@ import { db } from './firebase';
 
 export const doCreateUser = (id, username, email) =>
   db.ref(`users/${id}`).set({
-    username,
-    email,
+    username: username,
+    email: email,
   });
 
 
@@ -19,3 +19,8 @@ export const onceGetUsers = () =>
   db.ref('users').once('value');
 
 // Other Entity APIs ...
+
+export const changeUsername = (id, newUsername) =>
+  db.ref(`users/${id}`).set({
+    
+  })
