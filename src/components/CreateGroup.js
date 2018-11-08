@@ -12,6 +12,7 @@ import {
 
 import { auth, db} from '../firebase';
 import * as routes from '../constants/routes';
+//import Account from './Account'; 
 
 const CreateGroupPage = ({ history }) =>
     <div>
@@ -34,6 +35,9 @@ const INITIAL_STATE = {
     //email: '',
     groupName: '',
     leader: '',
+    maxPrice: '',
+    pickDate: '',
+    archiveDate: '',
 };
 
 const byPropKey = (propertyName, value) => () => ({
@@ -50,9 +54,11 @@ class CreateGroupForm extends Component {
 
     onSubmit = (event) => {
         const {
-            username,
-            email,
-            passwordOne,
+            groupName,
+            leader,
+            maxPrice,
+            pickDate,
+            archiveDate,
         } = this.state;
 
         const {
@@ -62,7 +68,7 @@ class CreateGroupForm extends Component {
 
         //authUser is the result of the promise from doCreateUserWithEmailAndPassword
         // Create a user in your own accessible Firebase Database too
-        db.doCreateGroup("groupName", this.state.leader)
+        db.doCreateGroup(groupName, leader, maxPrice, pickDate, archiveDate)
             .then(() => {
                 console.log("hello!");
                 // this.setState({ ...INITIAL_STATE });
@@ -82,10 +88,11 @@ class CreateGroupForm extends Component {
     render() {
 
         const {
-            username,
-            email,
-            passwordOne,
-            passwordTwo,
+            groupName,
+            leader,
+            maxPrice,
+            pickDate,
+            archiveDate,
             error,
         } = this.state;
 
@@ -142,28 +149,28 @@ class CreateGroupForm extends Component {
             <form onSubmit={this.onSubmit}>
                 <Grid container alignItems={'center'} justify={'center'} direction={'column'}></Grid>
                 <TextField
-                    value={username}
-                    onChange={event => this.setState(byPropKey('username', event.target.value))}
+                    value={groupName}
+                    onChange={event => this.setState(byPropKey('groupName', event.target.value))}
                     type="text"
-                    placeholder="Full Name"
+                    placeholder="Group Name"
                 />
                 <TextField
-                    value={email}
-                    onChange={event => this.setState(byPropKey('email', event.target.value))}
-                    type="text"
-                    placeholder="Email Address"
+                    value={maxPrice}
+                    onChange={event => this.setState(byPropKey('maxPrice', event.target.value))}
+                    type="number"
+                    placeholder="Price limit"
                 />
                 <TextField
-                    value={passwordOne}
-                    onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
-                    type="password"
-                    placeholder="Password"
+                    value={pickDate}
+                    onChange={event => this.setState(byPropKey('pickDate', event.target.value))}
+                    type="date"
+                    placeholder="End of Pick date"
                 />
                 <TextField
-                    value={passwordTwo}
-                    onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
-                    type="password"
-                    placeholder="Confirm Password"
+                    value={archiveDate}
+                    onChange={event => this.setState(byPropKey('archiveDate', event.target.value))}
+                    type="date"
+                    placeholder="Date to archive"
                 />
                 <button type="submit">
                     Create Group
