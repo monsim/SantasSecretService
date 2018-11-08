@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, ImageBackground } from 'react';
 import {
   BrowserRouter as Router,
   Route,

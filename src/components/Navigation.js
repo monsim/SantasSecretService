@@ -19,8 +19,6 @@ const Navigation = () =>
     }
   </AuthUserContext.Consumer>
 
-
-//only shows up if you're logged in
 const NavigationAuth = () =>
   <AppBar color="default">
     <Tabs>
