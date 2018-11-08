@@ -5,10 +5,12 @@ import {
 } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 const SignUpPage = ({ history }) =>
   <div>
-    <h1>SignUp</h1>
     <SignUpForm history={history} />
   </div>
 
@@ -78,36 +80,48 @@ class SignUpForm extends Component {
     username === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          value={username}
-          onChange={event => this.setState(byPropKey('username', event.target.value))}
-          type="text"
-          placeholder="Full Name"
-        />
-        <input
-          value={email}
-          onChange={event => this.setState(byPropKey('email', event.target.value))}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          value={passwordOne}
-          onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
-          type="password"
-          placeholder="Password"
-        />
-        <input
-          value={passwordTwo}
-          onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
-          type="password"
-          placeholder="Confirm Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign Up
-        </button>
+      <form onSubmit={this.onSubmit} style={{ padding: 30 }}>
+      <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
+        <h1>Sign Up</h1>
+
+           <TextField
+            id={username}
+            label="Name"
+            type="text"
+            margin="normal"
+            onChange={event => this.setState(byPropKey('username', event.target.value))}
+          />
+           <TextField
+            id={email}
+            label="Email Address"
+            type="email"
+            autoComplete="email"
+            margin="normal"
+            onChange={event => this.setState(byPropKey('email', event.target.value))}
+          />
+         <TextField
+            id={passwordOne}
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            margin="normal"
+            onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
+          />
+         <TextField
+            id={passwordTwo}
+            label="Confirm Password"
+            type="password"
+            autoComplete="current-password"
+            margin="normal"
+            onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
+          />
+       <br/>
+          <Button disabled={isInvalid} variant="contained" color="primary" size="large" type='submit'>
+          Get Started!
+          </Button>
 
         { error && <p>{error.message}</p> }
+        </Grid>
       </form>
     );
   }
