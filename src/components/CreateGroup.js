@@ -57,7 +57,7 @@ class CreateGroupForm extends Component {
 
         //authUser is the result of the promise from doCreateUserWithEmailAndPassword
         // Create a user in your own accessible Firebase Database too
-        db.doCreateGroup(groupName, leader)
+        db.doCreateGroup(groupName, leader, maxPrice, pickDate, archiveDate)
             .then(() => {
                 console.log("hello!");
                 this.setState({ ...INITIAL_STATE });
