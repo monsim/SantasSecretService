@@ -3,12 +3,14 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import AuthUserContext from './AuthUserContext';
+import withAuthorization from './withAuthorization';
+
 import {
     Link,
     withRouter,
 } from 'react-router-dom';
 
-import { auth, db } from '../firebase';
+import { auth, db} from '../firebase';
 import * as routes from '../constants/routes';
 
 const CreateGroupPage = ({ history }) =>
@@ -18,11 +20,20 @@ const CreateGroupPage = ({ history }) =>
     </div>
 
 
+const AccountPage = () =>
+<AuthUserContext.Consumer>
+  {authUser =>
+    
+      <h1>Account: {authUser.email}</h1>
+      
+  }
+</AuthUserContext.Consumer>
+
 const INITIAL_STATE = {
     //username: '', can we get this from current session??
     //email: '',
     groupName: '',
-    leader:  '',
+    leader: '',
 };
 
 const byPropKey = (propertyName, value) => () => ({
@@ -51,10 +62,10 @@ class CreateGroupForm extends Component {
 
         //authUser is the result of the promise from doCreateUserWithEmailAndPassword
         // Create a user in your own accessible Firebase Database too
-        db.doCreateGroup("groupName", "leader")
+        db.doCreateGroup("groupName", this.state.leader)
             .then(() => {
                 console.log("hello!");
-                this.setState({ ...INITIAL_STATE });
+                // this.setState({ ...INITIAL_STATE });
                 history.push(routes.HOME);
             })
             .catch(error => {

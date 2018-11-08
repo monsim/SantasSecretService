@@ -11,7 +11,6 @@ export const doCreateUser = (id, username, email) =>
 
   export const doCreateGroup = (groupName, leader) =>
   db.ref(`groups`).push().set({
-      
     groupName,
     leader,
   });
