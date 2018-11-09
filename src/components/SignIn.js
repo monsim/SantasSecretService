@@ -5,10 +5,12 @@ import { SignUpLink } from './SignUp';
 import { PasswordForgetLink } from './PasswordForget';
 import { auth } from '../firebase';
 import * as routes from '../constants/routes';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 const SignInPage = ({ history }) =>
   <div>
-    <h1>SignIn</h1>
     <SignInForm history={history} />
     <PasswordForgetLink />
     <SignUpLink />
@@ -65,24 +67,32 @@ class SignInForm extends Component {
       email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          value={email}
-          onChange={event => this.setState(byPropKey('email', event.target.value))}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          value={password}
-          onChange={event => this.setState(byPropKey('password', event.target.value))}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
+      <form onSubmit={this.onSubmit} style={{ padding: 30 }}>
+        <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
+          <h1>Sign In</h1>
+          <TextField
+            id={email}
+            label="Email Address"
+            type="email"
+            autoComplete="email"
+            margin="normal"
+            onChange={event => this.setState(byPropKey('email', event.target.value))}
+          />
 
-        { error && <p>{error.message}</p> }
+          <TextField
+            id={password}
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            margin="normal"
+            onChange={event => this.setState(byPropKey('password', event.target.value))}
+          />
+          <br/>
+          <Button disabled={isInvalid} variant="contained" color="primary" size="large" type='submit'> Sign In
+          </Button>
+
+          {error && <p>{error.message}</p>}
+        </Grid>
       </form>
     );
   }

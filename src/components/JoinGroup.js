@@ -27,7 +27,7 @@ class JoinGroupPage extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    // Backend Here
+    // Backend  here
     console.log(this.state.groupID);
   }
 
@@ -52,8 +52,11 @@ class JoinGroupPage extends React.Component {
 
         </Grid>
       </div>
+
+
     );
   }
+
 }
 
 export default JoinGroupPage;
