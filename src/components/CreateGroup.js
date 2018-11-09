@@ -3,6 +3,8 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import AuthUserContext from './AuthUserContext';
+import withAuthorization from './withAuthorization';
+import { firebase } from '../firebase';
 import {
     Link,
     withRouter,
@@ -19,12 +21,21 @@ const CreateGroupPage = ({ history }) =>
         <CreateGroupForm history={history} />
     </div>
 
+var test = RANDOM;
+
+const RANDOM = () =>
+
+    firebase.auth.onAuthStateChanged(authUser => {
+        authUser
+            ? test = authUser.uid
+            : test = 'blahblahblah';
+    });
 
 const INITIAL_STATE = {
     //username: '', can we get this from current session??
     //email: '',
     groupName: '',
-    leader: '',
+    leader: test,
     maxPrice: '',
     pickDate: '',
     archiveDate: '',
@@ -55,7 +66,6 @@ class CreateGroupForm extends Component {
             history,
         } = this.props;
 
-
         //authUser is the result of the promise from doCreateUserWithEmailAndPassword
         // Create a user in your own accessible Firebase Database too
         db.doCreateGroup(groupName, leader, maxPrice, pickDate, archiveDate)
@@ -68,11 +78,11 @@ class CreateGroupForm extends Component {
                     }
                   });
                 console.log("hello!");
-                this.setState({ ...INITIAL_STATE });
+                // this.setState({ ...INITIAL_STATE });
                 history.push(routes.HOME);
             })
             .catch(error => {
-                // this.setState(byPropKey('error', error));
+                this.setState(byPropKey('error', error));
             });
 
 
@@ -172,7 +182,7 @@ class CreateGroupForm extends Component {
                 <button type="submit">
                     Create Group
                 </button>
-                { error && <p>{error.message}</p> }
+                {error && <p>{error.message}</p>}
             </form >
         )
     }
