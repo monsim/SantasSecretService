@@ -15,7 +15,6 @@ import * as routes from '../constants/routes';
 
 const CreateGroupPage = ({ history }) =>
     <div>
-        <h1>SignUp</h1>
         <CreateGroupForm history={history} />
     </div>
 
@@ -55,42 +54,22 @@ class CreateGroupForm extends Component {
             history,
         } = this.props;
 
-        var leaderID = '';
-        
-
         //authUser is the result of the promise from doCreateUserWithEmailAndPassword
         // Create a user in your own accessible Firebase Database too
-        db.doCreateGroup(groupName, leader, maxPrice, pickDate, archiveDate)
-            .then(() => {
-                firebase.auth().onAuthStateChanged(function (user) {
-                    if (user) {
-                        // User is signed in.
-                        var userID = firebase.auth().currentUser.uid;
-                        alert(userID);
-                        leaderID = userID;
-                        console.log(leaderID);
-                    }
-                });
-                
-            }).then(() => {
-                console.log("hello!");
-                this.setState({ ...INITIAL_STATE });
-                this.setState({
-                    leader: leaderID
-                });
-                console.log(this.state);
-                history.push(routes.HOME);
-            })
-            .catch(error => {
-                // this.setState(byPropKey('error', error));
-            });
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                var userID = firebase.auth().currentUser.uid;
+                alert(userID);
 
+                db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate);
+            }
+        })
 
-
+        this.setState({ ...INITIAL_STATE });
+        history.push(routes.HOME);
         event.preventDefault();
     }
-
-
 
     render() {
 
@@ -154,35 +133,48 @@ class CreateGroupForm extends Component {
 
 
             <form onSubmit={this.onSubmit}>
-                <Grid container alignItems={'center'} justify={'center'} direction={'column'}></Grid>
-                <TextField
-                    value={groupName}
-                    onChange={event => this.setState(byPropKey('groupName', event.target.value))}
-                    type="text"
-                    placeholder="Group Name"
-                />
-                <TextField
-                    value={maxPrice}
-                    onChange={event => this.setState(byPropKey('maxPrice', event.target.value))}
-                    type="number"
-                    placeholder="Price limit"
-                />
-                <TextField
-                    value={pickDate}
-                    onChange={event => this.setState(byPropKey('pickDate', event.target.value))}
-                    type="date"
-                    placeholder="End of Pick date"
-                />
-                <TextField
-                    value={archiveDate}
-                    onChange={event => this.setState(byPropKey('archiveDate', event.target.value))}
-                    type="date"
-                    placeholder="Date to archive"
-                />
-                <button type="submit">
-                    Create Group
-                </button>
-                {error && <p>{error.message}</p>}
+                <div style={{ padding: 20 }}>
+                    <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
+                        <Grid item style={{ paddingBottom: 40 }}>
+                            <h1>Create A Group</h1>
+                        </Grid>
+                        <TextField
+                            value={groupName}
+                            label="Group Name"
+                            onChange={event => this.setState(byPropKey('groupName', event.target.value))}
+                            type="text"
+                            margin="normal"
+                        />
+                        <br />
+                        <TextField
+                            value={maxPrice}
+                            label="Price Limit"
+                            onChange={event => this.setState(byPropKey('maxPrice', event.target.value))}
+                            type="number"
+                            margin="normal"
+                        />
+                        <br />
+                        <TextField
+                            value={pickDate}
+                            onChange={event => this.setState(byPropKey('pickDate', event.target.value))}
+                            type="date"
+                            placeholder="End of Pick date"
+                        />
+
+                        <br />
+                        <TextField
+                            value={archiveDate}
+                            onChange={event => this.setState(byPropKey('archiveDate', event.target.value))}
+                            type="date"
+                            placeholder="Date to archive"
+                        />
+                        <br />
+                        <Button variant="contained" color="primary" size="large" type='submit'  > Create Group </Button>
+
+
+                        {error && <p>{error.message}</p>}
+                    </Grid>
+                </div>
             </form >
         )
     }
