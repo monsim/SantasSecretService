@@ -27,6 +27,7 @@ const NavigationAuth = () =>
       <TabContainer><Link to={routes.ACCOUNT}><Tab label="Account" /></Link></TabContainer>
       <TabContainer><Link to={routes.CREATE_GROUP}><Tab label="Create Group" /></Link></TabContainer>
       <TabContainer><Link to={routes.JOIN_GROUP}><Tab label="Join Group" /></Link></TabContainer>
+      <TabContainer><Link to={routes.VIEW_GROUP}><Tab label="View Group" /></Link></TabContainer>
       <TabContainer><SignOutButton /></TabContainer>
     </Tabs>
   </AppBar>

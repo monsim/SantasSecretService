@@ -9,13 +9,14 @@ export const doCreateUser = (id, username, email) =>
   });
 
 
-export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate) =>
-db.ref(`groups`).push().set({
+export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate, members) =>
+  db.ref(`groups`).push().set({
     groupName,
     leader,
     maxPrice,
     pickDate,
     archiveDate,
+    members,
   });
 
 export const onceGetUsers = () =>

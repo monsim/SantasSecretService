@@ -27,6 +27,7 @@ const INITIAL_STATE = {
     maxPrice: '',
     pickDate: '',
     archiveDate: '',
+    members: '',
 };
 
 const byPropKey = (propertyName, value) => () => ({
@@ -48,6 +49,7 @@ class CreateGroupForm extends Component {
             maxPrice,
             pickDate,
             archiveDate,
+            members,
         } = this.state;
 
         const {
@@ -60,13 +62,18 @@ class CreateGroupForm extends Component {
             if (user) {
                 // User is signed in.
                 var userID = firebase.auth().currentUser.uid;
-                alert(userID);
+                var memberID = firebase.auth().currentUser.uid;
+                //alert(userID);
+                db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, memberID);
 
-                db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate);
+                //Display Unique Group ID
+                //In db.js createUser has params(id,name,email), do we need params(groupId, groupName, ...) for createGroup?
+
+
             }
         })
-
         this.setState({ ...INITIAL_STATE });
+        
         history.push(routes.HOME);
         event.preventDefault();
     }
@@ -79,6 +86,7 @@ class CreateGroupForm extends Component {
             maxPrice,
             pickDate,
             archiveDate,
+            members,
             error,
         } = this.state;
 
@@ -160,7 +168,6 @@ class CreateGroupForm extends Component {
                             type="date"
                             placeholder="End of Pick date"
                         />
-
                         <br />
                         <TextField
                             value={archiveDate}
