@@ -8,6 +8,7 @@ import {
     withRouter,
 } from 'react-router-dom';
 
+import firebase from 'firebase/app';
 import { auth, db } from '../firebase';
 import * as routes from '../constants/routes';
 //import Account from './Account'; 
@@ -59,6 +60,13 @@ class CreateGroupForm extends Component {
         // Create a user in your own accessible Firebase Database too
         db.doCreateGroup(groupName, leader, maxPrice, pickDate, archiveDate)
             .then(() => {
+                firebase.auth().onAuthStateChanged(function(user) {
+                    if (user) {
+                      // User is signed in.
+                      var userID = firebase.auth().currentUser.uid;
+                      alert(userID);
+                    }
+                  });
                 console.log("hello!");
                 this.setState({ ...INITIAL_STATE });
                 history.push(routes.HOME);
