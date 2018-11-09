@@ -55,20 +55,30 @@ class CreateGroupForm extends Component {
             history,
         } = this.props;
 
+        var leaderID = '';
+        
 
-       //authUser is the result of the promise from doCreateUserWithEmailAndPassword
+        //authUser is the result of the promise from doCreateUserWithEmailAndPassword
         // Create a user in your own accessible Firebase Database too
         db.doCreateGroup(groupName, leader, maxPrice, pickDate, archiveDate)
             .then(() => {
-                firebase.auth().onAuthStateChanged(function(user) {
+                firebase.auth().onAuthStateChanged(function (user) {
                     if (user) {
-                      // User is signed in.
-                      var userID = firebase.auth().currentUser.uid;
-                      alert(userID);
+                        // User is signed in.
+                        var userID = firebase.auth().currentUser.uid;
+                        alert(userID);
+                        leaderID = userID;
+                        console.log(leaderID);
                     }
-                  });
+                });
+                
+            }).then(() => {
                 console.log("hello!");
                 this.setState({ ...INITIAL_STATE });
+                this.setState({
+                    leader: leaderID
+                });
+                console.log(this.state);
                 history.push(routes.HOME);
             })
             .catch(error => {
@@ -172,7 +182,7 @@ class CreateGroupForm extends Component {
                 <button type="submit">
                     Create Group
                 </button>
-                { error && <p>{error.message}</p> }
+                {error && <p>{error.message}</p>}
             </form >
         )
     }
