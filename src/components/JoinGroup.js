@@ -26,7 +26,15 @@ class JoinGroupPage extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
+  //   firebase.auth().onAuthStateChanged(function (user) {
+  //     if (user) {
+  //         // User is signed in.
+  //         var userID = firebase.auth().currentUser.uid;
+  //         var memberID = firebase.auth().currentUser.uid;
+  //         //alert(userID);
+  //         db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, memberID);
+  //     }
+  // })
     // Backend  here
     console.log(this.state.groupID);
   }
