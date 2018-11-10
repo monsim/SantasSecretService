@@ -20,7 +20,6 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
         archiveDate,
         members,
     });
-
     var grpID = '';
     groupRef.endAt().limitToLast(1).on('child_added', (snapshot) => {
         console.log(snapshot.key)
@@ -30,9 +29,9 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
 }
 //`groups/${ groupID }/members`
 export const doJoinGroup = (groupID, memberID) => {
-
-
     db.ref(`/groups/${groupID}/members`).push(memberID);
+    db.ref(`/users/${memberID}/groupList`).push(groupID);
+
 
 }
 
