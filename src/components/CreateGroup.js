@@ -22,6 +22,7 @@ const CreateGroupPage = ({ history }) =>
 const INITIAL_STATE = {
     //username: '', can we get this from current session??
     //email: '',
+    groupID: '',
     groupName: '',
     leader: '',
     maxPrice: '',
@@ -64,8 +65,11 @@ class CreateGroupForm extends Component {
                 var userID = firebase.auth().currentUser.uid;
                 var memberID = firebase.auth().currentUser.uid;
                 //alert(userID);
-                db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, memberID);
-
+                var grpID = db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, '');
+                console.log('here we ARE')
+                console.log(grpID)
+                db.doJoinGroup(grpID, memberID)
+                console.log('here we goooooo')
                 //Display Unique Group ID
                 //In db.js createUser has params(id,name,email), do we need params(groupId, groupName, ...) for createGroup?
 
@@ -91,54 +95,6 @@ class CreateGroupForm extends Component {
         } = this.state;
 
         return (
-            // <form onSubmit={this.onSubmit}>
-            //     <div style={{ padding: 30 }}>
-            //         <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-            //             <Grid item style={{ paddingBottom: 40 }}>
-            //                 <h1>Create A Group</h1>
-            //             </Grid>
-
-            //             <TextField
-            //                 // id="standard-search"
-            //                 label="Group Name"
-            //                 //   type="search"
-            //                 //   className={classes.textField}
-            //                 margin="normal"
-            //             />
-            //             <TextField
-            //                 id="standard-search"
-            //                 label="Price Limit"
-            //                 //   type="search"
-            //                 //   className={classes.textField}
-            //                 margin="normal"
-            //             />
-            //             <TextField
-            //                 id="standard-search"
-            //                 label="Pick Date"
-            //                 //   type="search"
-            //                 //   className={classes.textField}
-            //                 margin="normal"
-            //             />
-
-            //             <TextField
-            //                 id="standard-search"
-            //                 label="Archive Date"
-            //                 //   type="search"
-            //                 //   className={classes.textField}
-            //                 margin="normal"
-            //             />
-
-            //             <Grid item xs={6} style={{ paddingBottom: 20 }}>
-            //                 <Button variant="contained" color="primary" size="large"><Link to={routes.HOME}>Create</Link></Button>
-            //             </Grid>
-            //             <Grid item style={{ paddingTop: 50 }}>
-            //                 <img src={process.env.PUBLIC_URL + '/hushhush.png'} alt="logo" style={{ width: 200, height: 200 }} />
-            //             </Grid>
-            //         </Grid>
-            //     </div>
-            // </form>
-
-
 
             <form onSubmit={this.onSubmit}>
                 <div style={{ padding: 20 }}>
