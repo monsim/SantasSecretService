@@ -22,6 +22,7 @@ const CreateGroupPage = ({ history }) =>
 const INITIAL_STATE = {
     //username: '', can we get this from current session??
     //email: '',
+    groupID: '',
     groupName: '',
     leader: '',
     maxPrice: '',
