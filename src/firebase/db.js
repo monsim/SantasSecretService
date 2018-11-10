@@ -21,15 +21,9 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
   });
 //`groups/${ groupID }/members`
 export const doJoinGroup = (groupID, memberID) => {
-    // var updates = {};
-    // var id = '' + memberID;
-    // console.log("memberID in dojoingroup: " + id);
-    // updates['groups/' + groupID + '/members'] = id;
-    // console.log(updates);
-    // db.ref().update(updates);
-    // console.log("done");
 
-    
+
+    db.ref(`/groups/${ groupID }/members`).push(memberID);
 
 }
   
