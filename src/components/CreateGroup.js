@@ -65,9 +65,10 @@ class CreateGroupForm extends Component {
                 var userID = firebase.auth().currentUser.uid;
                 var memberID = firebase.auth().currentUser.uid;
                 //alert(userID);
-                db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, '');
-                console.log('here we r')
-                db.doJoinGroup('-LQvZzTGfuxX1UYqu44B', memberID)
+                var grpID = db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, '');
+                console.log('here we ARE')
+                console.log(grpID)
+                db.doJoinGroup(grpID, memberID)
                 console.log('here we goooooo')
                 //Display Unique Group ID
                 //In db.js createUser has params(id,name,email), do we need params(groupId, groupName, ...) for createGroup?

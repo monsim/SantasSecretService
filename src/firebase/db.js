@@ -20,11 +20,13 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
         archiveDate,
         members,
     });
-  
-    groupRef.on('child_added', (snapshot) => {
-        console.log("doCreateGroup");
-        console.log(snapshot.key);
-      });
+
+    var grpID = '';
+    groupRef.endAt().limitToLast(1).on('child_added', (snapshot) => {
+        console.log(snapshot.key)
+        grpID = snapshot.key;
+    });
+    return grpID;
 }
 //`groups/${ groupID }/members`
 export const doJoinGroup = (groupID, memberID) => {
