@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField';
 
 import { Link } from 'react-router-dom';
 import * as routes from '../constants/routes';
+import firebase from 'firebase/app';
+import { auth, db } from '../firebase';
 
 
 class JoinGroupPage extends React.Component {
@@ -26,9 +28,16 @@ class JoinGroupPage extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
+    var grpID = this.state.groupID;
     // Backend  here
-    console.log(this.state.groupID);
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+          // User is signed in.
+          var userID = firebase.auth().currentUser.uid;
+          db.doJoinGroup(grpID, userID)
+          console.log(userID + ' added to ' + grpID)
+      }
+  })
   }
 
 
