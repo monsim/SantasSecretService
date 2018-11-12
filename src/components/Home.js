@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 import * as routes from '../constants/routes';
 import { Redirect } from 'react-router-dom'
@@ -84,16 +90,20 @@ class HomePage extends Component {
             <Grid item style={{paddingBottom: 20}}>
               <h1> My Groups </h1>
             </Grid>
-            < Grid item xs={6} style={{paddingBottom: 20}}>
+            < Grid item xs={6}>
               <h2>Group 1</h2>
-              mygroups here
-
+              should loop through all the groups
+              <ListItem button>
+                <ListItemText primary="Inbox" />
+                <ListItemIcon><PlayArrowIcon /></ListItemIcon>
+              </ListItem>
+              <Divider />
               {/* { !!users && <UserList users={users} /> } */}
 
             </Grid>
-            < Grid item xs={6}>
+            < Grid item xs={6} style={{paddingTop: 20}}>
               <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleCreateGroup} style={{ float : 'left' }}>Create Group</Button>
-              &nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;
               <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleJoinGroup} style={{ float : 'right' }}>Join Group</Button>
               </Grid>
             <Grid item style={{paddingTop: 50}}>
