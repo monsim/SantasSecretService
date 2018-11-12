@@ -35,7 +35,14 @@ export const doJoinGroup = (groupID, memberID) => {
 
 }
 
+// Get groups
+export const getGroups = (memberID) => {
+  return db.ref(`/users/${memberID}/groupList`);
+}
 
+export const getGroupName = (groupID) => {
+  return db.ref(`/groups/${groupID}/groupName`).toString;
+}
 
 export const onceGetUsers = () =>
     db.ref('users').once('value');
