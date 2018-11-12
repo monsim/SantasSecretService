@@ -14,13 +14,14 @@ import { Redirect } from 'react-router-dom'
 import firebase from 'firebase/app';
 import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
+import { EXITED } from 'react-transition-group/Transition';
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      groups: null,
+      groups: [],
       users: null,
     };
   }
@@ -48,32 +49,54 @@ class HomePage extends Component {
     const { users } = this.state;
     let user = firebase.auth().currentUser;
     var currentUserEmail = null;
-    // trying to save the groups into this variable to print all the current user's groups out later
+    var group_list = [];  // this is printed out later in the return statement
     var mygroups = null;
+    var group_names = [];
 
-    // prints all the auth user's information -- but doesn't print the group list
+    // gets the currently sign in user's email
     user.providerData.forEach(function(profile) {
       currentUserEmail = profile.email;
       console.log('email: ', profile.email)
       console.log('uid: ', profile.uid)
+      // this is undefined, so that's why it's so hard to directly access groupList
       console.log('group list', profile.uid.groupList)
     });
 
+    // loops through all the users to find the current user's information (idk a more efficient way of doing this lmao)
     var groups = firebase.database().ref('users').on('value', snapshot => {
         snapshot.forEach(childSnapshot => {
           var childData = childSnapshot.val()
           if (childData.email == currentUserEmail) {
-            // how do you loop through the nested group list??
             console.log('CURRENT USERS GROUPS: ', childData.groupList)
-            console.log(JSON.stringify(childData.groupList));
+            // get all the groups that the currently signed in user is in
             mygroups = childData.groupList;
+            // it'll be in JSON format, so loop through all of its keys and add the values
+            // to the group_list array to be printed out later (this is sorta hacky sorry)
+            Object.keys(mygroups).forEach(function(key) {
+              group_list.push(JSON.parse(JSON.stringify(mygroups[key])))
+            });
           }
-          // all of each user's groups
-          //console.log('ChildData', childData)
         })
     })
 
-    // button redirecting
+    // loop through all the groups
+    var allGroups = firebase.database().ref('groups').on('value', snapshot => {
+        snapshot.forEach(childSnapshot => {
+          var aGroup = childSnapshot.key;
+          Object.keys(group_list).forEach(function(key) {
+            var anotherGroup = group_list[key]
+            if (aGroup == anotherGroup) {
+              //wtf.push(childSnapshot.val().groupName);
+              //console.log(JSON.parse(JSON.stringify(childSnapshot.val().groupName)))
+              group_names.push(JSON.parse(JSON.stringify(childSnapshot.val().groupName)))
+              console.log('dsaodsfjs', JSON.parse(JSON.stringify(childSnapshot.val().groupName)))
+            }
+          });
+        })
+    })
+    
+
+    // "Create Group" and "Join Group" button redirecting
     if (this.state.redirectCreateGroup) {
       return <Redirect push to="/create-group" />;
     }
@@ -81,6 +104,12 @@ class HomePage extends Component {
       return <Redirect push to="/join-group" />;
     }
 
+
+    setTimeout(function(){
+      console.log('group_names timeout: ', group_names);
+    }, 1000)
+    console.log('group_names : ' , group_names);
+    console.log('group_list: ' , group_list);
     
     return (
       
@@ -91,13 +120,29 @@ class HomePage extends Component {
               <h1> My Groups </h1>
             </Grid>
             < Grid item xs={6}>
-              <h2>Group 1</h2>
-              should loop through all the groups
-              <ListItem button>
-                <ListItemText primary="Inbox" />
-                <ListItemIcon><PlayArrowIcon /></ListItemIcon>
-              </ListItem>
-              <Divider />
+              {group_list.map(function(groupName, index){
+                    return <div>
+                      <h2>Group {index + 1}</h2>
+                    <ListItem button key={ index }>
+                      <ListItemText primary={groupName} />
+                      <ListItemIcon><PlayArrowIcon /></ListItemIcon>
+                      </ListItem>
+                    <Divider />
+                  </div>;
+              })}
+              
+              {/* 
+              {group_names.map(function(groupName){
+                    return <div>
+                    <ListItem button>
+                      <ListItemText primary={groupName} />
+                      <ListItemIcon><PlayArrowIcon /></ListItemIcon>
+                      </ListItem>
+                    <Divider />
+                  </div>;
+              })}
+              */}
+
               {/* { !!users && <UserList users={users} /> } */}
 
             </Grid>
