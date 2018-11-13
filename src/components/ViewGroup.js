@@ -9,9 +9,9 @@ import {
 } from 'react-router-dom';
 import * as routes from '../constants/routes';
 
-
-var members = [];
 var groupName = '';
+var members = {};
+
 // Front end
 //const ViewGroupPage = (groupID) => (Component) =>
   class ViewGroupPage extends React.Component {
@@ -34,38 +34,41 @@ var groupName = '';
     handleSubmit(event) {
       event.preventDefault();
     }
-  
+
     componentDidMount() {
       firebase.database().ref(`/groups/${this.state.id}/members`).once("value", function(snapshot) {
-       snapshot.forEach(function(data) {
-         let x = firebase.database().ref(`/users/${data.val()}/username`);
-         x.once("value", function(snap) {
-           if (!members.includes(snap.val())) members.push(snap.val());
-         });
-       });
-     });
+        snapshot.forEach(function(data) {
+          // if (!memberIDs.includes(data.val())) memberIDs.push(data.val);
+          let id = data.val()
+          let x = firebase.database().ref(`/users/${data.val()}/username`);
+          x.once("value", function(snap) {
+            if (!(data.val() in members)) members[id] = snap.val();
+          });
+        });
+      });
      
-     firebase.database().ref(`/groups/${this.state.id}/groupName`).once("value", function(snap) {
-       groupName = snap.val();
-     });
+      firebase.database().ref(`/groups/${this.state.id}/groupName`).once("value", function(snap) {
+        groupName = snap.val();
+      });
     }
     
     render() {
       
-      const showMembers = members.map((name) => 
+      const showMembers = Object.keys(members).map((key) => 
         <Grid 
-          key={'child'+members.indexOf(name)}
+          key={'child'+key}
           container alignItems={'center'} 
           justify={'center'} 
           direction={'column'} 
           item style={{ padding: 30 }}>
-          <Button key='text'><Link to={routes.JOIN_GROUP}>{name}</Link></Button>
+          <Button key='text'><Link to={routes.WISHLIST}>{members[key]}</Link></Button>
         </Grid>
       );
       
 //      if (groupName === '' && members === null) return <div>Loading...</div>
-      console.log(groupName)
-      console.log(members)
+      console.log(groupName);
+      console.log(members);
+
       return (
         <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
           <h4>Group Name</h4>
@@ -76,7 +79,5 @@ var groupName = '';
       );
     }
   }
-
-
 
 export default ViewGroupPage;
