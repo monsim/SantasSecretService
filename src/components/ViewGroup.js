@@ -11,7 +11,7 @@ import * as routes from '../constants/routes';
 
 var groupName = '';
 var members = {};
-
+var clickedOn = '';
 // Front end
 //const ViewGroupPage = (groupID) => (Component) =>
   class ViewGroupPage extends React.Component {
@@ -38,7 +38,6 @@ var members = {};
     componentDidMount() {
       firebase.database().ref(`/groups/${this.state.id}/members`).once("value", function(snapshot) {
         snapshot.forEach(function(data) {
-          // if (!memberIDs.includes(data.val())) memberIDs.push(data.val);
           let id = data.val()
           let x = firebase.database().ref(`/users/${data.val()}/username`);
           x.once("value", function(snap) {
@@ -61,7 +60,7 @@ var members = {};
           justify={'center'} 
           direction={'column'} 
           item style={{ padding: 30 }}>
-          <Button key='text'><Link to={routes.WISHLIST}>{members[key]}</Link></Button>
+          <Button key='submit' onClick={this.handleSubmit}><Link to={routes.WISHLIST}>{members[key]}</Link></Button>
         </Grid>
       );
       
@@ -79,5 +78,9 @@ var members = {};
       );
     }
   }
+
+function setID(id) {
+  clickedOn = id;
+}
 
 export default ViewGroupPage;
