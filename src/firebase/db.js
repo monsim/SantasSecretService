@@ -2,6 +2,8 @@ import { db } from './firebase';
 
 // User API
 
+export var groups = [];
+
 export const doCreateUser = (id, username, email, groupList) =>
     db.ref(`users/${id}`).set({
         username,
@@ -50,10 +52,16 @@ export const doGetUserGroupList = (userID) => {
 
 export const doGetGroupName = (groupID) => {
     var theGroupName = db.ref(`/groups/${groupID}/groupName`);
+    var theGroup = '';
     theGroupName.on('value', snapshot => {
-        alert(snapshot.key);
+        theGroup = snapshot.val();
+        console.log('the group: ', theGroup)
+        groups.push(theGroup);
+        console.log('groups: ' + groups)
     })
-    return theGroupName;
+    console.log('i am in db.js: ', theGroup)
+    return theGroup;
+    //return theGroup;
 }
 
 export const onceGetUsers = () =>

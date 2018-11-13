@@ -31,7 +31,11 @@ class HomePage extends Component {
       this.setState({ users: snapshot.val() })
     );
   }
-  
+
+  componentWillMount() {
+
+  }
+
   /** Handles states based on button onclick **/
   handleCreateGroup = () => {
     this.setState({
@@ -46,30 +50,29 @@ class HomePage extends Component {
   }
 
   render() {
-    const { users } = this.state;
+    //const { users } = this.state;
     let user = firebase.auth().currentUser;
-    var currentUserEmail = null;
     var group_list = [];  // this is printed out later in the return statement
-    var mygroups = null;
     var group_names = [];
-
-    // gets the currently sign in user's email
-    user.providerData.forEach(function(profile) {
-      currentUserEmail = profile.email;
-      console.log('email: ', profile.email)
-      console.log('uid: ', profile.uid)
-      // this is undefined, so that's why it's so hard to directly access groupList
-      console.log('group list', profile.uid.groupList)
-    });
 
     // getting the group IDs of groupList
     group_list = db.doGetUserGroupList(user.uid);
+    console.log('group_list: ' , group_list)
 
     // for each groupID in group_list, call db.doGetGroupName to get their group names
     // and add them to another array, group_names
-    group_list.forEach(function(value) {
-      group_names.push(db.doGetGroupName(value));
-    })
+    for (var i = 0; i < group_list.length; i++) {
+      console.log('i am in home.js: ', group_list[i]);
+      group_names.push(db.doGetGroupName(group_list[i]));
+    }
+
+    console.log("before")
+    console.log(db.groups)
+    for (var i = 0; i < db.groups.length; i++){
+      console.log('within')
+      console.log(db.groups[i]);
+    }
+    console.log("after")
 
     // "Create Group" and "Join Group" button redirecting
     if (this.state.redirectCreateGroup) {
@@ -79,21 +82,18 @@ class HomePage extends Component {
       return <Redirect push to="/join-group" />;
     }
 
-    setTimeout(function(){
-      console.log('group_names timeout: ', group_names);
-    }, 1000)
-    console.log('group_names : ' , group_names);
-    console.log('group_list: ' , group_list);
-    
+    console.log('group names: ', group_names)
+
     return (
-      
+
       <form onSubmit={this.onSubmit}>
-        <div style={{padding: 30}}>
+        <div style={{ padding: 30 }}>
           <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-            <Grid item style={{paddingBottom: 20}}>
+            <Grid item style={{ paddingBottom: 20 }}>
               <h1> My Groups </h1>
             </Grid>
             < Grid item xs={6}>
+
               {group_list.map(function(groupName, index){
                     return <div>
                       <h2>Group {index + 1}</h2>
@@ -104,29 +104,17 @@ class HomePage extends Component {
                     <Divider />
                   </div>;
               })}
-              
-              {/* 
-              {group_names.map(function(groupName){
-                    return <div>
-                    <ListItem button>
-                      <ListItemText primary={groupName} />
-                      <ListItemIcon><PlayArrowIcon /></ListItemIcon>
-                      </ListItem>
-                    <Divider />
-                  </div>;
-              })}
-              */}
 
               {/* { !!users && <UserList users={users} /> } */}
 
             </Grid>
-            < Grid item xs={6} style={{paddingTop: 20}}>
-              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleCreateGroup} style={{ float : 'left' }}>Create Group</Button>
+            < Grid item xs={6} style={{ paddingTop: 20 }}>
+              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleCreateGroup} style={{ float: 'left' }}>Create Group</Button>
               &nbsp;&nbsp;
-              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleJoinGroup} style={{ float : 'right' }}>Join Group</Button>
-              </Grid>
-            <Grid item style={{paddingTop: 50}}>
-              <img src={process.env.PUBLIC_URL + '/hushhush.png'} alt="logo" style={{width: 200, height: 200}}/>
+              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleJoinGroup} style={{ float: 'right' }}>Join Group</Button>
+            </Grid>
+            <Grid item style={{ paddingTop: 50 }}>
+              <img src={process.env.PUBLIC_URL + '/hushhush.png'} alt="logo" style={{ width: 200, height: 200 }} />
             </Grid>
           </Grid>
         </div>
