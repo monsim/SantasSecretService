@@ -33,6 +33,7 @@ export const doJoinGroup = (groupID, memberID) => {
     db.ref(`/users/${memberID}/groupList`).push(groupID);
 }
 
+
 export const addWishlistItem = (memberID, wishlistItem) => {
     db.ref(`/users/${memberID}/wishlist`).push(wishlistItem);
 }
@@ -41,6 +42,24 @@ export const onceGetWishlistItems = (memberID) => {
     db.ref.once(`/users/${memberID}/wishlist`, function (data) {
         console.log('HELLLLOOOOOOOOOO IN DB')
     });
+}
+// Get groups
+export const getGroups = (memberID) => {
+  return db.ref(`/users/${memberID}/groupList`);
+}
+
+// Get group name
+export const getGroupName = (groupID) => {
+  return db.ref(`/groups/${groupID}/groupName`);
+}
+
+// Get group members
+export const getGroupMembers = (groupID) => {
+  return db.ref(`/groups/${groupID}/members`);
+}
+
+export const getUserName = (userID) => {
+  return db.ref(`/users/${userID}/username`);
 }
 
 export const onceGetUsers = () =>
