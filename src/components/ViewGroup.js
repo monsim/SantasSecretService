@@ -6,9 +6,9 @@ import Grid from '@material-ui/core/Grid';
 //import firebase from 'firebase/app';
 import { db } from '../firebase';
 import {
-    Link,
+//    Link,
 } from 'react-router-dom';
-import * as routes from '../constants/routes';
+//import * as routes from '../constants/routes';
 
 
 var members = [];
@@ -22,17 +22,16 @@ var groupName = '';
         id: '-LR9m8U9ghz-2F4ZR2SR',
       };
       
-      console.log('here');
-      db.getGroupMembers(this.state.id).on("value", function(snapshot) {
+      db.getGroupMembers(this.state.id).once("value", function(snapshot) {
         snapshot.forEach(function(data) {
           let x = db.getUserName(data.val());
-          x.on("value", function(snap) {
+          x.once("value", function(snap) {
             if (!members.includes(snap.val())) members.push(snap.val());
           });
         });
       });
       
-      db.getGroupName(this.state.id).on("value", function(snap) {
+      db.getGroupName(this.state.id).once("value", function(snap) {
         groupName = snap.val();
       });
       
@@ -50,21 +49,37 @@ var groupName = '';
       event.preventDefault();
     }
   
+    componentDidMount() {
+//      db.getGroupMembers(this.state.id).once("value", function(snapshot) {
+//        snapshot.forEach(function(data) {
+//          let x = db.getUserName(data.val());
+//          x.once("value", function(snap) {
+//            if (!members.includes(snap.val())) members.push(snap.val());
+//          });
+//        });
+//      });
+//      
+//      db.getGroupName(this.state.id).once("value", function(snap) {
+//        groupName = snap.val();
+//      });
+    }
+    
     render() {
-      const {
-        id,
-      } = this.state;
       
       const showMembers = members.map((name) => 
         <li key='text'>{name}</li>
       );
       
+//      if (groupName === '' && members === null) return <div>Loading...</div>
+      console.log(groupName)
+      console.log(members)
       return (
         <div style={{ padding: 30 }}>
           <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-            <Grid item style={{ paddingTop: 50 }}>
+            <Grid item style={{ padding: 50 }}>
               <h4>Group Name</h4>
               <h1>{groupName}</h1>
+              <h4>Member list</h4>
               {showMembers}
             </Grid>
           </Grid>
