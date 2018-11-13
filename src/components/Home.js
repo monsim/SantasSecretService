@@ -15,6 +15,8 @@ import firebase from 'firebase/app';
 import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
 import { EXITED } from 'react-transition-group/Transition';
+import AuthUserContext from './AuthUserContext';
+
 
 class HomePage extends Component {
   constructor(props) {
@@ -90,7 +92,11 @@ class HomePage extends Component {
         <div style={{ padding: 30 }}>
           <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
             <Grid item style={{ paddingBottom: 20 }}>
-              <h1> My Groups </h1>
+            <AuthUserContext.Consumer>
+              {authUser =>
+                <h1>{authUser.email}'s Group</h1>
+              }
+            </AuthUserContext.Consumer>
             </Grid>
             < Grid item xs={6}>
 

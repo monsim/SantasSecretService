@@ -1,29 +1,78 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+//import TextField from '@material-ui/core/TextField';
 
-import { Link } from 'react-router-dom';
+//import firebase from 'firebase/app';
+import { db } from '../firebase';
+import {
+  Link,
+} from 'react-router-dom';
 import * as routes from '../constants/routes';
 
 
+var members = [];
+var groupName = '';
+// Front end
+//const ViewGroupPage = (groupID) => (Component) =>
 class ViewGroupPage extends React.Component {
-  render() {
-    return (
-      <div style={{ padding: 30 }}>
-        <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-          <Grid item style={{ paddingBottom: 40 }}>
-            <h1>Group: (GroupID Here)</h1>
-            <h2>Group Member 1      (Giftee Symbol)</h2>
-            <h2>Group Member 2      (Giftee Symbol)</h2>
-          </Grid>
-        </Grid>
-      </div>
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: '-LR9m8U9ghz-2F4ZR2SR',
+    };
 
+    console.log('here');
+    db.getGroupMembers(this.state.id).on("value", function(snapshot) {
+      snapshot.forEach(function(data) {
+        let x = db.getUserName(data.val());
+        x.on("value", function(snap) {
+          if (!members.includes(snap.val())) members.push(snap.val());
+        });
+      });
+    });
 
-    );
+    db.getGroupName(this.state.id).on("value", function(snap) {
+      groupName = snap.val();
+    });
+    
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-}
+  handleChange(event) {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  }
 
-export default ViewGroupPage;
+  handleSubmit(event) {
+    event.preventDefault();
+  }
+
+  render() {
+    const {
+      id,
+    } = this.state;
+
+     
+  const showMembers = members.map((name) => 
+    <li key='text'>{name}</li>
+  );
+  
+  return (
+    <div style={{ padding: 30 }}>
+      <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
+        <Grid item style={{ paddingTop: 50 }}>
+          <h4>Group Name</h4>
+          <h1>{groupName}</h1>
+          {showMembers}
+        </Grid>
+      </Grid>
+    </div>
+  );
+  }
+  }
+  
+export default ViewGroupPage; 
