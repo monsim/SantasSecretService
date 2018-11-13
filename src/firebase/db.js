@@ -37,11 +37,35 @@ export const addWishlistItem = (memberID, wishlistItem) => {
     db.ref(`/users/${memberID}/wishlist`).push(wishlistItem);
 }
 
-export const onceGetWishlistItems = (memberID) => {
-    db.ref.once(`/users/${memberID}/wishlist`, function (data) {
-        console.log('HELLLLOOOOOOOOOO IN DB')
+export function getWishlist(userID) {
+    var promise = new Promise(function (resolve, reject) {
+        var groups = db.ref(`/users/${userID}/wishlist`);
+        var list = [];
+        groups.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                var item = childSnapshot.val();
+                list.push(JSON.parse(JSON.stringify(item)));
+            })
+        })
+        console.log(list)
+        resolve(list);
     });
+    return promise;
 }
+
+export const getUserWishlist = (userID) => {
+    var groups = db.ref(`/users/${userID}/wishlist`);
+    var list = [];
+    groups.on('value', snapshot => {
+        snapshot.forEach(childSnapshot => {
+            var item = childSnapshot.val();
+            list.push(JSON.parse(JSON.stringify(item)));
+        })
+    })
+    console.log(list);
+    return list;
+}
+
 
 export const onceGetUsers = () =>
     db.ref('users').once('value');

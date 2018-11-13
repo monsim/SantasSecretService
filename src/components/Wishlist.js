@@ -30,6 +30,7 @@ const INITIAL_STATE = {
   item: '', //most recently added items
   wishlist: [],   //array of names of items
   boolee: false,
+  oldWishlistDivs: [], //array of divs from wishlist in firebase
 };
 
 const byPropKey = (propertyName, value) => () => ({
@@ -55,7 +56,35 @@ class ViewWishlistPage extends React.Component {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         var memberID = firebase.auth().currentUser.uid;
-        db.onceGetWishlistItems(memberID);
+        console.log('before')
+        db.getWishlist(memberID).then(function(result) {
+          console.log("its done!");
+          console.log(result)
+        });
+        console.log('end')
+
+        // console.log(existingWishlist);
+        // for (var i = 0; i < existingWishlist.length; i++) { //add each wishlist item into oldWishlistDivs
+        //   this.state.oldWishlistDivs.push(
+        //     <div>
+        //       <div>
+        //         <Input
+        //           name='item'
+        //           onChange={this.handleChange}
+        //           placeholder="Wishlist Item"
+        //           inputProps={{
+        //             'aria-label': 'Description',
+        //           }}
+        //           defaultValue={existingWishlist[i]}
+        //         />
+        //         {/* <Button variant="contained" color="primary" onClick={this.handleItemSubmit} >
+        //           Delete Item 
+        //         </Button> */}
+        //       </div>
+        //     </div>
+        //   )
+        // }
+
       }
     });
   }
@@ -142,6 +171,9 @@ class ViewWishlistPage extends React.Component {
           <Grid item style={{ paddingBottom: 40 }}>
             <h1>Your Wishlist</h1>
           </Grid>
+          <div>
+            {this.state.oldWishlistDivs}
+          </div>
           <div>
             {this.state.wishlistDivs}
           </div>
