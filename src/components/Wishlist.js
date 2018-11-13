@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import Input from '@material-ui/core/Input';
+import Icon from '@material-ui/core/Icon';
 import AuthUserContext from './AuthUserContext';
 import {
   Link,
@@ -25,8 +26,10 @@ const INITIAL_STATE = {
   pickDate: '',
   archiveDate: '',
   members: '',
-  wishlist: [],
-  item: '',
+  wishlistDivs: [], //array of divs
+  item: '', //most recently added items
+  wishlist: [],   //array of names of items
+  boolee: false,
 };
 
 const byPropKey = (propertyName, value) => () => ({
@@ -44,35 +47,69 @@ class ViewWishlistPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
+    this.handleItemSubmit = this.handleItemSubmit.bind(this);
+  }
+
+  componentWillMount() {
+    console.log('in componentWillMount')
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        var memberID = firebase.auth().currentUser.uid;
+        db.onceGetWishlistItems(memberID);
+      }
+    });
   }
 
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
+    // this.addItem(event.target.value)
+  }
+
+  //only saves the last one you type, make sure you hit save item before you hit the +
+  handleItemSubmit(event) {
+    console.log('item submit')
+    console.log(this.state.item)
+    const wishlistS = this.state.wishlist;
+
+    wishlistS.push(
+      this.state.item
+    );
+
+    console.log(wishlistS.length)
+    for (var i = 0; i < wishlistS.length; i++) {
+      console.log(wishlistS[i]);
+    }
+    console.log('wishlistS: ' + wishlistS);
+    this.setState({
+      wishlist: wishlistS
+    });
+    console.log("wishlist: " + this.state.wishlist);
   }
 
   handleSubmit(event) {
-    // event.preventDefault();
-    // var grpID = this.state.groupID;
-    // // Backend  here
-    // firebase.auth().onAuthStateChanged(function (user) {
-    //   if (user) {
-    //     // User is signed in.
-    //     var userID = firebase.auth().currentUser.uid;
-    //     db.addWishlistItem(userID, )
-    //     console.log(userID + ' added to ' + grpID)
-    //   }
-    // })
+    console.log('handle submit');
+    console.log("wishlist in final submit: " + this.state.wishlist)
 
-    for (var i = 0; i < this.state.wishlist.size; i++) {
-      console.log(this.state.wishlist[i].inputProps);
-    }
+    var finalWishlist = this.state.wishlist;
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        // User is signed in.
+        var userID = firebase.auth().currentUser.uid;
+        for (var i = 0; i < finalWishlist.length; i++) {
+          db.addWishlistItem(userID, finalWishlist[i]);
+        }
+
+        console.log('wishlist: ' + finalWishlist + ' added to userID ' + userID);
+      }
+    })
 
   }
 
   handleSubmitAdd() {
-    const wishlistS = this.state.wishlist;
+    const wishlistS = this.state.wishlistDivs;
 
     wishlistS.push(<div>
       <div>
@@ -84,12 +121,15 @@ class ViewWishlistPage extends React.Component {
             'aria-label': 'Description',
           }}
         />
+        <Button variant="contained" color="primary" onClick={this.handleItemSubmit} >
+          Save Item
+        </Button>
       </div>
     </div>
     );
 
     this.setState({
-      wishlist: wishlistS
+      wishlistDivs: wishlistS
     });
     console.log(wishlistS);
   }
@@ -103,7 +143,7 @@ class ViewWishlistPage extends React.Component {
             <h1>Your Wishlist</h1>
           </Grid>
           <div>
-            {this.state.wishlist}
+            {this.state.wishlistDivs}
           </div>
           <br />
           <Button variant="contained" color="primary" size="large" type='submit' onClick={this.handleSubmit} ><Link to={routes.HOME}>Save Wishlist</Link> </Button>
@@ -117,30 +157,6 @@ class ViewWishlistPage extends React.Component {
 
     );
   }
-
 }
 
 export default ViewWishlistPage;
-
-
-
-class WishlistItem extends React.Component {
-  // render() {
-  //   return (
-  //     <Input
-  //       placeholder="Wishlist Item"
-  //       inputProps={{
-  //         'aria-label': 'Description',
-  //       }}
-  //     />
-  //   );
-  // }
-  render() {
-    return <Input
-      type="file"
-      name={`wishlist-${this.props.index}-wishlist`}
-    />;
-  }
-}
-
-// 

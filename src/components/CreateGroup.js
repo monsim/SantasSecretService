@@ -29,6 +29,7 @@ const INITIAL_STATE = {
     pickDate: '',
     archiveDate: '',
     members: '',
+    boolee: false,
 };
 
 const byPropKey = (propertyName, value) => () => ({
@@ -41,6 +42,7 @@ class CreateGroupForm extends Component {
         super(props);
 
         this.state = { ...INITIAL_STATE };
+
     }
 
     onSubmit = (event) => {
@@ -50,7 +52,6 @@ class CreateGroupForm extends Component {
             maxPrice,
             pickDate,
             archiveDate,
-            members,
         } = this.state;
 
         const {
@@ -83,7 +84,6 @@ class CreateGroupForm extends Component {
     }
 
     render() {
-
         const {
             groupName,
             leader,

@@ -34,10 +34,14 @@ export const doJoinGroup = (groupID, memberID) => {
 }
 
 export const addWishlistItem = (memberID, wishlistItem) => {
-    db.ref(`/users/${memberID}/wishlist`).push(wishlistItem); 
+    db.ref(`/users/${memberID}/wishlist`).push(wishlistItem);
 }
 
-
+export const onceGetWishlistItems = (memberID) => {
+    db.ref.once(`/users/${memberID}/wishlist`, function (data) {
+        console.log('HELLLLOOOOOOOOOO IN DB')
+    });
+}
 
 export const onceGetUsers = () =>
     db.ref('users').once('value');
