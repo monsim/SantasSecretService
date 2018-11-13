@@ -67,9 +67,15 @@ export function helper(groups) {
         console.log('within helper')
         var list = [];
         groups.on('value', snapshot => {
+            console.log('here0')
             snapshot.forEach(childSnapshot => {
+                console.log('here')
                 var item = childSnapshot.val();
+                console.log('here1')
+                console.log(JSON.parse(JSON.stringify(item)))
+                console.log('here2')
                 list.push(JSON.parse(JSON.stringify(item)));
+                console.log('here3')
             })
         })
         console.log('after foreach line 75')
@@ -77,7 +83,6 @@ export function helper(groups) {
         resolve(list)
     });
     return promise;
-    
 }
 
 
