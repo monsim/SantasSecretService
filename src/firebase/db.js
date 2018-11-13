@@ -22,7 +22,7 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
     });
     var grpID = '';
     groupRef.endAt().limitToLast(1).on('child_added', (snapshot) => {
-        console.log(snapshot.key)
+//        console.log(snapshot.key)
         grpID = snapshot.key;
     });
     return grpID;
