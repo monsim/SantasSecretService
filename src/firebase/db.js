@@ -31,8 +31,6 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
 export const doJoinGroup = (groupID, memberID) => {
     db.ref(`/groups/${groupID}/members`).push(memberID);
     db.ref(`/users/${memberID}/groupList`).push(groupID);
-
-
 }
 
 // Get groups
@@ -40,8 +38,18 @@ export const getGroups = (memberID) => {
   return db.ref(`/users/${memberID}/groupList`);
 }
 
+// Get group name
 export const getGroupName = (groupID) => {
   return db.ref(`/groups/${groupID}/groupName`).toString;
+}
+
+// Get group members
+export const getGroupMembers = (groupID) => {
+  return db.ref(`/groups/${groupID}/members`);
+}
+
+export const getUserName = (userID) => {
+  return db.ref(`/users/${userID}/username`);
 }
 
 export const onceGetUsers = () =>
