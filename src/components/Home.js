@@ -62,39 +62,14 @@ class HomePage extends Component {
       console.log('group list', profile.uid.groupList)
     });
 
-    // loops through all the users to find the current user's information (idk a more efficient way of doing this lmao)
-    var groups = firebase.database().ref('users').on('value', snapshot => {
-        snapshot.forEach(childSnapshot => {
-          var childData = childSnapshot.val()
-          if (childData.email == currentUserEmail) {
-            console.log('CURRENT USERS GROUPS: ', childData.groupList)
-            // get all the groups that the currently signed in user is in
-            mygroups = childData.groupList;
-            // it'll be in JSON format, so loop through all of its keys and add the values
-            // to the group_list array to be printed out later (this is sorta hacky sorry)
-            Object.keys(mygroups).forEach(function(key) {
-              group_list.push(JSON.parse(JSON.stringify(mygroups[key])))
-            });
-          }
-        })
-    })
+    // getting the group IDs of groupList
+    group_list = db.doGetUserGroupList(user.uid);
 
-    // loop through all the groups
-    var allGroups = firebase.database().ref('groups').on('value', snapshot => {
-        snapshot.forEach(childSnapshot => {
-          var aGroup = childSnapshot.key;
-          Object.keys(group_list).forEach(function(key) {
-            var anotherGroup = group_list[key]
-            if (aGroup == anotherGroup) {
-              //wtf.push(childSnapshot.val().groupName);
-              //console.log(JSON.parse(JSON.stringify(childSnapshot.val().groupName)))
-              group_names.push(JSON.parse(JSON.stringify(childSnapshot.val().groupName)))
-              console.log('dsaodsfjs', JSON.parse(JSON.stringify(childSnapshot.val().groupName)))
-            }
-          });
-        })
+    // for each groupID in group_list, call db.doGetGroupName to get their group names
+    // and add them to another array, group_names
+    group_list.forEach(function(value) {
+      group_names.push(db.doGetGroupName(value));
     })
-    
 
     // "Create Group" and "Join Group" button redirecting
     if (this.state.redirectCreateGroup) {
@@ -103,7 +78,6 @@ class HomePage extends Component {
     else if (this.state.redirectJoinGroup) {
       return <Redirect push to="/join-group" />;
     }
-
 
     setTimeout(function(){
       console.log('group_names timeout: ', group_names);

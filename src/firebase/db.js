@@ -36,6 +36,25 @@ export const doJoinGroup = (groupID, memberID) => {
 }
 
 
+export const doGetUserGroupList = (userID) => {
+   var groups = db.ref(`/users/${userID}/groupList`);
+   var list = [];
+   groups.on('value', snapshot => {
+       snapshot.forEach(childSnapshot => {
+           var aGroup = childSnapshot.val();
+           list.push(JSON.parse(JSON.stringify(aGroup)));
+       })
+   })
+   return list;
+}
+
+export const doGetGroupName = (groupID) => {
+    var theGroupName = db.ref(`/groups/${groupID}/groupName`);
+    theGroupName.on('value', snapshot => {
+        alert(snapshot.key);
+    })
+    return theGroupName;
+}
 
 export const onceGetUsers = () =>
     db.ref('users').once('value');
