@@ -56,12 +56,12 @@ class ViewWishlistPage extends React.Component {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         var memberID = firebase.auth().currentUser.uid;
-        console.log('before')
+        console.log('before in wishlist')
         db.getWishlist(memberID).then(function(result) {
-          console.log("its done!");
+          console.log("its done! in wishlist");
           console.log(result)
         });
-        console.log('end')
+        console.log('end in wishlist')
 
         // console.log(existingWishlist);
         // for (var i = 0; i < existingWishlist.length; i++) { //add each wishlist item into oldWishlistDivs
