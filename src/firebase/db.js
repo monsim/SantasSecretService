@@ -38,20 +38,6 @@ export const getGroups = (memberID) => {
   return db.ref(`/users/${memberID}/groupList`);
 }
 
-// Get group name
-export const getGroupName = (groupID) => {
-  return db.ref(`/groups/${groupID}/groupName`);
-}
-
-// Get group members
-export const getGroupMembers = (groupID) => {
-  return db.ref(`/groups/${groupID}/members`);
-}
-
-export const getUserName = (userID) => {
-  return db.ref(`/users/${userID}/username`);
-}
-
 export const onceGetUsers = () =>
     db.ref('users').once('value');
 
