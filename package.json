@@ -5,7 +5,10 @@
   "dependencies": {
     "@material-ui/core": "^3.4.0",
     "@material-ui/icons": "^3.0.1",
+<<<<<<< HEAD
     "ajv": "^6.5.5",
+=======
+>>>>>>> a2cc8585be4ae7ec35f23b71baa36c9ef0349b5d
     "firebase": "^5.5.7",
     "firebase-admin": "^6.1.0",
     "react": "^16.6.0",

@@ -10,11 +10,11 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 
 const SignInPage = ({ history }) =>
-  <div>
+    <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
     <SignInForm history={history} />
     <PasswordForgetLink />
     <SignUpLink />
-  </div>
+    </Grid>
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value,
@@ -39,18 +39,17 @@ class SignInForm extends Component {
       password,
     } = this.state;
 
-    const {
-      history,
-    } = this.props;
+  const {
+    history,
+  } = this.props;
 
-    auth.doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.setState({ ...INITIAL_STATE });
-        history.push(routes.HOME);
-      })
-      .catch(error => {
-        this.setState(byPropKey('error', error));
-      });
+  auth.doSignInWithEmailAndPassword(email, password)
+    .then(() => {
+    this.setState({ ...INITIAL_STATE });
+    history.push(routes.HOME);
+  }).catch(error => {
+    this.setState(byPropKey('error', error));
+  });
 
     event.preventDefault();
   }
@@ -62,39 +61,36 @@ class SignInForm extends Component {
       error,
     } = this.state;
 
-    const isInvalid =
-      password === '' ||
-      email === '';
+    const isInvalid = password === '' || email === '';
 
     return (
       <form onSubmit={this.onSubmit} style={{ padding: 30 }}>
         <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
           <h1>Sign In</h1>
-          <TextField
-            id={email}
-            label="Email Address"
-            type="email"
-            autoComplete="email"
-            margin="normal"
-            onChange={event => this.setState(byPropKey('email', event.target.value))}
-          />
-
-          <TextField
-            id={password}
-            label="Password"
-            type="password"
-            autoComplete="current-password"
-            margin="normal"
-            onChange={event => this.setState(byPropKey('password', event.target.value))}
-          />
-          <br/>
-          <Button disabled={isInvalid} variant="contained" color="primary" size="large" type='submit'> Sign In
-          </Button>
-
-          {error && <p>{error.message}</p>}
+            <TextField
+              id={email}
+              label="Email Address"
+              type="email"
+              autoComplete="email"
+              margin="normal"
+              onChange={event => this.setState(byPropKey('email', event.target.value))}
+            />
+            <TextField
+              id={password}
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              margin="normal"
+              onChange={event => this.setState(byPropKey('password', event.target.value))}
+            />
+            <br />
+            <Button disabled={isInvalid} variant="contained" color="primary" size="large" type='submit'>
+              Sign In
+            </Button>
         </Grid>
+          {error && <p>{error.message}</p>}
       </form>
-    );
+           );
   }
 }
 
