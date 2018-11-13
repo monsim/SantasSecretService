@@ -12,14 +12,14 @@ import * as routes from '../constants/routes';
 
 
 var members = [];
-
+var groupName = '';
 // Front end
 //const ViewGroupPage = (groupID) => (Component) =>
   class ViewGroupPage extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        id: 'LR3ZjmCUc9SBXAvDqEy',
+        id: '-LR9m8U9ghz-2F4ZR2SR',
       };
       
       console.log('here');
@@ -27,11 +27,13 @@ var members = [];
         snapshot.forEach(function(data) {
           let x = db.getUserName(data.val());
           x.on("value", function(snap) {
-//            members.push(snap.val());
             if (!members.includes(snap.val())) members.push(snap.val());
-            console.log(members);
           });
         });
+      });
+      
+      db.getGroupName(this.state.id).on("value", function(snap) {
+        groupName = snap.val();
       });
       
       this.handleChange = this.handleChange.bind(this);
@@ -52,18 +54,25 @@ var members = [];
       const {
         id,
       } = this.state;
+      
+      const showMembers = members.map((name) => 
+        <li key='text'>{name}</li>
+      );
+      
       return (
         <div style={{ padding: 30 }}>
           <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-            <Grid item style={{ paddingTop: 100 }}>
-              <h1>Group: {id}</h1>
-              <h2>Group Member 1 </h2>
-              <h2>Group Member 2 (Giftee Symbol)</h2>
+            <Grid item style={{ paddingTop: 50 }}>
+              <h4>Group Name</h4>
+              <h1>{groupName}</h1>
+              {showMembers}
             </Grid>
           </Grid>
         </div>
       );
     }
   }
+
+
 
 export default ViewGroupPage;

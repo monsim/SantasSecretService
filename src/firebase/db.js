@@ -40,7 +40,7 @@ export const getGroups = (memberID) => {
 
 // Get group name
 export const getGroupName = (groupID) => {
-  return db.ref(`/groups/${groupID}/groupName`).toString;
+  return db.ref(`/groups/${groupID}/groupName`);
 }
 
 // Get group members
