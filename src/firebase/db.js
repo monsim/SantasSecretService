@@ -166,22 +166,15 @@ export function doGetGroupMemberHelper(members) {
     console.log(members + " in db")
     var promise = new Promise(function (resolve, reject) {
         console.log("within dbbb")
-        var set = {};
+        var list = [];
         members.on('value', snapshot => {
             snapshot.forEach(childSnapshot => {
                 var memberID = childSnapshot.val();
                 console.log('memberID ' + memberID)
-                // Write a function for it (promise)
-                // db.ref(`/users/${memberID}/username`).on('value', snap => {
-                //     if (!(snap in set)) {
-                //         console.log('not in set')
-                //         set[JSON.parse(JSON.stringify(memberID))] = JSON.parse(JSON.stringify(snap.val()));
-                //     }
-                // })
-                set[JSON.parse(JSON.stringify(memberID))] = JSON.parse(JSON.stringify(doGetUserName(memberID)))
+                list.push(JSON.parse(JSON.stringify(memberID)))
             })
-            resolve(set);
-            console.log(set)
+            resolve(list)
+            console.log(list)
         })
     });
     return promise;
@@ -203,7 +196,7 @@ export function doGetUserNameHelper(memberName) {
         memberName.on('value', snapshot => {
             name = snapshot.val();
             resolve(name)
-            console.log(name)
+            console.log("helper name " + name)
         })
     });
     return promise;

@@ -1,19 +1,19 @@
 
-import React, { Component } from 'react';
+import React, { /*Component*/ } from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import Input from '@material-ui/core/Input';
-import Icon from '@material-ui/core/Icon';
-import AuthUserContext from './AuthUserContext';
+// import Icon from '@material-ui/core/Icon';
+// import AuthUserContext from './AuthUserContext';
 import {
   Link,
-  withRouter,
+  // withRouter,
 } from 'react-router-dom';
 
 import firebase from 'firebase/app';
-import { auth, db } from '../firebase';
+import { /*auth,*/ db } from '../firebase';
 import * as routes from '../constants/routes';
 
 const INITIAL_STATE = {
@@ -32,9 +32,9 @@ const INITIAL_STATE = {
   oldWishlistDivs: [], //array of divs from wishlist in firebase
 };
 
-const byPropKey = (propertyName, value) => () => ({
-  [propertyName]: value,
-});
+// const byPropKey = (propertyName, value) => () => ({
+//   [propertyName]: value,
+// });
 
 
 class ViewWishlistPage extends React.Component {
