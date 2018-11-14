@@ -68,8 +68,7 @@ export function helper(groups) {
     var promise = new Promise(function (resolve, reject) {
         console.log('within helper')
         var list = [];
-        groups.once('value')
-        .then(function(snapshot) {
+        groups.on('value', snapshot => {
             console.log('here0')
             snapshot.forEach(childSnapshot => {
                 console.log('here')
@@ -79,7 +78,6 @@ export function helper(groups) {
                 console.log('here2')
                 list.push(JSON.parse(JSON.stringify(item)));
                 console.log('here3')
-                return true
             })
             console.log('before resolve')
             console.log(list)

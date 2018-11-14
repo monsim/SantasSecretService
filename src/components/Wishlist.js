@@ -53,11 +53,12 @@ class ViewWishlistPage extends React.Component {
 
   componentDidMount() {
     console.log('in componentWillMount')
+    this.state = { ...INITIAL_STATE };  //fixes problem where 'view wishlist' click adds to screen unncessarily 
     var oldDivs = this.state.oldWishlistDivs;
     var cachedThis = this;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        var memberID = firebase.auth().currentUser.uid;
+        var memberID = firebase.auth().currentUser.uid; 
         console.log('before in wishlist')
         db.getWishlist(memberID).then(function (result) {
           console.log("its done! in wishlist");
