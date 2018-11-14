@@ -79,6 +79,63 @@ export function doGetGroupNameHelper(theGroupName) {
     return promise;
 }
 
+export const doGetGroupMember = (groupID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var members = db.ref(`/groups/${groupID}/members`);
+        doGetGroupMemberHelper(members).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetGroupMemberHelper(members) {
+    console.log(members + " in db")
+    var promise = new Promise(function (resolve, reject) {
+        console.log("within dbbb")
+        var set = {};
+        members.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                var memberID = childSnapshot.val();
+                console.log('memberID ' + memberID)
+                // Write a function for it (promise)
+                // db.ref(`/users/${memberID}/username`).on('value', snap => {
+                //     if (!(snap in set)) {
+                //         console.log('not in set')
+                //         set[JSON.parse(JSON.stringify(memberID))] = JSON.parse(JSON.stringify(snap.val()));
+                //     }
+                // })
+                set[JSON.parse(JSON.stringify(memberID))] = JSON.parse(JSON.stringify(doGetUserName(memberID)))
+            })
+            resolve(set);
+            console.log(set)
+        })
+    });
+    return promise;
+}
+
+export const doGetUserName = (memberID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var memberName = db.ref(`/users/${memberID}/username`);
+        doGetUserNameHelper(memberName).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetUserNameHelper(memberName) {
+    var promise = new Promise(function (resolve, reject) {
+        var name = '';
+        memberName.on('value', snapshot => {
+            name = snapshot.val();
+            resolve(name)
+            console.log(name)
+        })
+    });
+    return promise;
+}
+
 export const onceGetUsers = () =>
     db.ref('users').once('value');
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+// import TextField from '@material-ui/core/TextField';
 
-import { Link } from 'react-router-dom';
-import * as routes from '../constants/routes';
+// import { Link } from 'react-router-dom';
+// import * as routes from '../constants/routes';
 
 
 class ViewWishlistPage extends React.Component {
