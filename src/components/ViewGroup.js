@@ -13,7 +13,7 @@ var groupName = '';
 var members = {};
 
 // Front end
-//const ViewGroupPage = (groupID) => (Component) =>
+// const ViewGroupPage = (groupID) =>
   class ViewGroupPage extends React.Component {
     constructor(props) {
       super(props);
