@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 
 import firebase from 'firebase/app';
 import {
-   Link,
+  Link,
 } from 'react-router-dom';
 import * as routes from '../constants/routes';
 
@@ -85,5 +85,6 @@ var members = {};
       );
     }
   }
+}
 
 export default ViewGroupPage;
