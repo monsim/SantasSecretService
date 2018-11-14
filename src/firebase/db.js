@@ -88,7 +88,9 @@ export function helper(groups) {
         })
         console.log('after foreach line 75')
         console.log('line 76 list ' + list)
-        
+    });
+}      
+
 export const doGetUserGroupList = (userID) => {
     var promise = new Promise(function (resolve, reject) {
         var groups = db.ref(`/users/${userID}/groupList`);
