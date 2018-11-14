@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 import { auth } from '../firebase';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 const byPropKey = (propertyName, value) => () => ({
   [propertyName]: value,
@@ -45,24 +48,36 @@ class PasswordChangeForm extends Component {
       passwordOne === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          value={passwordOne}
+      <form onSubmit={this.onSubmit} style={{ padding: 30 }}>
+      <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
+        <h3> Change Password </h3>
+        <TextField
+          id={passwordOne}
+          label="New Password"
+          type="password1"
+          autoComplete="new password"
+          margin="normal"
           onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
-          type="password"
-          placeholder="New Password"
         />
-        <input
-          value={passwordTwo}
+        <TextField
+          id={passwordTwo}
+          label="Confirm Password"
+          type="password2"
+          autoComplete="Confirm Password"
+          margin="normal"
           onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
-          type="password"
-          placeholder="Confirm New Password"
         />
-        <button disabled={isInvalid} type="submit">
+        <Button
+          disabled={isInvalid}
+          variant="contained"
+          color="primary"
+          size="medium"
+          type='submit'> 
           Reset My Password
-        </button>
+        </Button>
 
         { error && <p>{error.message}</p> }
+      </Grid>
       </form>
     );
   }

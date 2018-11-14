@@ -53,8 +53,7 @@ class PasswordForgetForm extends Component {
     return (
       <form onSubmit={this.onSubmit} style={{ padding: 30 }}>
         <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-          <h1>Password Forget</h1>
-
+          <h3>Password Forget</h3>
           <TextField
             id={this.state.email}
             label="Email Address"
@@ -64,7 +63,13 @@ class PasswordForgetForm extends Component {
             onChange={event => this.setState(byPropKey('email', event.target.value))}
           />
           <br/>
-          <Button disabled={isInvalid} variant="contained" color="primary" size="large" type='submit'> Reset My Password
+          <Button
+            disabled={isInvalid}
+            variant="contained"
+            color="primary"
+            size="medium"
+            type='submit'> 
+            Send Email
           </Button>
 
         { error && <p>{error.message}</p> }
