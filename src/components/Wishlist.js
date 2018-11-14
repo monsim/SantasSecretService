@@ -29,7 +29,6 @@ const INITIAL_STATE = {
   wishlistDivs: [], //array of divs
   item: '', //most recently added items
   wishlist: [],   //array of names of items
-  boolee: false,
   oldWishlistDivs: [], //array of divs from wishlist in firebase
 };
 
@@ -49,42 +48,51 @@ class ViewWishlistPage extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleItemSubmit = this.handleItemSubmit.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     console.log('in componentWillMount')
+    this.state = { ...INITIAL_STATE };  //fixes problem where 'view wishlist' click adds to screen unncessarily 
+    var oldDivs = this.state.oldWishlistDivs;
+    var cachedThis = this;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        var memberID = firebase.auth().currentUser.uid;
+        var memberID = firebase.auth().currentUser.uid; 
         console.log('before in wishlist')
-        db.getWishlist(memberID).then(function(result) {
+        db.getWishlist(memberID).then(function (result) {
           console.log("its done! in wishlist");
           console.log(result)
+          
+
+          console.log(result);
+          // const oldDivs = stateIn.oldWishlistDivs;
+          for (var i = 0; i < result.length; i++) { //add each wishlist item into oldWishlistDivs
+            oldDivs.push(
+              <div>
+                <div>
+                  <Input
+                    name='item'
+                    //onChange={this.handleChange}
+                    placeholder="Wishlist Item"
+                    inputProps={{
+                      'aria-label': 'Description',
+                    }}
+                    defaultValue={result[i]}
+                  />
+                  {/* <Button variant="contained" color="primary" onClick={this.handleItemSubmit} >
+                    Delete Item 
+                  </Button> */}
+                </div>
+              </div>
+            )
+          }
+
+          cachedThis.setState({
+            oldWishlistDivs: oldDivs
+          });
+
         });
-        console.log('end in wishlist')
-
-        // console.log(existingWishlist);
-        // for (var i = 0; i < existingWishlist.length; i++) { //add each wishlist item into oldWishlistDivs
-        //   this.state.oldWishlistDivs.push(
-        //     <div>
-        //       <div>
-        //         <Input
-        //           name='item'
-        //           onChange={this.handleChange}
-        //           placeholder="Wishlist Item"
-        //           inputProps={{
-        //             'aria-label': 'Description',
-        //           }}
-        //           defaultValue={existingWishlist[i]}
-        //         />
-        //         {/* <Button variant="contained" color="primary" onClick={this.handleItemSubmit} >
-        //           Delete Item 
-        //         </Button> */}
-        //       </div>
-        //     </div>
-        //   )
-        // }
-
       }
     });
   }

@@ -45,27 +45,29 @@ export function getWishlist(userID) {
         console.log('within promise line 43')
         console.log(userID)
         var groups = db.ref(`/users/${userID}/wishlist`);
-       
+
         console.log('before snapshot line 47')
         //call
         var outer = [];
-        helper(groups).then(function(result){
+        helper(groups).then(function (result) {
             console.log('within inner promise line 51')
             console.log('line 52: ' + result)
             outer = result;
             console.log('end inner promise line 54')
+            console.log('outer line 58 db ' + outer)
+            resolve(outer);
+            console.log('last line of promise line 59')
         })
         // console.log(list)
-        console.log('outer line 58 db ' + outer)
-        resolve(outer);
-        console.log('last line of promise line 59')
+        // resolve(outer);
+        // return promise;
     });
     console.log('after promise line 61')
     return promise;
 }
 
 export function helper(groups) {
-    var promise = new Promise(function (resolve, reject){
+    var promise = new Promise(function (resolve, reject) {
         console.log('within helper')
         var list = [];
         groups.on('value', snapshot => {
@@ -79,14 +81,64 @@ export function helper(groups) {
                 list.push(JSON.parse(JSON.stringify(item)));
                 console.log('here3')
             })
+            console.log('before resolve')
+            console.log(list)
+            resolve(list)
+            console.log('after resolve')
         })
         console.log('after foreach line 75')
         console.log('line 76 list ' + list)
-        resolve(list)
+        
     });
     return promise;
 }
 
+
+
+export const doGetUserGroupList = (userID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var groups = db.ref(`/users/${userID}/groupList`);
+        doGetUserGroupListHelper(groups).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetUserGroupListHelper(groups) {
+    var promise = new Promise(function (resolve, reject) {
+        var list = [];
+        groups.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                var aGroup = childSnapshot.val();
+                list.push(JSON.parse(JSON.stringify(aGroup)));
+            })
+            resolve(list);
+        })
+    });
+    return promise;
+}
+
+export const doGetGroupName = (groupID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var theGroupName = db.ref(`/groups/${groupID}/groupName`);
+        doGetGroupNameHelper(theGroupName).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetGroupNameHelper(theGroupName) {
+    var promise = new Promise(function (resolve, reject) {
+        var theGroup = '';
+        theGroupName.on('value', snapshot => {
+            theGroup = snapshot.val();
+            resolve(theGroup)
+        })
+    });
+    return promise;
+}
 
 export const getUserWishlist = (userID) => {
     var groups = db.ref(`/users/${userID}/wishlist`);

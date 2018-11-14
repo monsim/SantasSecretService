@@ -21,79 +21,112 @@ class HomePage extends Component {
     super(props);
 
     this.state = {
-      groups: [],
+      group_names: [],
+      group_name_divs: [],
       users: null,
     };
+
+    this.helper = this.helper.bind(this)
   }
 
+
+
+
   componentDidMount() {
+    /*
     db.onceGetUsers().then(snapshot =>
       this.setState({ users: snapshot.val() })
     );
-  }
+      */
 
-  componentWillMount() {
-
-  }
-
-  /** Handles states based on button onclick **/
-  handleCreateGroup = () => {
-    this.setState({
-      redirectCreateGroup: true
-    });
-  }
-
-  handleJoinGroup = () => {
-    this.setState({
-      redirectJoinGroup: true
-    });
-  }
-
-  render() {
     //const { users } = this.state;
     let user = firebase.auth().currentUser;
-    var group_list = [];  // this is printed out later in the return statement
-    var group_names = [];
+    var cachedThis = this;
 
     // getting the group IDs of groupList
-    group_list = db.doGetUserGroupList(user.uid);
-    console.log('group_list: ' , group_list)
 
-    // for each groupID in group_list, call db.doGetGroupName to get their group names
-    // and add them to another array, group_names
-    for (var i = 0; i < group_list.length; i++) {
-      console.log('i am in home.js: ', group_list[i]);
-      group_names.push(db.doGetGroupName(group_list[i]));
-    }
+    db.doGetUserGroupList(user.uid).then(function (group_list) {
+      console.log('group_list: ', group_list)
 
-    console.log("before")
-    console.log(db.groups)
-    for (var i = 0; i < db.groups.length; i++){
-      console.log('within')
-      console.log(db.groups[i]);
-    }
-    console.log("after")
+      var oldGroupNames = cachedThis.state.group_names;
+      // for each groupID in group_list, call db.doGetGroupName to get their group names
+      // and add them to another array, group_names
+      console.log('before helper')
+      cachedThis.helper(group_list, oldGroupNames, cachedThis).then(function (result) {
+        console.log('after helper call')
+        console.log(cachedThis.state.group_names)
+        var oldDivs = cachedThis.state.group_name_divs;
+        for (var i = 0; i < cachedThis.state.group_names.length; i++) {
+          console.log('i am in the group names for loop')
+          oldDivs.push(
+            <div>
+              <h2>Group {i + 1}</h2>
+              <ListItem button>
+                <ListItemText primary={cachedThis.state.group_names[i]} />
+                <ListItemIcon><PlayArrowIcon /></ListItemIcon>
+              </ListItem>
+              <Divider />
+            </div>
+          )
+        }
+        cachedThis.setState({
+          group_name_divs: oldDivs
+        })
+      })
 
-    // "Create Group" and "Join Group" button redirecting
-    if (this.state.redirectCreateGroup) {
-      return <Redirect push to="/create-group" />;
-    }
-    else if (this.state.redirectJoinGroup) {
-      return <Redirect push to="/join-group" />;
-    }
+      // "Create Group" and "Join Group" button redirecting
+      if (cachedThis.state.redirectCreateGroup) {
+        return <Redirect push to="/create-group" />;
+      }
+      else if (cachedThis.state.redirectJoinGroup) {
+        return <Redirect push to="/join-group" />;
+      }
 
-    console.log('group names: ', group_names)
+    });
+  }
 
-    return (
+  helper(group_list, oldGroupNames, cachedThis) {
+    var promise = new Promise(function (resolve, reject) {
+      var promises = [];
+        for (var i = 0; i < group_list.length; i++) {
+          console.log('i am in home.js: ', group_list[i]);
+          promises.push(db.doGetGroupName(group_list[i]));
+        }
+        Promise.all(promises).then(function(values) {
+          console.log(values)
+          resolve(values)
+          cachedThis.setState({
+            group_names: values
+          })
+        });
+    });
+    return promise;
+  }
 
-      <form onSubmit={this.onSubmit}>
-        <div style={{ padding: 30 }}>
-          <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-            <Grid item style={{ paddingBottom: 20 }}>
-              <h1> My Groups </h1>
-            </Grid>
-            < Grid item xs={6}>
+/** Handles states based on button onclick **/
+handleCreateGroup = () => {
+  this.setState({
+    redirectCreateGroup: true
+  });
+}
 
+handleJoinGroup = () => {
+  this.setState({
+    redirectJoinGroup: true
+  });
+}
+
+render() {
+  return (
+    <form onSubmit={this.onSubmit}>
+      <div style={{ padding: 30 }}>
+        <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
+          <Grid item style={{ paddingBottom: 20 }}>
+            <h1> My Groups </h1>
+          </Grid>
+          < Grid item xs={6}>
+            <div>{this.state.group_name_divs}</div>
+            {/*
               {group_list.map(function(groupName, index){
                     return <div>
                       <h2>Group {index + 1}</h2>
@@ -104,23 +137,23 @@ class HomePage extends Component {
                     <Divider />
                   </div>;
               })}
+ */}
+            {/* { !!users && <UserList users={users} /> } */}
 
-              {/* { !!users && <UserList users={users} /> } */}
-
-            </Grid>
-            < Grid item xs={6} style={{ paddingTop: 20 }}>
-              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleCreateGroup} style={{ float: 'left' }}>Create Group</Button>
-              &nbsp;&nbsp;
-              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleJoinGroup} style={{ float: 'right' }}>Join Group</Button>
-            </Grid>
-            <Grid item style={{ paddingTop: 50 }}>
-              <img src={process.env.PUBLIC_URL + '/hushhush.png'} alt="logo" style={{ width: 200, height: 200 }} />
-            </Grid>
           </Grid>
-        </div>
-      </form>
-    );
-  }
+          < Grid item xs={6} style={{ paddingTop: 20 }}>
+            <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleCreateGroup} style={{ float: 'left' }}>Create Group</Button>
+            &nbsp;&nbsp;
+              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.handleJoinGroup} style={{ float: 'right' }}>Join Group</Button>
+          </Grid>
+          <Grid item style={{ paddingTop: 50 }}>
+            <img src={process.env.PUBLIC_URL + '/hushhush.png'} alt="logo" style={{ width: 200, height: 200 }} />
+          </Grid>
+        </Grid>
+      </div>
+    </form>
+  );
+} // end of render()
 }
 
 
@@ -129,7 +162,6 @@ const UserList = ({ users }) =>
   <div>
     <h2>Groups</h2>
     <p>(Saved on Sign Up in Firebase Database)</p>
-
     {Object.keys(users).map(key =>
       <div key={key}>{users[key].username}</div>
     )}
