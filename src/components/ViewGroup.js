@@ -11,7 +11,7 @@ import * as routes from '../constants/routes';
 
 var groupName = '';
 var members = {};
-var clickedOn = '';
+
 // Front end
 //const ViewGroupPage = (groupID) => (Component) =>
   class ViewGroupPage extends React.Component {
@@ -33,6 +33,7 @@ var clickedOn = '';
   
     handleSubmit(event) {
       event.preventDefault();
+      alert(this.state.id)
     }
 
     componentDidMount() {
@@ -52,7 +53,6 @@ var clickedOn = '';
     }
     
     render() {
-      
       const showMembers = Object.keys(members).map((key) => 
         <Grid 
           key={'child'+key}
@@ -60,7 +60,14 @@ var clickedOn = '';
           justify={'center'} 
           direction={'column'} 
           item style={{ padding: 30 }}>
-          <Button key='submit' onClick={this.handleSubmit}><Link to={routes.WISHLIST}>{members[key]}</Link></Button>
+          <Button
+            type='button'
+            variant='contained'
+            color="primary"
+            size="medium"
+            component={Link} to={routes.WISHLIST}>
+              {members[key]}
+          </Button>
         </Grid>
       );
       
@@ -78,9 +85,5 @@ var clickedOn = '';
       );
     }
   }
-
-function setID(id) {
-  clickedOn = id;
-}
 
 export default ViewGroupPage;

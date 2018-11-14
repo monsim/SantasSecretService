@@ -20,7 +20,7 @@ const Navigation = () =>
   </AuthUserContext.Consumer>
 
 const NavigationAuth = () =>
-  <AppBar color="default">
+  <AppBar color="default" position={'static'}>
     <Tabs>
       <TabContainer><Link to={routes.HOME}><Tab label="Home" /></Link></TabContainer>
       <TabContainer><Link to={routes.ACCOUNT}><Tab label="Account" /></Link></TabContainer>
