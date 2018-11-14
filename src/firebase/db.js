@@ -93,36 +93,52 @@ export function helper(groups) {
     return promise;
 }
 
-/*
-WITH .ON INSTEAD OF .ONCE
-export function helper(groups) {
+
+
+export const doGetUserGroupList = (userID) => {
     var promise = new Promise(function (resolve, reject) {
-        console.log('within helper')
-        var list = [];
-        groups.on('value', snapshot => {
-            console.log('here0')
-            snapshot.forEach(childSnapshot => {
-                console.log('here')
-                var item = childSnapshot.val();
-                console.log('here1')
-                console.log(JSON.parse(JSON.stringify(item)))
-                console.log('here2')
-                list.push(JSON.parse(JSON.stringify(item)));
-                console.log('here3')
-                return true
-            })
-            console.log('before resolve')
-            console.log(list)
-            resolve(list)
-            console.log('after resolve')
+        var groups = db.ref(`/users/${userID}/groupList`);
+        doGetUserGroupListHelper(groups).then(function (result) {
+            resolve(result)
         })
-        console.log('after foreach line 75')
-        console.log('line 76 list ' + list)
-        
     });
     return promise;
 }
-*/
+
+export function doGetUserGroupListHelper(groups) {
+    var promise = new Promise(function (resolve, reject) {
+        var list = [];
+        groups.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                var aGroup = childSnapshot.val();
+                list.push(JSON.parse(JSON.stringify(aGroup)));
+            })
+            resolve(list);
+        })
+    });
+    return promise;
+}
+
+export const doGetGroupName = (groupID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var theGroupName = db.ref(`/groups/${groupID}/groupName`);
+        doGetGroupNameHelper(theGroupName).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetGroupNameHelper(theGroupName) {
+    var promise = new Promise(function (resolve, reject) {
+        var theGroup = '';
+        theGroupName.on('value', snapshot => {
+            theGroup = snapshot.val();
+            resolve(theGroup)
+        })
+    });
+    return promise;
+}
 
 export const getUserWishlist = (userID) => {
     var groups = db.ref(`/users/${userID}/wishlist`);
