@@ -16,8 +16,8 @@ class JoinGroupPage extends React.Component {
     this.state = {
       groupID: ''
     };
-  this.handleChange = this.handleChange.bind(this);
-  this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
@@ -37,7 +37,7 @@ class JoinGroupPage extends React.Component {
           db.doJoinGroup(grpID, userID)
           console.log(userID + ' added to ' + grpID)
       }
-  })
+    })
   }
 
 
