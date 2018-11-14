@@ -88,8 +88,10 @@ export function helper(groups) {
         })
         console.log('after foreach line 75')
         console.log('line 76 list ' + list)
+        
     });
-}      
+    return promise;
+}
 
 export const doGetUserGroupList = (userID) => {
     var promise = new Promise(function (resolve, reject) {
