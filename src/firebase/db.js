@@ -2,8 +2,6 @@ import { db } from './firebase';
 
 // User API
 
-export var groups = [];
-
 export const doCreateUser = (id, username, email, groupList) =>
     db.ref(`users/${id}`).set({
         username,
@@ -39,29 +37,48 @@ export const doJoinGroup = (groupID, memberID) => {
 
 
 export const doGetUserGroupList = (userID) => {
-   var groups = db.ref(`/users/${userID}/groupList`);
-   var list = [];
-   groups.on('value', snapshot => {
-       snapshot.forEach(childSnapshot => {
-           var aGroup = childSnapshot.val();
-           list.push(JSON.parse(JSON.stringify(aGroup)));
-       })
-   })
-   return list;
+    var promise = new Promise(function (resolve, reject) {
+        var groups = db.ref(`/users/${userID}/groupList`);
+        doGetUserGroupListHelper(groups).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetUserGroupListHelper(groups) {
+    var promise = new Promise(function (resolve, reject) {
+        var list = [];
+        groups.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                var aGroup = childSnapshot.val();
+                list.push(JSON.parse(JSON.stringify(aGroup)));
+            })
+            resolve(list);
+        })
+    });
+    return promise;
 }
 
 export const doGetGroupName = (groupID) => {
-    var theGroupName = db.ref(`/groups/${groupID}/groupName`);
-    var theGroup = '';
-    theGroupName.on('value', snapshot => {
-        theGroup = snapshot.val();
-        console.log('the group: ', theGroup)
-        groups.push(theGroup);
-        console.log('groups: ' + groups)
-    })
-    console.log('i am in db.js: ', theGroup)
-    return theGroup;
-    //return theGroup;
+    var promise = new Promise(function (resolve, reject) {
+        var theGroupName = db.ref(`/groups/${groupID}/groupName`);
+        doGetGroupNameHelper(theGroupName).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetGroupNameHelper(theGroupName) {
+    var promise = new Promise(function (resolve, reject) {
+        var theGroup = '';
+        theGroupName.on('value', snapshot => {
+            theGroup = snapshot.val();
+            resolve(theGroup)
+        })
+    });
+    return promise;
 }
 
 export const onceGetUsers = () =>
