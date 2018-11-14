@@ -170,12 +170,12 @@ class ViewWishlistPage extends React.Component {
     console.log(wishlistS);
   }
 
-
   render() {
     return (
       <div style={{ padding: 30 }}>
         <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
           <Grid item style={{ paddingBottom: 40 }}>
+
             <h1>Your Wishlist</h1>
           </Grid>
           <div>
