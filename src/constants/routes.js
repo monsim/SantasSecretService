@@ -9,4 +9,7 @@ export const JOIN_GROUP = '/join-group';
 export const VIEW_GROUP = '/view-group';
 export const VIEW_GROUP_LIST = '/view-group-list';
 export const VIEW_WISHLIST = '/my-wishlist';
+<<<<<<< HEAD
 export const WISHLIST = '/wishlist';
+=======
+>>>>>>> 466fcc2400ac8fb03865d88dddecaccad10de0a4

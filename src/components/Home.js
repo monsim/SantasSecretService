@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import List from '@material-ui/core/List';
+// import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
-import * as routes from '../constants/routes';
+// import * as routes from '../constants/routes';
 import { Redirect } from 'react-router-dom'
 
 import firebase from 'firebase/app';
 import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
+<<<<<<< HEAD
 import { EXITED } from 'react-transition-group/Transition';
 import AuthUserContext from './AuthUserContext';
 
+=======
+// import { EXITED } from 'react-transition-group/Transition';
+>>>>>>> 466fcc2400ac8fb03865d88dddecaccad10de0a4
 
 class HomePage extends Component {
   constructor(props) {
@@ -56,7 +60,7 @@ class HomePage extends Component {
       console.log('before helper')
       cachedThis.helper(group_list, oldGroupNames, cachedThis).then(function (result) {
         console.log('after helper call')
-        console.log(cachedThis.state.group_names)
+        // console.log(cachedThis.state.group_names)
         var oldDivs = cachedThis.state.group_name_divs;
         for (var i = 0; i < cachedThis.state.group_names.length; i++) {
           console.log('i am in the group names for loop')
