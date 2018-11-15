@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Divider from '@material-ui/core/Divider';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
-// import * as routes from '../constants/routes';
+import * as routes from '../constants/routes';
 import { Redirect } from 'react-router-dom'
 
 import firebase from 'firebase/app';
@@ -27,9 +27,19 @@ class HomePage extends Component {
     };
 
     this.helper = this.helper.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
 
+  handleSubmit(event) {
+    event.preventDefault();
+    const {
+      history,
+    } = this.props;
+
+    alert(event.target.name)
+    history.push(routes.VIEW_GROUP)
+  }
 
 
   componentDidMount() {
@@ -61,7 +71,7 @@ class HomePage extends Component {
           oldDivs.push(
             <div>
               <h2>Group {i + 1}</h2>
-              <ListItem button>
+              <ListItem name={cachedThis.state.group_names[i]} button onClick={cachedThis.handleSubmit}>
                 <ListItemText primary={cachedThis.state.group_names[i]} />
                 <ListItemIcon><PlayArrowIcon /></ListItemIcon>
               </ListItem>
