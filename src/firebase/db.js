@@ -1,4 +1,3 @@
-
 import { db } from './firebase';
 
 // User API
@@ -32,27 +31,8 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
 export const doJoinGroup = (groupID, memberID) => {
     db.ref(`/groups/${groupID}/members`).push(memberID);
     db.ref(`/users/${memberID}/groupList`).push(groupID);
-<<<<<<< HEAD
 }
 
-// Get groups
-export const getGroups = (memberID) => {
-  return db.ref(`/users/${memberID}/groupList`);
-=======
->>>>>>> 6c1e709ca25d50690144cd65643698d9ca5e2a41
-}
-
-// Get group name
-export const getGroupName = (groupID) => {
-  return db.ref(`/groups/${groupID}/groupName`);
-}
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-// Get group members
-export const getGroupMembers = (groupID) => {
-  return db.ref(`/groups/${groupID}/members`);
-=======
 export const addWishlistItem = (memberID, wishlistItem) => {
     db.ref(`/users/${memberID}/wishlist`).push(wishlistItem);
 }
@@ -111,12 +91,8 @@ export function helper(groups) {
         
     });
     return promise;
->>>>>>> 466fcc2400ac8fb03865d88dddecaccad10de0a4
 }
 
-export const getUserName = (userID) => {
-  return db.ref(`/users/${userID}/username`);
-=======
 export const doGetUserGroupList = (userID) => {
     var promise = new Promise(function (resolve, reject) {
         var groups = db.ref(`/users/${userID}/groupList`);
@@ -174,38 +150,8 @@ export function doGetGroupNameHelper(theGroupName) {
         })
     });
     return promise;
->>>>>>> 6c1e709ca25d50690144cd65643698d9ca5e2a41
 }
 
-<<<<<<< HEAD
-export const doGetUserGroupList = (userID) => {
-    var groups = db.ref(`/users/${userID}/groupList`);
-    var list = [];
-    groups.on('value', snapshot => {
-        snapshot.forEach(childSnapshot => {
-            var aGroup = childSnapshot.val();
-            list.push(JSON.parse(JSON.stringify(aGroup)));
-        })
-    })
-    return list;
- }
- 
- export const doGetGroupName = (groupID) => {
-     var theGroupName = db.ref(`/groups/${groupID}/groupName`);
-     var theGroup = '';
-     theGroupName.on('value', snapshot => {
-         theGroup = snapshot.val();
-         console.log('the group: ', theGroup)
-         groups.push(theGroup);
-         console.log('groups: ' + groups)
-     })
-     console.log('i am in db.js: ', theGroup)
-     return theGroup;
-     //return theGroup;
-    }
-     
-     export const onceGetUsers = () =>
-=======
 export const doGetGroupMember = (groupID) => {
     var promise = new Promise(function (resolve, reject) {
         var members = db.ref(`/groups/${groupID}/members`);
@@ -257,7 +203,6 @@ export function doGetUserNameHelper(memberName) {
 }
 
 export const onceGetUsers = () =>
->>>>>>> 466fcc2400ac8fb03865d88dddecaccad10de0a4
     db.ref('users').once('value');
 
 // Other Entity APIs ...

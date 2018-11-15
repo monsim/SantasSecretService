@@ -15,52 +15,6 @@ import {
 import firebase from 'firebase/app';
 import { /*auth,*/ db } from '../firebase';
 import * as routes from '../constants/routes';
-<<<<<<< HEAD
-import WishListItems from "./WishListItems";
-
-class ViewWishlistPage extends React.Component {
-  constructor(props) {
-    super(props);
- 
-    this.state = {
-      items: []
-    };
-
-    this.addItem = this.addItem.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-
-  }
-
-  addItem(e) {
-    if (this._inputElement.value !== "") {
-      var newItem = {
-        text: this._inputElement.value,
-        key: Date.now()
-      };
-   
-      this.setState((prevState) => {
-        return { 
-          items: prevState.items.concat(newItem) 
-        };
-      });
-     
-      this._inputElement.value = "";
-    }
-     
-    console.log(this.state.items);
-       
-    e.preventDefault();
-  }
-
-  deleteItem(key) {
-    var filteredItems = this.state.items.filter(function (item) {
-      return (item.key !== key);
-    });
-   
-    this.setState({
-      items: filteredItems
-    });
-=======
 
 const INITIAL_STATE = {
   //username: '', can we get this from current session??
@@ -214,7 +168,6 @@ class ViewWishlistPage extends React.Component {
       wishlistDivs: wishlistS
     });
     console.log(wishlistS);
->>>>>>> 466fcc2400ac8fb03865d88dddecaccad10de0a4
   }
 
   render() {
@@ -222,19 +175,6 @@ class ViewWishlistPage extends React.Component {
       <div style={{ padding: 30 }}>
         <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
           <Grid item style={{ paddingBottom: 40 }}>
-<<<<<<< HEAD
-            <h1>My Wishlist</h1>
-            <h3>(Click to Remove)</h3>
-            <form onSubmit={this.addItem}>
-                <input ref={(a) => this._inputElement = a} placeholder="Enter WishList Item"></input>
-                <button type="Submit">add</button>
-            </form>
-            </Grid>
-            <WishListItems entries={this.state.items}
-                 delete={this.deleteItem}/>        
-          </Grid>
-        </div>
-=======
 
             <h1>Your Wishlist</h1>
           </Grid>
@@ -254,8 +194,8 @@ class ViewWishlistPage extends React.Component {
       </div>
 
 
->>>>>>> 466fcc2400ac8fb03865d88dddecaccad10de0a4
     );
   }
 }
+
 export default ViewWishlistPage;

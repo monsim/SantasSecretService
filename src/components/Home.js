@@ -14,13 +14,7 @@ import { Redirect } from 'react-router-dom'
 import firebase from 'firebase/app';
 import withAuthorization from './withAuthorization';
 import { db } from '../firebase';
-<<<<<<< HEAD
-import { EXITED } from 'react-transition-group/Transition';
-import AuthUserContext from './AuthUserContext';
-
-=======
 // import { EXITED } from 'react-transition-group/Transition';
->>>>>>> 466fcc2400ac8fb03865d88dddecaccad10de0a4
 
 class HomePage extends Component {
   constructor(props) {
@@ -116,56 +110,11 @@ handleCreateGroup = () => {
   });
 }
 
-<<<<<<< HEAD
-    // getting the group IDs of groupList
-    group_list = db.doGetUserGroupList(user.uid);
-    console.log('group_list: ' , group_list)
-
-    // for each groupID in group_list, call db.doGetGroupName to get their group names
-    // and add them to another array, group_names
-    for (var i = 0; i < group_list.length; i++) {
-      console.log('i am in home.js: ', group_list[i]);
-      group_names.push(db.doGetGroupName(group_list[i]));
-    }
-
-    console.log("before")
-    console.log(db.groups)
-    for (var i = 0; i < db.groups.length; i++){
-      console.log('within')
-      console.log(db.groups[i]);
-    }
-    console.log("after")
-
-    // "Create Group" and "Join Group" button redirecting
-    if (this.state.redirectCreateGroup) {
-      return <Redirect push to="/create-group" />;
-    }
-    else if (this.state.redirectJoinGroup) {
-      return <Redirect push to="/join-group" />;
-    }
-
-    console.log('group names: ', group_names)
-
-    return (
-
-      <form onSubmit={this.onSubmit}>
-        <div style={{ padding: 30 }}>
-          <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-            <Grid item style={{ paddingBottom: 20 }}>
-            <AuthUserContext.Consumer>
-              {authUser =>
-                <h1>{authUser.email}'s Group</h1>
-              }
-            </AuthUserContext.Consumer>
-            </Grid>
-            < Grid item xs={6}>
-=======
 handleJoinGroup = () => {
   this.setState({
     redirectJoinGroup: true
   });
 }
->>>>>>> 6c1e709ca25d50690144cd65643698d9ca5e2a41
 
 render() {
   return (
@@ -213,7 +162,6 @@ const UserList = ({ users }) =>
   <div>
     <h2>Groups</h2>
     <p>(Saved on Sign Up in Firebase Database)</p>
-
     {Object.keys(users).map(key =>
       <div key={key}>{users[key].username}</div>
     )}
@@ -223,5 +171,3 @@ const UserList = ({ users }) =>
 const authCondition = (authUser) => !!authUser;
 
 export default withAuthorization(authCondition)(HomePage);
-
-
