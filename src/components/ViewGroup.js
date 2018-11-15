@@ -16,7 +16,7 @@ import * as routes from '../constants/routes';
     constructor(props) {
       super(props);
       this.state = {
-        id: '-LR9m8U9ghz-2F4ZR2SR',
+        groupID: '-LR9m8U9ghz-2F4ZR2SR',
         groupName: '',
         members: {},
         memberIDs: [],
@@ -39,20 +39,19 @@ import * as routes from '../constants/routes';
         history,
       } = this.props;
 
-      console.log(event.target.name)
+      alert(event.target.value)
       history.push(routes.VIEW_WISHLIST)
-      
     }
 
     componentDidMount() {
       var cachedThis = this;
 
-      db.doGetGroupName(cachedThis.state.id).then(function(gName) {
+      db.doGetGroupName(cachedThis.state.groupID).then(function(gName) {
         cachedThis.setState({groupName: gName})
       })
 
       console.log('before componentDidMount')
-      db.doGetGroupMember(this.state.id).then(function(ids) {
+      db.doGetGroupMember(this.state.groupID).then(function(ids) {
         // console.log('within then')
         // console.log("ids: " + ids)
         // cachedThis.state.memberIDs = ids;
@@ -68,11 +67,10 @@ import * as routes from '../constants/routes';
           // var h = 'hi';
           for (var i = 0; i < cachedThis.state.memberIDs.length; i++) {
             // console.log('I am in the member names for loop')
-            // var x = nameList[i]
             divs.push(
-              <Grid name='x' key={'child'+ i} container alignItems={'center'} 
+              <Grid key={'child'+ i} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                <Button name={ids[i]} type='button' variant='contained' color="primary"
+                <Button name={ids[i]} value={ids[i]} type='button' variant='contained' color="primary"
                   size="large" onClick={cachedThis.handleSubmit}>
                   {nameList[i]}
                 </Button>
