@@ -11,7 +11,7 @@ import {
 import * as routes from '../constants/routes';
 
 // Front end
-// const ViewGroupPage = (groupID) =>
+// const ViewGroupPage = (groupID) => {
   class ViewGroupPage extends React.Component {
     constructor(props) {
       super(props);
@@ -23,15 +23,15 @@ import * as routes from '../constants/routes';
         memberNamesHTML: [],
       };
       
-      this.handleChange = this.handleChange.bind(this);
+      // this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
-      this.setState({
-        [event.target.name]: event.target.value
-      });
-    }
+    // handleChange(event) {
+    //   this.setState({
+    //     [event.target.name]: event.target.value
+    //   });
+    // }
   
     handleSubmit(event) {
       event.preventDefault();
@@ -39,7 +39,7 @@ import * as routes from '../constants/routes';
         history,
       } = this.props;
 
-      alert(event.target.value)
+      alert(event.target.name)
       history.push(routes.VIEW_WISHLIST)
     }
 
@@ -70,7 +70,7 @@ import * as routes from '../constants/routes';
             divs.push(
               <Grid key={'child'+ i} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                <Button name={ids[i]} value={ids[i]} type='button' variant='contained' color="primary"
+                <Button name={ids[i]} type='button' variant='contained' color="primary"
                   size="large" onClick={cachedThis.handleSubmit}>
                   {nameList[i]}
                 </Button>
@@ -111,5 +111,7 @@ import * as routes from '../constants/routes';
       );
     }
   }
-
+  
+  // return ViewGroupPage
+// }
 export default ViewGroupPage;
