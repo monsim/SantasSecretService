@@ -163,16 +163,16 @@ export const doGetGroupMember = (groupID) => {
 export function doGetGroupMemberHelper(members) {
     console.log(members + " in db")
     var promise = new Promise(function (resolve, reject) {
-        console.log("within dbbb")
+        // console.log("within dbbb")
         var list = [];
         members.on('value', snapshot => {
             snapshot.forEach(childSnapshot => {
                 var memberID = childSnapshot.val();
-                console.log('memberID ' + memberID)
+                // console.log('memberID ' + memberID)
                 list.push(JSON.parse(JSON.stringify(memberID)))
             })
             resolve(list)
-            console.log(list)
+            // console.log(list)
         })
     });
     return promise;
@@ -194,7 +194,7 @@ export function doGetUserNameHelper(memberName) {
         memberName.on('value', snapshot => {
             name = snapshot.val();
             resolve(name)
-            console.log("helper name " + name)
+            // console.log("helper name " + name)
         })
     });
     return promise;
