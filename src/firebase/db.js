@@ -205,4 +205,6 @@ export function doGetUserNameHelper(memberName) {
 export const onceGetUsers = () =>
     db.ref('users').once('value');
 
+export const getpickDate = (pickDate) =>
+    db.ref(`/groups/${pickDate}/pickDate`).push(pickDate);
 // Other Entity APIs ...

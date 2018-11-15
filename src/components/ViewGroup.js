@@ -21,6 +21,7 @@ import * as routes from '../constants/routes';
         members: {},
         memberIDs: [],
         memberNamesHTML: [],
+        pickDate: '',
       };
       
       this.handleChange = this.handleChange.bind(this);
@@ -35,7 +36,7 @@ import * as routes from '../constants/routes';
   
     handleSubmit(event) {
       // event.preventDefault();
-      alert(event.target)
+      alert(event)
     }
 
     componentDidMount() {
@@ -43,6 +44,10 @@ import * as routes from '../constants/routes';
 
       db.doGetGroupName(cachedThis.state.id).then(function(gName) {
         cachedThis.setState({groupName: gName})
+      })
+
+      db.getpickDate(cachedThis.state.id).then(function(pDate) {
+        cachedThis.setState({pickDate: pDate})
       })
 
       console.log('before componentDidMount')
@@ -100,6 +105,7 @@ import * as routes from '../constants/routes';
         <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
           <h4>Group Name</h4>
           <h1>{this.state.groupName}</h1>
+          <h2>{this.state.pickDate}</h2>
           <h4>Member list</h4>
           <div>{this.state.memberNamesHTML}</div>
         </Grid>
