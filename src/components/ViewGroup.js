@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 // import firebase from 'firebase/app';
 import { db } from '../firebase';
 import {
-  Link,
+  // Link,
 } from 'react-router-dom';
 import * as routes from '../constants/routes';
 
@@ -21,7 +21,6 @@ import * as routes from '../constants/routes';
         members: {},
         memberIDs: [],
         memberNamesHTML: [],
-        pickDate: '',
       };
       
       this.handleChange = this.handleChange.bind(this);
@@ -35,8 +34,14 @@ import * as routes from '../constants/routes';
     }
   
     handleSubmit(event) {
-      // event.preventDefault();
-      alert(event)
+      event.preventDefault();
+      const {
+        history,
+      } = this.props;
+
+      console.log(event.target.name)
+      history.push(routes.VIEW_WISHLIST)
+      
     }
 
     componentDidMount() {
@@ -46,32 +51,29 @@ import * as routes from '../constants/routes';
         cachedThis.setState({groupName: gName})
       })
 
-      db.getpickDate(cachedThis.state.id).then(function(pDate) {
-        cachedThis.setState({pickDate: pDate})
-      })
-
       console.log('before componentDidMount')
       db.doGetGroupMember(this.state.id).then(function(ids) {
-        console.log('within then')
-        console.log("ids: " + ids)
+        // console.log('within then')
+        // console.log("ids: " + ids)
         // cachedThis.state.memberIDs = ids;
         cachedThis.setState({memberIDs: ids})
-        console.log("state ids: " + cachedThis.state.memberIDs)
+        // console.log("state ids: " + cachedThis.state.memberIDs)
 
-        console.log('before helper')
+        // console.log('before helper')
         cachedThis.helper(cachedThis.state.memberIDs).then(function(nameList) {
-          console.log('after helper call')
-          console.log(nameList)
+          // console.log('after helper call')
+          // console.log(nameList)
 
           var divs = cachedThis.state.memberNamesHTML
+          // var h = 'hi';
           for (var i = 0; i < cachedThis.state.memberIDs.length; i++) {
-            console.log('I am in the member names for loop')
+            // console.log('I am in the member names for loop')
+            // var x = nameList[i]
             divs.push(
-              <Grid key={'child'+ i} container alignItems={'center'} 
+              <Grid name='x' key={'child'+ i} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                <Button value='Ytan' type='button' variant='contained' color="primary"
-                  size="medium" component={Link} to={routes.VIEW_WISHLIST}
-                  onClick={cachedThis.handleSubmit}>
+                <Button name={ids[i]} type='button' variant='contained' color="primary"
+                  size="large" onClick={cachedThis.handleSubmit}>
                   {nameList[i]}
                 </Button>
               </Grid>
@@ -80,8 +82,8 @@ import * as routes from '../constants/routes';
           cachedThis.setState({memberNamesHTML: divs})
         })
       })
-      console.log("state ids outside didmount: " + cachedThis.state.names)
-      console.log('after componentDidMount')
+      // console.log("state ids outside didmount: " + cachedThis.state.names)
+      // console.log('after componentDidMount')
     }
 
     helper(memberIDs) {
@@ -92,7 +94,7 @@ import * as routes from '../constants/routes';
             promises.push(db.doGetUserName(memberIDs[i]));
           }
           Promise.all(promises).then(function(values) {
-            console.log(values)
+            // console.log(values)
             resolve(values)
           });
       });
@@ -105,7 +107,6 @@ import * as routes from '../constants/routes';
         <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
           <h4>Group Name</h4>
           <h1>{this.state.groupName}</h1>
-          <h2>{this.state.pickDate}</h2>
           <h4>Member list</h4>
           <div>{this.state.memberNamesHTML}</div>
         </Grid>
