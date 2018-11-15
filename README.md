@@ -1,6 +1,10 @@
 # Santa's Secret Service
 
+<<<<<<< HEAD
 [GitHub link](https://github.com/monsim/SantasSecretService "Github link")
+=======
+[GitHub link](https://github.com/monsim/SantasSecretService/tree/project3Draft "Github link")
+>>>>>>> 466fcc2400ac8fb03865d88dddecaccad10de0a4
 
 ## Getting started
 

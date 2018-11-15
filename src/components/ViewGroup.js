@@ -1,61 +1,110 @@
 import React from 'react';
-//import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 //import TextField from '@material-ui/core/TextField';
 
-//import firebase from 'firebase/app';
+// import firebase from 'firebase/app';
 import { db } from '../firebase';
 import {
   Link,
 } from 'react-router-dom';
 import * as routes from '../constants/routes';
 
-
-var members = [];
-var groupName = '';
 // Front end
-//const ViewGroupPage = (groupID) => (Component) =>
-class ViewGroupPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      id: '-LR9m8U9ghz-2F4ZR2SR',
-    };
+// const ViewGroupPage = (groupID) =>
+  class ViewGroupPage extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        id: '-LR9m8U9ghz-2F4ZR2SR',
+        groupName: '',
+        members: {},
+        memberIDs: [],
+        memberNamesHTML: [],
+      };
+      
+      this.handleChange = this.handleChange.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
+    }
 
-    console.log('here');
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+    handleChange(event) {
+      this.setState({
+        [event.target.name]: event.target.value
+      });
+    }
+  
+    handleSubmit(event) {
+      // event.preventDefault();
+      alert(event.target)
+    }
 
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value
-    });
-  }
+    componentDidMount() {
+      var cachedThis = this;
 
-  handleSubmit(event) {
-    event.preventDefault();
-  }
+      db.doGetGroupName(cachedThis.state.id).then(function(gName) {
+        cachedThis.setState({groupName: gName})
+      })
 
-  render() {
-    const {
-      id,
-    } = this.state;
+      console.log('before componentDidMount')
+      db.doGetGroupMember(this.state.id).then(function(ids) {
+        console.log('within then')
+        console.log("ids: " + ids)
+        // cachedThis.state.memberIDs = ids;
+        cachedThis.setState({memberIDs: ids})
+        console.log("state ids: " + cachedThis.state.memberIDs)
 
-    return (
-      <div style={{ padding: 30 }}>
-        <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-          <Grid item style={{ paddingTop: 100 }}>
-            <h1>Group: {id}</h1>
-            <h2>Group Member 1 </h2>
-            <h2>Group Member 2 (Giftee Symbol)</h2>
-          </Grid>
+        console.log('before helper')
+        cachedThis.helper(cachedThis.state.memberIDs).then(function(nameList) {
+          console.log('after helper call')
+          console.log(nameList)
+
+          var divs = cachedThis.state.memberNamesHTML
+          for (var i = 0; i < cachedThis.state.memberIDs.length; i++) {
+            console.log('I am in the member names for loop')
+            divs.push(
+              <Grid key={'child'+ i} container alignItems={'center'} 
+                justify={'center'} direction={'column'} item style={{ padding: 30 }}>
+                <Button value='Ytan' type='button' variant='contained' color="primary"
+                  size="medium" component={Link} to={routes.VIEW_WISHLIST}
+                  onClick={cachedThis.handleSubmit}>
+                  {nameList[i]}
+                </Button>
+              </Grid>
+            )
+          }
+          cachedThis.setState({memberNamesHTML: divs})
+        })
+      })
+      console.log("state ids outside didmount: " + cachedThis.state.names)
+      console.log('after componentDidMount')
+    }
+
+    helper(memberIDs) {
+      var promise = new Promise(function (resolve, reject) {
+        var promises = [];
+          for (var i = 0; i < memberIDs.length; i++) {
+            // console.log('i am in ViewGroup.js: ', memberIDs[i]);
+            promises.push(db.doGetUserName(memberIDs[i]));
+          }
+          Promise.all(promises).then(function(values) {
+            console.log(values)
+            resolve(values)
+          });
+      });
+      return promise;
+    }
+    
+    render() {
+      
+      return (
+        <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
+          <h4>Group Name</h4>
+          <h1>{this.state.groupName}</h1>
+          <h4>Member list</h4>
+          <div>{this.state.memberNamesHTML}</div>
         </Grid>
-      </div>
-    );
+      );
+    }
   }
-}
-
-
 
 export default ViewGroupPage;

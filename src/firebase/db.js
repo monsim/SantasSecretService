@@ -2,8 +2,6 @@ import { db } from './firebase';
 
 // User API
 
-export var groups = [];
-
 export const doCreateUser = (id, username, email, groupList) =>
     db.ref(`users/${id}`).set({
         username,
@@ -24,7 +22,7 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
     });
     var grpID = '';
     groupRef.endAt().limitToLast(1).on('child_added', (snapshot) => {
-        console.log(snapshot.key)
+//        console.log(snapshot.key)
         grpID = snapshot.key;
     });
     return grpID;
@@ -93,8 +91,6 @@ export function helper(groups) {
     return promise;
 }
 
-
-
 export const doGetUserGroupList = (userID) => {
     var promise = new Promise(function (resolve, reject) {
         var groups = db.ref(`/users/${userID}/groupList`);
@@ -119,6 +115,20 @@ export function doGetUserGroupListHelper(groups) {
     return promise;
 }
 
+export const getUserWishlist = (userID) => {
+    var groups = db.ref(`/users/${userID}/wishlist`);
+    var list = [];
+    groups.on('value', snapshot => {
+        snapshot.forEach(childSnapshot => {
+            var item = childSnapshot.val();
+            list.push(JSON.parse(JSON.stringify(item)));
+        })
+    })
+    console.log(list);
+    return list;
+}
+
+
 export const doGetGroupName = (groupID) => {
     var promise = new Promise(function (resolve, reject) {
         var theGroupName = db.ref(`/groups/${groupID}/groupName`);
@@ -140,19 +150,55 @@ export function doGetGroupNameHelper(theGroupName) {
     return promise;
 }
 
-export const getUserWishlist = (userID) => {
-    var groups = db.ref(`/users/${userID}/wishlist`);
-    var list = [];
-    groups.on('value', snapshot => {
-        snapshot.forEach(childSnapshot => {
-            var item = childSnapshot.val();
-            list.push(JSON.parse(JSON.stringify(item)));
+export const doGetGroupMember = (groupID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var members = db.ref(`/groups/${groupID}/members`);
+        doGetGroupMemberHelper(members).then(function (result) {
+            resolve(result)
         })
-    })
-    console.log(list);
-    return list;
+    });
+    return promise;
 }
 
+export function doGetGroupMemberHelper(members) {
+    console.log(members + " in db")
+    var promise = new Promise(function (resolve, reject) {
+        console.log("within dbbb")
+        var list = [];
+        members.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                var memberID = childSnapshot.val();
+                console.log('memberID ' + memberID)
+                list.push(JSON.parse(JSON.stringify(memberID)))
+            })
+            resolve(list)
+            console.log(list)
+        })
+    });
+    return promise;
+}
+
+export const doGetUserName = (memberID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var memberName = db.ref(`/users/${memberID}/username`);
+        doGetUserNameHelper(memberName).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetUserNameHelper(memberName) {
+    var promise = new Promise(function (resolve, reject) {
+        var name = '';
+        memberName.on('value', snapshot => {
+            name = snapshot.val();
+            resolve(name)
+            console.log("helper name " + name)
+        })
+    });
+    return promise;
+}
 
 export const onceGetUsers = () =>
     db.ref('users').once('value');
