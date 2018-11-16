@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 //import TextField from '@material-ui/core/TextField';
+//npm install shuffle-array
 
 // import firebase from 'firebase/app';
 import { db } from '../firebase';
@@ -22,7 +23,7 @@ import * as routes from '../constants/routes';
         memberIDs: [],
         memberNamesHTML: [],
       };
-      
+    
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
     }
