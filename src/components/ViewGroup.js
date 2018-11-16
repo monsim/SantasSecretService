@@ -13,6 +13,7 @@ import * as routes from '../constants/routes';
 // Front end
 // const ViewGroupPage = (groupID) => {
   class ViewGroupPage extends React.Component {
+
     constructor(props) {
       super(props);
       this.state = {
@@ -22,7 +23,7 @@ import * as routes from '../constants/routes';
         memberIDs: [],
         memberNamesHTML: [],
       };
-      
+
       // this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -39,8 +40,13 @@ import * as routes from '../constants/routes';
         history,
       } = this.props;
 
-      alert(event.target.name)
-      history.push(routes.VIEW_WISHLIST)
+      // alert(event.target.name)
+      // history.push(routes.VIEW_WISHLIST)
+      history.push({
+        pathname: routes.VIEW_WISHLIST,
+        // search: '?query=abc',
+        state: { detail: event.target.name }
+      })
     }
 
     componentDidMount() {
