@@ -1,9 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-//import TextField from '@material-ui/core/TextField';
 
-// import firebase from 'firebase/app';
+import { withRouter } from 'react-router-dom';
 import { db } from '../firebase';
 import {
   // Link,
@@ -40,12 +39,10 @@ import * as routes from '../constants/routes';
         history,
       } = this.props;
 
-      // alert(event.target.name)
-      // history.push(routes.VIEW_WISHLIST)
       history.push({
         pathname: routes.VIEW_WISHLIST,
         // search: '?query=abc',
-        state: { detail: event.target.name }
+        state: { detail: event.target.id }
       })
     }
 
@@ -70,15 +67,15 @@ import * as routes from '../constants/routes';
           // console.log(nameList)
 
           var divs = cachedThis.state.memberNamesHTML
-          // var h = 'hi';
           for (var i = 0; i < cachedThis.state.memberIDs.length; i++) {
             // console.log('I am in the member names for loop')
+            var sth = nameList[i] + ' of ' + ids[i]
             divs.push(
               <Grid key={'child'+ i} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                <Button name={ids[i]} type='button' variant='contained' color="primary"
+                <Button id={sth} type='button' variant='contained' color="primary"
                   size="large" onClick={cachedThis.handleSubmit}>
-                  {nameList[i]}
+                  <span id={sth} >{nameList[i]}</span>
                 </Button>
               </Grid>
             )
@@ -120,4 +117,4 @@ import * as routes from '../constants/routes';
   
   // return ViewGroupPage
 // }
-export default ViewGroupPage;
+export default withRouter(ViewGroupPage);
