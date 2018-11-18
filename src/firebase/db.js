@@ -28,10 +28,19 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
     return grpID;
 }
 //`groups/${ groupID }/members`
-export const doJoinGroup = (groupID, memberID) => {
+export const doJoinGroup = (groupID, memberID, giftee) => {
+    //db.ref(`/groups/${groupID}/members`).push(memberID);
+    db.ref(`/users/${memberID}/groupList`).push(groupID);
+    db.ref(`/groups/${groupID}/members/${memberID}/giftee`).push(giftee);
+}
+
+/*
+export const doJoinGroup = (groupID, memberID, giftee) => {
     db.ref(`/groups/${groupID}/members`).push(memberID);
     db.ref(`/users/${memberID}/groupList`).push(groupID);
+    db.ref(`/groups/${groupID}/members/${memberID}/giftee`).push(giftee);
 }
+*/
 
 export const addWishlistItem = (memberID, wishlistItem) => {
     db.ref(`/users/${memberID}/wishlist`).push(wishlistItem);
@@ -205,6 +214,29 @@ export function doGetUserNameHelper(memberName) {
 export const onceGetUsers = () =>
     db.ref('users').once('value');
 
-export const getpickDate = (pickDate) =>
-    db.ref(`/groups/${pickDate}/pickDate`).push(pickDate);
+export const doGetPickDate = (pickDate) => {
+        var promise = new Promise(function (resolve, reject) {
+            var thepickDate = db.ref(`/groups/${pickDate}/pickDate`);
+            doGetPickDateHelper(thepickDate).then(function (result) {
+                resolve(result)
+            })
+        });
+        return promise;
+    }
+    
+export function doGetPickDateHelper(thepickDate) {
+        var promise = new Promise(function (resolve, reject) {
+            var thepDate = '';
+            thepickDate.on('value', snapshot => {
+                thepDate = snapshot.val();
+                resolve(thepDate)
+            })
+        });
+        return promise;
+    }
+    
+//    export const getPickDate = (pickDate) => {
+//        return db.ref(`/groups/${pickDate}/pickDate`);
+//      }
+
 // Other Entity APIs ...

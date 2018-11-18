@@ -39,10 +39,10 @@ const INITIAL_STATE = {
 
 class ViewWishlistPage extends React.Component {
 
-
   constructor(props) {
     super(props);
 
+    //alert("WishListPage recieve " + this.props.location.state.detail);
     this.state = { ...INITIAL_STATE };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);

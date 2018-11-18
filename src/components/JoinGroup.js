@@ -29,12 +29,14 @@ class JoinGroupPage extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     var grpID = this.state.groupID;
+    var giftee = '';
     // Backend  here
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
           // User is signed in.
           var userID = auth.getCurUser().uid;
-          db.doJoinGroup(grpID, userID)
+          db.doJoinGroup(grpID, userID, giftee)
+          //db.doJoinGroup(grpID, userID, giftee)
           console.log(userID + ' added to ' + grpID)
       }
     })

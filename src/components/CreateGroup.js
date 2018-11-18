@@ -64,11 +64,13 @@ class CreateGroupForm extends Component {
       // User is signed in.
       var userID = auth.getCurUser().uid;
       var memberID = userID
+      var giftee = ''
       //alert(userID);
       var grpID = db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, '');
 //                console.log('here we ARE')
       console.log(grpID)
-      db.doJoinGroup(grpID, memberID)
+      db.doJoinGroup(grpID, memberID, giftee)
+      //db.doJoinGroup(grpID, memberID, giftee)
 //                console.log('here we goooooo')
                 //Display Unique Group ID
                 //In db.js createUser has params(id,name,email), do we need params(groupId, groupName, ...) for createGroup?
