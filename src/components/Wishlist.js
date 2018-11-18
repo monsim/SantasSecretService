@@ -19,6 +19,7 @@ import * as routes from '../constants/routes';
 const INITIAL_STATE = {
   //username: '', can we get this from current session??
   //email: '',
+  userID:'',
   groupID: '',
   groupName: '',
   leader: '',
@@ -42,7 +43,7 @@ class ViewWishlistPage extends React.Component {
   constructor(props) {
     super(props);
 
-    alert("WishListPage recieve " + this.props.location.state.detail);
+    // alert("WishListPage recieve " + this.props.location.state.memberID);
     this.state = { ...INITIAL_STATE };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -57,7 +58,9 @@ class ViewWishlistPage extends React.Component {
     var cachedThis = this;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        var memberID = firebase.auth().currentUser.uid;
+        // alert(cachedThis.props.location.state.memberID)
+        var memberID = cachedThis.props.location.state.memberID//firebase.auth().currentUser.uid;
+        alert(memberID)
         console.log('before in wishlist')
         db.getWishlist(memberID).then(function (result) {
           console.log("its done! in wishlist");

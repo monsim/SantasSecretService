@@ -42,7 +42,7 @@ import * as routes from '../constants/routes';
       history.push({
         pathname: routes.VIEW_WISHLIST,
         // search: '?query=abc',
-        state: { detail: event.target.id }
+        state: { memberID: event.target.id }
       })
     }
 
@@ -69,13 +69,13 @@ import * as routes from '../constants/routes';
           var divs = cachedThis.state.memberNamesHTML
           for (var i = 0; i < cachedThis.state.memberIDs.length; i++) {
             // console.log('I am in the member names for loop')
-            var sth = nameList[i] + ' of ' + ids[i]
+            // var sth = nameList[i] + ' of ' + ids[i]
             divs.push(
               <Grid key={'child'+ i} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                <Button id={sth} type='button' variant='contained' color="primary"
+                <Button id={ids[i]} type='button' variant='contained' color="primary"
                   size="large" onClick={cachedThis.handleSubmit}>
-                  <span id={sth} >{nameList[i]}</span>
+                  <span id={ids[i]} >{nameList[i]}</span>
                 </Button>
               </Grid>
             )
