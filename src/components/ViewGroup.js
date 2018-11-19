@@ -16,11 +16,12 @@ import * as routes from '../constants/routes';
     constructor(props) {
       super(props);
       this.state = {
-        groupID: '-LR9m8U9ghz-2F4ZR2SR',
+        groupID: '-LRfZ80uQWlJA9IlaHm_',
         groupName: '',
         members: {},
         memberIDs: [],
         memberNamesHTML: [],
+        pickDate: ''
       };
 
       // this.handleChange = this.handleChange.bind(this);
@@ -53,23 +54,26 @@ import * as routes from '../constants/routes';
         cachedThis.setState({groupName: gName})
       })
 
+      db.doGetPickDate(cachedThis.state.pickDate).then(function(pDate) {
+        cachedThis.setState({pickDate: pDate})
+      })
+
       console.log('before componentDidMount')
       db.doGetGroupMember(this.state.groupID).then(function(ids) {
-        // console.log('within then')
-        // console.log("ids: " + ids)
+        console.log('within then')
+        console.log("ids: " + ids)
         // cachedThis.state.memberIDs = ids;
         cachedThis.setState({memberIDs: ids})
-        // console.log("state ids: " + cachedThis.state.memberIDs)
+        console.log("state ids: " + cachedThis.state.memberIDs)
 
-        // console.log('before helper')
+        console.log('before helper')
         cachedThis.helper(cachedThis.state.memberIDs).then(function(nameList) {
-          // console.log('after helper call')
-          // console.log(nameList)
-
+          console.log('after helper call')
+          console.log(nameList)
           var divs = cachedThis.state.memberNamesHTML
           for (var i = 0; i < cachedThis.state.memberIDs.length; i++) {
-            // console.log('I am in the member names for loop')
-            // var sth = nameList[i] + ' of ' + ids[i]
+            console.log('I am in the member names for loop')
+            var sth = nameList[i] + ' of ' + ids[i]
             divs.push(
               <Grid key={'child'+ i} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
@@ -81,10 +85,15 @@ import * as routes from '../constants/routes';
             )
           }
           cachedThis.setState({memberNamesHTML: divs})
+
+          //Shuffle 
+          var shuffle = require('shuffle-array'), collection = nameList;
+          shuffle(collection);
+          console.log('Shuffled = ' + collection);         
         })
       })
-      // console.log("state ids outside didmount: " + cachedThis.state.names)
-      // console.log('after componentDidMount')
+       console.log("state ids outside didmount: " + cachedThis.state.names)
+       console.log('after componentDidMount')
     }
 
     helper(memberIDs) {
@@ -108,6 +117,8 @@ import * as routes from '../constants/routes';
         <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
           <h4>Group Name</h4>
           <h1>{this.state.groupName}</h1>
+          <h4>PickDate</h4>
+          <h1>{this.state.pickDate}</h1>
           <h4>Member list</h4>
           <div>{this.state.memberNamesHTML}</div>
         </Grid>

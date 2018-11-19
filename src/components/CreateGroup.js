@@ -66,7 +66,7 @@ class CreateGroupForm extends Component {
       var memberID = userID
       var giftee = ''
       //alert(userID);
-      var grpID = db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, '');
+      var grpID = db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, '', '');
 //                console.log('here we ARE')
       console.log(grpID)
       db.doJoinGroup(grpID, memberID, giftee)

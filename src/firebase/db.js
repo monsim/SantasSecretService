@@ -10,7 +10,7 @@ export const doCreateUser = (id, username, email, groupList) =>
     });
 
 
-export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate, members = '') => {
+export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate, members = '', giftee = '') => {
     const groupRef = db.ref(`groups`);
     groupRef.push().set({
         groupName,
@@ -19,6 +19,7 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
         pickDate,
         archiveDate,
         members,
+        giftee, //Added Giftee to set giftee
     });
     var grpID = '';
     groupRef.endAt().limitToLast(1).on('child_added', (snapshot) => {
@@ -29,18 +30,14 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
 }
 //`groups/${ groupID }/members`
 export const doJoinGroup = (groupID, memberID, giftee) => {
-    //db.ref(`/groups/${groupID}/members`).push(memberID);
-    db.ref(`/users/${memberID}/groupList`).push(groupID);
-    db.ref(`/groups/${groupID}/members/${memberID}/giftee`).push(giftee);
-}
-
-/*
-export const doJoinGroup = (groupID, memberID, giftee) => {
+    //Original Structure -> member - memberID
     db.ref(`/groups/${groupID}/members`).push(memberID);
     db.ref(`/users/${memberID}/groupList`).push(groupID);
-    db.ref(`/groups/${groupID}/members/${memberID}/giftee`).push(giftee);
+    db.ref(`/groups/${groupID}/giftee`).push(giftee);
+
+    //New Structure -> member - memberID - giftee
+    //db.ref(`/groups/${groupID}/members/${memberID}`).push(giftee);
 }
-*/
 
 export const addWishlistItem = (memberID, wishlistItem) => {
     db.ref(`/users/${memberID}/wishlist`).push(wishlistItem);

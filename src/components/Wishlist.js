@@ -16,7 +16,7 @@ import * as routes from '../constants/routes';
     constructor(props) {
       super(props);
       this.state = {
-        groupID: '-LR9m8U9ghz-2F4ZR2SR',
+        groupID: '-LRfZ80uQWlJA9IlaHm_',
         groupName: '',
         members: {},
         memberIDs: [],
