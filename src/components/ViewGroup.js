@@ -1,10 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-//import TextField from '@material-ui/core/TextField';
-import Randomizer from 'react-randomizer';
 
-// import firebase from 'firebase/app';
+import { withRouter } from 'react-router-dom';
 import { db } from '../firebase';
 import {
   // Link,
@@ -18,12 +16,11 @@ import * as routes from '../constants/routes';
     constructor(props) {
       super(props);
       this.state = {
-        groupID: '-LRTJ1txMXSTDusoGdhi',
+        groupID: '-LR9m8U9ghz-2F4ZR2SR',
         groupName: '',
         members: {},
         memberIDs: [],
         memberNamesHTML: [],
-        shuffleMembers: [],
       };
 
       // this.handleChange = this.handleChange.bind(this);
@@ -42,12 +39,10 @@ import * as routes from '../constants/routes';
         history,
       } = this.props;
 
-      // alert(event.target.name)
-      // history.push(routes.VIEW_WISHLIST)
       history.push({
         pathname: routes.VIEW_WISHLIST,
         // search: '?query=abc',
-        state: { detail: event.target.name }
+        state: { memberID: event.target.id }
       })
     }
 
@@ -60,26 +55,27 @@ import * as routes from '../constants/routes';
 
       console.log('before componentDidMount')
       db.doGetGroupMember(this.state.groupID).then(function(ids) {
-         console.log('within then')
-         console.log("ids: " + ids)
-         //cachedThis.state.memberIDs = ids;
+        // console.log('within then')
+        // console.log("ids: " + ids)
+        // cachedThis.state.memberIDs = ids;
         cachedThis.setState({memberIDs: ids})
-         console.log("state ids: " + cachedThis.state.memberIDs)
+        // console.log("state ids: " + cachedThis.state.memberIDs)
 
-         console.log('before helper')
+        // console.log('before helper')
         cachedThis.helper(cachedThis.state.memberIDs).then(function(nameList) {
-           console.log('after helper call')
-           console.log(nameList)
+          // console.log('after helper call')
+          // console.log(nameList)
 
           var divs = cachedThis.state.memberNamesHTML
           for (var i = 0; i < cachedThis.state.memberIDs.length; i++) {
-             console.log('I am in the member names for loop')
+            // console.log('I am in the member names for loop')
+            // var sth = nameList[i] + ' of ' + ids[i]
             divs.push(
               <Grid key={'child'+ i} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                <Button name={ids[i]} type='button' variant='contained' color="primary"
+                <Button id={ids[i]} type='button' variant='contained' color="primary"
                   size="large" onClick={cachedThis.handleSubmit}>
-                  {nameList[i]}
+                  <span id={ids[i]} >{nameList[i]}</span>
                 </Button>
               </Grid>
             )
@@ -87,8 +83,8 @@ import * as routes from '../constants/routes';
           cachedThis.setState({memberNamesHTML: divs})
         })
       })
-       console.log("state ids outside didmount: " + cachedThis.state.names)
-       console.log('after componentDidMount')
+      // console.log("state ids outside didmount: " + cachedThis.state.names)
+      // console.log('after componentDidMount')
     }
 
     helper(memberIDs) {
@@ -105,17 +101,15 @@ import * as routes from '../constants/routes';
       });
       return promise;
     }
-
+    
     render() {
-
+      
       return (
         <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
           <h4>Group Name</h4>
           <h1>{this.state.groupName}</h1>
-          <h1>{this.state.pickdate}</h1>
           <h4>Member list</h4>
           <div>{this.state.memberNamesHTML}</div>
-          <h2>{Randomizer.randomizeArray([1,2,3,4,5])}</h2>
         </Grid>
       );
     }
@@ -123,4 +117,4 @@ import * as routes from '../constants/routes';
   
   // return ViewGroupPage
 // }
-export default ViewGroupPage;
+export default withRouter(ViewGroupPage);
