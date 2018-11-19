@@ -12,7 +12,7 @@ import firebase from 'firebase/app';
 
 // Front end
 // const ViewGroupPage = (groupID) => {
-  class ViewGroupPage extends React.Component {
+class ViewGroupPage extends React.Component {
 
     constructor(props) {
       super(props);
@@ -51,6 +51,14 @@ import firebase from 'firebase/app';
       })
     }
 
+    //Change View According to The PickDay
+    changeView(pickDate) {
+      if (pickDate) {
+        return <div>{this.state.gifteeNamesHTML}</div>;
+      }
+      return <div>{this.state.memberNamesHTML}</div>;
+    }
+
     componentDidMount() {
       var cachedThis = this;
 
@@ -58,7 +66,7 @@ import firebase from 'firebase/app';
         cachedThis.setState({groupName: gName})
       })
 
-      db.doGetPickDate(cachedThis.state.pickDate).then(function(pDate) {
+      db.doGetPickDate(cachedThis.state.groupID).then(function(pDate) {
         cachedThis.setState({pickDate: pDate})
       })
 
@@ -109,27 +117,15 @@ import firebase from 'firebase/app';
             
             //Setting Giftee in Firebase According to the Shuffled Collection
             
-            /*
-            for (var k = 0; k < shuffledCollection.length; k++) {
+            
+            for (var k = 0; k < cachedThis.state.memberIDs.length; k++) {
                 db.doSetGiftee(cachedThis.state.groupID, shuffledCollection[k]);
             }
-            */
+            
           
             //Get Current User
             var currentUserID = firebase.auth().currentUser.uid;
             console.log('currentuserID : ' + currentUserID);
-            //Assigning Current User to Giftee
-            /*
-            for(var a = 0; a < cachedThis.state.memberIDs.length; a++) {
-              if(currentUserID == cachedThis.state.memberIDs[a]) {
-                console.log(currentUserID + ' , ' + cachedThis.state.memberIDs[a]);
-                console.log('equal at ' + a);
-                <Grid item style={{ paddingTop: 50 }}>
-                <img src={process.env.PUBLIC_URL + '/present.png'} alt="present" style={{ width: 200, height: 200 }} />
-              </Grid>
-              }
-            }
-            */
           
             //Assigning Current User to Giftee and displaying
             var gdivs = cachedThis.state.gifteeNamesHTML
@@ -198,8 +194,7 @@ import firebase from 'firebase/app';
           <h4>PickDate</h4>
           <h1>{this.state.pickDate}</h1>
           <h4>Member list</h4>
-          <div>{this.state.memberNamesHTML}</div>
-          <div>{this.state.gifteeNamesHTML}</div>
+          {this.changeView(false)}
         </Grid>
       );
     }

@@ -242,29 +242,26 @@ export function doGetUserNameHelper(memberName) {
 export const onceGetUsers = () =>
     db.ref('users').once('value');
 
-export const doGetPickDate = (pickDate) => {
+    export const doGetPickDate = (groupID) => {
         var promise = new Promise(function (resolve, reject) {
-            var thepickDate = db.ref(`/groups/${pickDate}/pickDate`);
-            doGetPickDateHelper(thepickDate).then(function (result) {
+            var thePickDate = db.ref(`/groups/${groupID}/pickDate`);
+            doGetPickDateHelper(thePickDate).then(function (result) {
                 resolve(result)
             })
         });
         return promise;
     }
     
-export function doGetPickDateHelper(thepickDate) {
+    export function doGetPickDateHelper(thePickDate) {
         var promise = new Promise(function (resolve, reject) {
             var thepDate = '';
-            thepickDate.on('value', snapshot => {
+            thePickDate.on('value', snapshot => {
                 thepDate = snapshot.val();
                 resolve(thepDate)
             })
         });
         return promise;
     }
-    
-//    export const getPickDate = (pickDate) => {
-//        return db.ref(`/groups/${pickDate}/pickDate`);
-//      }
+
 
 // Other Entity APIs ...
