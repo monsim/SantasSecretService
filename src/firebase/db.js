@@ -29,14 +29,17 @@ export const doCreateGroup = (groupName, leader, maxPrice, pickDate, archiveDate
     return grpID;
 }
 //`groups/${ groupID }/members`
-export const doJoinGroup = (groupID, memberID, giftee) => {
+export const doJoinGroup = (groupID, memberID) => {
     //Original Structure -> member - memberID
     db.ref(`/groups/${groupID}/members`).push(memberID);
     db.ref(`/users/${memberID}/groupList`).push(groupID);
-    db.ref(`/groups/${groupID}/giftee`).push(giftee);
-
     //New Structure -> member - memberID - giftee
     //db.ref(`/groups/${groupID}/members/${memberID}`).push(giftee);
+}
+
+//Force Sets Giftee
+export const doSetGiftee = (groupID,gifteeID) => {
+    db.ref(`/groups/${groupID}/giftee`).push(gifteeID);
 }
 
 export const addWishlistItem = (memberID, wishlistItem) => {
@@ -178,6 +181,34 @@ export function doGetGroupMemberHelper(members) {
                 var memberID = childSnapshot.val();
                 // console.log('memberID ' + memberID)
                 list.push(JSON.parse(JSON.stringify(memberID)))
+            })
+            resolve(list)
+            // console.log(list)
+        })
+    });
+    return promise;
+}
+
+export const doGetGiftee = (groupID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var giftee = db.ref(`/groups/${groupID}/giftee`);
+        doGetGifteeHelper(giftee).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetGifteeHelper(giftee) {
+    console.log(giftee + " in db")
+    var promise = new Promise(function (resolve, reject) {
+        // console.log("within dbbb")
+        var list = [];
+        giftee.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                var gifteeID = childSnapshot.val();
+                // console.log('memberID ' + memberID)
+                list.push(JSON.parse(JSON.stringify(gifteeID)))
             })
             resolve(list)
             // console.log(list)

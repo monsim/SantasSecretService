@@ -8,6 +8,7 @@ import {
   // Link,
 } from 'react-router-dom';
 import * as routes from '../constants/routes';
+import firebase from 'firebase/app';
 
 // Front end
 // const ViewGroupPage = (groupID) => {
@@ -18,9 +19,12 @@ import * as routes from '../constants/routes';
       this.state = {
         groupID: '-LRfZ80uQWlJA9IlaHm_',
         groupName: '',
+        currentUserID: '',
         members: {},
         memberIDs: [],
         memberNamesHTML: [],
+        gifteeIDs: [],
+        gifteeNamesHTML: [],
         pickDate: ''
       };
 
@@ -60,19 +64,18 @@ import * as routes from '../constants/routes';
 
       console.log('before componentDidMount')
       db.doGetGroupMember(this.state.groupID).then(function(ids) {
-        console.log('within then')
-        console.log("ids: " + ids)
-        // cachedThis.state.memberIDs = ids;
+        //console.log('within then')
+        //console.log("ids: " + ids)
         cachedThis.setState({memberIDs: ids})
-        console.log("state ids: " + cachedThis.state.memberIDs)
+        //console.log("state ids: " + cachedThis.state.memberIDs)
 
-        console.log('before helper')
+        //console.log('before helper')
         cachedThis.helper(cachedThis.state.memberIDs).then(function(nameList) {
-          console.log('after helper call')
-          console.log(nameList)
+          //console.log('after helper call')
+          console.log('Unshuffled Names - in Members : ' + nameList)
           var divs = cachedThis.state.memberNamesHTML
           for (var i = 0; i < cachedThis.state.memberIDs.length; i++) {
-            console.log('I am in the member names for loop')
+            //console.log('I am in the member names for loop')
             var sth = nameList[i] + ' of ' + ids[i]
             divs.push(
               <Grid key={'child'+ i} container alignItems={'center'} 
@@ -87,14 +90,89 @@ import * as routes from '../constants/routes';
           cachedThis.setState({memberNamesHTML: divs})
 
           //Shuffle 
-          var shuffle = require('shuffle-array'), collection = nameList;
-          shuffle(collection);
-          console.log('Shuffled = ' + collection);         
+          var shuffle = require('shuffle-array'), collection = cachedThis.state.memberIDs;
+          var shuffledCollection = shuffle(collection);
+          /*
+          console.log('Shuffled = ' + shuffledCollection);
+          console.log('Length of collection = ' + shuffledCollection.length);
+          for(var w = 0; w < shuffledCollection.length; w++) {
+            console.log('collection[' + w + '] = ' + shuffledCollection[w]);
+          }
+          */
+
+          db.doGetGiftee(cachedThis.state.groupID).then(function(gids) {
+            //console.log("Giftee ids: " + gids)
+            cachedThis.setState({gifteeIDs: gids})
+            //console.log("Giftee state ids: " + cachedThis.state.gifteeIDs)
+            cachedThis.helper(cachedThis.state.gifteeIDs).then(function(gnameList) {
+            console.log('Shuffled Names - in Giftee : ' + gnameList)
+            
+            //Setting Giftee in Firebase According to the Shuffled Collection
+            
+            /*
+            for (var k = 0; k < shuffledCollection.length; k++) {
+                db.doSetGiftee(cachedThis.state.groupID, shuffledCollection[k]);
+            }
+            */
+          
+            //Get Current User
+            var currentUserID = firebase.auth().currentUser.uid;
+            console.log('currentuserID : ' + currentUserID);
+            //Assigning Current User to Giftee
+            /*
+            for(var a = 0; a < cachedThis.state.memberIDs.length; a++) {
+              if(currentUserID == cachedThis.state.memberIDs[a]) {
+                console.log(currentUserID + ' , ' + cachedThis.state.memberIDs[a]);
+                console.log('equal at ' + a);
+                <Grid item style={{ paddingTop: 50 }}>
+                <img src={process.env.PUBLIC_URL + '/present.png'} alt="present" style={{ width: 200, height: 200 }} />
+              </Grid>
+              }
+            }
+            */
+          
+            //Assigning Current User to Giftee and displaying
+            var gdivs = cachedThis.state.gifteeNamesHTML
+            for (var j = 0; j < cachedThis.state.memberIDs.length; j++) {
+              //IF Current User , Check the corresponding Shuffled Member
+              if(currentUserID == cachedThis.state.memberIDs[j]) {
+                console.log(currentUserID + ' , ' + cachedThis.state.memberIDs[j]);
+                console.log('equal at ' + j);
+                console.log('UnShuffled Index ' + j + ' Name: ' + nameList[j]);
+                console.log('Shuffled Index ' + j + ' Name: ' + gnameList[j]);
+            
+                gdivs.push(
+                  <Grid gkey={'child'+ j} container alignItems={'center'} 
+                   justify={'center'} direction={'column'} item style={{ padding: 30 }}>
+                    <Button gid={gids[j]} type='button' variant='contained' color="primary" size="large" onClick={cachedThis.handleSubmit}>
+                      <span gid={gids[j]} >{gnameList[j]}</span>
+                      <img src={process.env.PUBLIC_URL + '/present.png'} alt="present" style={{ width: 50, height: 50 }} />
+                    </Button>
+                  </Grid>
+                )
+                j++
+              }
+            gdivs.push(
+              <Grid gkey={'child'+ j} container alignItems={'center'} 
+                justify={'center'} direction={'column'} item style={{ padding: 30 }}>
+                <Button gid={gids[j]} type='button' variant='contained' color="primary"
+                  size="large" onClick={cachedThis.handleSubmit}>
+                  <span gid={gids[j]} >{gnameList[j]}</span>
+                </Button>
+              </Grid>
+            )
+          }
+          cachedThis.setState({gifteeNamesHTML: gdivs})
+          }
+        )
+       //console.log("state gids outside didmount: " + cachedThis.state.names)
+       //console.log('after componentDidMount')
         })
+       })
       })
-       console.log("state ids outside didmount: " + cachedThis.state.names)
-       console.log('after componentDidMount')
-    }
+       //console.log("state ids outside didmount: " + cachedThis.state.names)
+       //console.log('after componentDidMount')
+}
 
     helper(memberIDs) {
       var promise = new Promise(function (resolve, reject) {
@@ -121,6 +199,7 @@ import * as routes from '../constants/routes';
           <h1>{this.state.pickDate}</h1>
           <h4>Member list</h4>
           <div>{this.state.memberNamesHTML}</div>
+          <div>{this.state.gifteeNamesHTML}</div>
         </Grid>
       );
     }
