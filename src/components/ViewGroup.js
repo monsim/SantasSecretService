@@ -8,7 +8,8 @@ import {
   // Link,
 } from 'react-router-dom';
 import * as routes from '../constants/routes';
-import firebase from 'firebase/app';
+import firebase, { database } from 'firebase/app';
+import { deflateRawSync } from 'zlib';
 
 // Front end
 // const ViewGroupPage = (groupID) => {
@@ -21,6 +22,7 @@ class ViewGroupPage extends React.Component {
         groupName: '',
         currentUserID: '',
         members: {},
+        originalMemberList: [],
         memberIDs: [],
         memberNamesHTML: [],
         gifteeIDs: [],
@@ -52,14 +54,6 @@ class ViewGroupPage extends React.Component {
       })
     }
 
-    //Change View According to The PickDay
-    changeView(pickDate) {
-      if (pickDate) {
-        return <div>{this.state.gifteeNamesHTML}</div>;
-      }
-      return <div>{this.state.memberNamesHTML}</div>;
-    }
-
     //Get CurrentDate
     currentDate() {
       var date = new Date().getDate();
@@ -68,6 +62,15 @@ class ViewGroupPage extends React.Component {
       var currentDate = year + '-' + month + '-' + date;
       return currentDate;
     }
+
+       //Change View According to The PickDay
+       changeView(pickDate) {
+        if (pickDate==this.currentDate() || pickDate<this.currentDate()) {
+          console.log('PickDate + ' + pickDate + ' , CurrentDate : ' + this.currentDate())
+          return <div>{this.state.gifteeNamesHTML}</div>;
+        }
+        return <div>{this.state.memberNamesHTML}</div>;
+      }
 
     componentDidMount() {
       var cachedThis = this;
@@ -85,6 +88,7 @@ class ViewGroupPage extends React.Component {
         //console.log('within then')
         //console.log("ids: " + ids)
         cachedThis.setState({memberIDs: ids})
+        cachedThis.setState({originalMemberList: ids})
         //console.log("state ids: " + cachedThis.state.memberIDs)
 
         //console.log('before helper')
@@ -94,7 +98,7 @@ class ViewGroupPage extends React.Component {
           var divs = cachedThis.state.memberNamesHTML
           for (var i = 0; i < cachedThis.state.memberIDs.length; i++) {
             //console.log('I am in the member names for loop')
-            var sth = nameList[i] + ' of ' + ids[i]
+            //var sth = nameList[i] + ' of ' + ids[i]
             divs.push(
               <Grid key={'child'+ i} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
@@ -136,13 +140,14 @@ class ViewGroupPage extends React.Component {
             //Get Current User
             var currentUserID = firebase.auth().currentUser.uid;
             console.log('currentuserID : ' + currentUserID);
+            console.log('IDs: ' + ids);
           
             //Assigning Current User to Giftee and displaying
             var gdivs = cachedThis.state.gifteeNamesHTML
             for (var j = 0; j < cachedThis.state.memberIDs.length; j++) {
               //IF Current User , Check the corresponding Shuffled Member
-              if(currentUserID == cachedThis.state.memberIDs[j]) {
-                console.log(currentUserID + ' , ' + cachedThis.state.memberIDs[j]);
+              if(currentUserID == ids[j]) {
+                console.log(currentUserID + ' , ' + cachedThis.state.originalMemberList[j]);
                 console.log('equal at ' + j);
                 console.log('UnShuffled Index ' + j + ' Name: ' + nameList[j]);
                 console.log('Shuffled Index ' + j + ' Name: ' + gnameList[j]);
@@ -206,7 +211,7 @@ class ViewGroupPage extends React.Component {
           <h4>CurrentDate</h4>
           <h1>{this.currentDate()}</h1>
           <h4>Member list</h4>
-          {this.changeView(true)}
+          {this.changeView(this.state.pickDate)}
         </Grid>
       );
     }
