@@ -22,7 +22,6 @@ class HomePage extends Component {
       users: null,
     };
     this.helper = this.helper.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   /** For the CREATE GROUP and JOIN GROUP button routing **/
@@ -56,7 +55,7 @@ class HomePage extends Component {
           oldDivs.push(
             <div>
               <h2>Group {i + 1}</h2>
-              <ListItem name={cachedThis.state.group_names[i]} button onClick={cachedThis.handleSubmit}>
+              <ListItem id={cachedThis.state.group_names[i]} button onClick={cachedThis.handleSubmit}>
                 <ListItemText primary={cachedThis.state.group_names[i]} />
                 <ListItemIcon><PlayArrowIcon /></ListItemIcon>
               </ListItem>
@@ -103,9 +102,11 @@ class HomePage extends Component {
               <div>{this.state.group_name_divs}</div>
             </Grid>
             < Grid item style={{ paddingTop: 20 }}>
-              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.toCreateGroup} style={{ float: 'left' }}>Create Group</Button>
+              <Button variant="contained" color="primary" size="medium" 
+                type="submit" onClick={this.toCreateGroup} style={{ float: 'left' }}>Create Group</Button>
               &nbsp;&nbsp;
-              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.toJoinGroup} style={{ float: 'right' }}>Join Group</Button>
+              <Button variant="contained" color="primary" size="medium" 
+                type="submit" onClick={this.toJoinGroup} style={{ float: 'right' }}>Join Group</Button>
             </Grid>
             <Grid item style={{ paddingTop: 50 }}>
               <img src={process.env.PUBLIC_URL + '/hushhush.png'} alt="logo" style={{ width: 200, height: 200 }} />

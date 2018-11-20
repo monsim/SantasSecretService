@@ -202,6 +202,48 @@ export function doGetUserNameHelper(memberName) {
     return promise;
 }
 
+export const doGetMaxPrice= (groupID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var maxPrice = db.ref(`/groups/${groupID}/maxPrice`);
+        doGetMaxPriceHelper(maxPrice).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetMaxPriceHelper(maxPrice) {
+    var promise = new Promise(function (resolve, reject) {
+        var price = '';
+        maxPrice.on('value', snapshot => {
+            price = snapshot.val();
+            resolve(price)
+        })
+    });
+    return promise;
+}
+
+export const doGetPickDate= (groupID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var pickDate = db.ref(`/groups/${groupID}/pickDate`);
+        doGetPickDateHelper(pickDate).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetPickDateHelper(pickDate) {
+    var promise = new Promise(function (resolve, reject) {
+        var date = '';
+        pickDate.on('value', snapshot => {
+            date = snapshot.val();
+            resolve(date)
+        })
+    });
+    return promise;
+}
+
 export const onceGetUsers = () =>
     db.ref('users').once('value');
 

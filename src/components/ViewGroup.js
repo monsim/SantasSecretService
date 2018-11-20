@@ -16,11 +16,13 @@ import * as routes from '../constants/routes';
     constructor(props) {
       super(props);
       this.state = {
-        groupID: '-LR9m8U9ghz-2F4ZR2SR',
+        groupID: '-LRigxxDM_X2fjEoNFr6',
         groupName: '',
         members: {},
         memberIDs: [],
         memberNamesHTML: [],
+        maxPrice: '',
+        pickDate: '',
       };
 
       // this.handleChange = this.handleChange.bind(this);
@@ -39,6 +41,7 @@ import * as routes from '../constants/routes';
         history,
       } = this.props;
 
+      alert("id: " + event.target.id);
       history.push({
         pathname: routes.VIEW_WISHLIST,
         // search: '?query=abc',
@@ -53,7 +56,7 @@ import * as routes from '../constants/routes';
         cachedThis.setState({groupName: gName})
       })
 
-      console.log('before componentDidMount')
+      // console.log('before componentDidMount')
       db.doGetGroupMember(this.state.groupID).then(function(ids) {
         // console.log('within then')
         // console.log("ids: " + ids)
@@ -62,7 +65,7 @@ import * as routes from '../constants/routes';
         // console.log("state ids: " + cachedThis.state.memberIDs)
 
         // console.log('before helper')
-        cachedThis.helper(cachedThis.state.memberIDs).then(function(nameList) {
+        cachedThis.helper1(cachedThis.state.memberIDs).then(function(nameList) {
           // console.log('after helper call')
           // console.log(nameList)
 
@@ -73,9 +76,9 @@ import * as routes from '../constants/routes';
             divs.push(
               <Grid key={'child'+ i} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                <Button id={ids[i]} type='button' variant='contained' color="primary"
+                <Button id={ids[i]} name='1' type='button' variant='contained' color="primary"
                   size="large" onClick={cachedThis.handleSubmit}>
-                  <span id={ids[i]} >{nameList[i]}</span>
+                  <span id={ids[i]}>{nameList[i]}</span>
                 </Button>
               </Grid>
             )
@@ -83,11 +86,20 @@ import * as routes from '../constants/routes';
           cachedThis.setState({memberNamesHTML: divs})
         })
       })
+
+      db.doGetMaxPrice(cachedThis.state.groupID).then(function(price) {
+        console.log(price)
+        cachedThis.setState({maxPrice: price})
+      })
+      db.doGetPickDate(cachedThis.state.groupID).then(function(date) {
+        console.log(date)
+        cachedThis.setState({pickDate: date})
+      })
       // console.log("state ids outside didmount: " + cachedThis.state.names)
       // console.log('after componentDidMount')
     }
 
-    helper(memberIDs) {
+    helper1(memberIDs) {
       var promise = new Promise(function (resolve, reject) {
         var promises = [];
           for (var i = 0; i < memberIDs.length; i++) {
@@ -107,6 +119,13 @@ import * as routes from '../constants/routes';
       return (
         <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
           <h4>Group Name</h4>
+          <h1>{this.state.groupName}</h1>
+          <Grid key='price' container alignItems={'center'} justify={'space-evenly'} direction={'row'}>
+            <h4>Price Limit</h4><h1>${this.state.maxPrice}</h1>
+          </Grid>
+          <Grid key='date' container alignItems={'center'} justify={'space-evenly'} direction={'row'}>
+            <h4>Pick Date</h4><h1>{this.state.pickDate}</h1>
+          </Grid>
           <h1>{this.state.groupName}</h1>
           <h4>Member list</h4>
           <div>{this.state.memberNamesHTML}</div>

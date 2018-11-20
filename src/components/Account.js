@@ -17,12 +17,13 @@ const AccountPage = () =>
           <PasswordForgetForm />
           <PasswordChangeForm />
         </Grid>
+        <Grid container alignItems={'center'} justify={'space-evenly'} direction={'column'}>
+          <img src={process.env.PUBLIC_URL + '/hushhush.png'} alt="logo" style={{ width: 200, height: 200 }} />
+        </Grid>
       </div>
     }
   </AuthUserContext.Consumer>
 
 const authCondition = (authUser) => !!authUser;
-
-
 
 export default withAuthorization(authCondition)(AccountPage);

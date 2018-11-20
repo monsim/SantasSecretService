@@ -60,7 +60,7 @@ class ViewWishlistPage extends React.Component {
       if (user) {
         // alert(cachedThis.props.location.state.memberID)
         var memberID = cachedThis.props.location.state.memberID//firebase.auth().currentUser.uid;
-        alert(memberID)
+        // alert(memberID)
         console.log('before in wishlist')
         db.getWishlist(memberID).then(function (result) {
           console.log("its done! in wishlist");
