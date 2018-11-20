@@ -13,7 +13,7 @@ import firebase from 'firebase/app';
 // Front end
 // const ViewGroupPage = (groupID) => {
 class ViewGroupPage extends React.Component {
-
+  
     constructor(props) {
       super(props);
       this.state = {
@@ -25,7 +25,8 @@ class ViewGroupPage extends React.Component {
         memberNamesHTML: [],
         gifteeIDs: [],
         gifteeNamesHTML: [],
-        pickDate: ''
+        pickDate: '',
+        //currentDate: '',
       };
 
       // this.handleChange = this.handleChange.bind(this);
@@ -57,6 +58,15 @@ class ViewGroupPage extends React.Component {
         return <div>{this.state.gifteeNamesHTML}</div>;
       }
       return <div>{this.state.memberNamesHTML}</div>;
+    }
+
+    //Get CurrentDate
+    currentDate() {
+      var date = new Date().getDate();
+      var month = new Date().getMonth() + 1;
+      var year = new Date().getFullYear();
+      var currentDate = year + '-' + month + '-' + date;
+      return currentDate;
     }
 
     componentDidMount() {
@@ -117,11 +127,11 @@ class ViewGroupPage extends React.Component {
             
             //Setting Giftee in Firebase According to the Shuffled Collection
             
-            
+            /*
             for (var k = 0; k < cachedThis.state.memberIDs.length; k++) {
                 db.doSetGiftee(cachedThis.state.groupID, shuffledCollection[k]);
             }
-            
+            */
           
             //Get Current User
             var currentUserID = firebase.auth().currentUser.uid;
@@ -186,15 +196,17 @@ class ViewGroupPage extends React.Component {
     }
     
     render() {
-      
+
       return (
         <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
           <h4>Group Name</h4>
           <h1>{this.state.groupName}</h1>
           <h4>PickDate</h4>
           <h1>{this.state.pickDate}</h1>
+          <h4>CurrentDate</h4>
+          <h1>{this.currentDate()}</h1>
           <h4>Member list</h4>
-          {this.changeView(false)}
+          {this.changeView(true)}
         </Grid>
       );
     }
