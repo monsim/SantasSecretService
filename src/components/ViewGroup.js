@@ -146,8 +146,8 @@ class ViewGroupPage extends React.Component {
               if(currentUserID == ids[j]) {
                 console.log(currentUserID + ' , ' + cachedThis.state.originalMemberList[j]);
                 console.log('equal at ' + j);
-                console.log('UnShuffled Index ' + j + ' Name: ' + nameList[j]);
-                console.log('Shuffled Index ' + j + ' Name: ' + gnameList[j]);
+                console.log('UnShuffled Index ' + j + ' Gifter Name: ' + nameList[j]);
+                console.log('Shuffled Index ' + j + ' Giftee Name: ' + gnameList[j]);
             
                 gdivs.push(
                   <Grid gkey={'child'+ j} container alignItems={'center'} 

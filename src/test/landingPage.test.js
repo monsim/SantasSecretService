@@ -3,8 +3,7 @@ import Enzyme, { shallow, mount } from "enzyme";
 import LandingPage from "../components/Landing.js";
 import Adapter from "enzyme-adapter-react-16";
 import sinon from "../../node_modules/sinon/pkg/sinon.js";
-import Button from '../components/Button.jsx';
-
+import Button from '@material-ui/core/Button';
 
 Enzyme.configure({ adapter: new Adapter() });
 
