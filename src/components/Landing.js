@@ -11,8 +11,11 @@ class LandingPage extends Component {
     this.toSignUp = this.toSignUp.bind(this);
   }
 
-  /** For the LOGIN and SIGN UP button routing **/
+   sum(a, b) {
+    return a + b;
+  }
 
+  /** For the LOGIN and SIGN UP button routing **/
   toLogin = (event) => {
     const {
       history,

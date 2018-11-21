@@ -22,7 +22,7 @@ class HomePage extends Component {
       users: null,
     };
     this.helper = this.helper.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+  
   }
 
   /** For the CREATE GROUP and JOIN GROUP button routing **/
@@ -56,7 +56,7 @@ class HomePage extends Component {
           oldDivs.push(
             <div>
               <h2>Group {i + 1}</h2>
-              <ListItem name={cachedThis.state.group_names[i]} button onClick={cachedThis.handleSubmit}>
+              <ListItem name={cachedThis.state.group_names[i]} button >
                 <ListItemText primary={cachedThis.state.group_names[i]} />
                 <ListItemIcon><PlayArrowIcon /></ListItemIcon>
               </ListItem>
