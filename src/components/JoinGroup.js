@@ -5,6 +5,8 @@ import TextField from '@material-ui/core/TextField';
 
 import { Link } from 'react-router-dom';
 import * as routes from '../constants/routes';
+import firebase from 'firebase/app';
+import { auth, db } from '../firebase';
 
 
 class JoinGroupPage extends React.Component {
@@ -26,17 +28,32 @@ class JoinGroupPage extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
-    // Backend Here
-    console.log(this.state.groupID);
+    var grpID = this.state.groupID;
+    // Backend  here
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+          // User is signed in.
+          var userID = auth.getCurUser().uid;
+          db.doJoinGroup(grpID, userID)
+          console.log(userID + ' added to ' + grpID)
+      }
+  })
   }
 
 
   render() {
+    
+    const {
+      groupID
+    } = this.state
+    
+    const isInvalid =
+    groupID === '';
+    
     return (
-      <div style={{ padding: 30 }}>
+      <div style={{ paddingBottom: 20 }}>
         <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-          <Grid item style={{ paddingBottom: 40 }}>
+          <Grid item style={{ paddingTop: 100 }}>
             <h1>Join A Group</h1>
           </Grid>
 
@@ -48,12 +65,22 @@ class JoinGroupPage extends React.Component {
             margin="normal"
           />
 
-          <Button variant="contained" color="primary" size="large" type='submit' onClick={this.handleSubmit} ><Link to={routes.HOME}>Join Group</Link></Button>
-
+          <Button 
+            disabled={isInvalid}
+            variant="contained"
+            color="primary"
+            size="large"
+            type='submit'
+            onClick={this.handleSubmit}>
+            <Link to={routes.HOME}>Join Group</Link>
+          </Button>
         </Grid>
       </div>
+
+
     );
   }
+
 }
 
 export default JoinGroupPage;

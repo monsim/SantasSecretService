@@ -6,3 +6,6 @@ export const ACCOUNT = '/account';
 export const PASSWORD_FORGET = '/pw-forget';
 export const CREATE_GROUP = '/create-group';
 export const JOIN_GROUP = '/join-group';
+export const VIEW_GROUP = '/view-group';
+export const VIEW_GROUP_LIST = '/view-group-list';
+export const VIEW_WISHLIST = '/my-wishlist';
