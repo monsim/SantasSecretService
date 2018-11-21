@@ -27,19 +27,19 @@ describe('<Landing Buttons />', () => {
         // const wrapper = shallow(<LandingPage />)
         const login = jest.fn(LandingPage.toLogin)
         const button = shallow((<Button onClick={login}>Login</Button>))
-        button.trigger('click');
+        button.find('Button').simulate('click');
         expect(login).toHaveBeenCalled()
     });
 });
 
-// // Check if toSignUp is called
-// describe('<Landing Buttons />', () => {
-//     it('simulates click events', () => {
-//         // const mockCallBack = sinon.spy();
-//         // const wrapper = shallow(<LandingPage />)
-//         const login = jest.fn(LandingPage.toLogin)
-//         const button = shallow((<Button onClick={login}>Login</Button>))
-//         button.find('Button').simulate('click');
-//         expect(login).toHaveBeenCalled()
-//     });
-// });
+// Check if toSignUp is called
+describe('<Landing Buttons />', () => {
+    it('simulates click events', () => {
+        // const mockCallBack = sinon.spy();
+        // const wrapper = shallow(<LandingPage />)
+        const signUp = jest.fn(LandingPage.toSignUp)
+        const button = shallow((<Button onClick={signUp}>Login</Button>))
+        button.find('Button').simulate('click');
+        expect(signUp).toHaveBeenCalled()
+    });
+});
