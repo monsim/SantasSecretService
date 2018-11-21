@@ -131,11 +131,9 @@ class ViewGroupPage extends React.Component {
             
             //Setting Giftee in Firebase According to the Shuffled Collection
             
-            /*
             for (var k = 0; k < cachedThis.state.memberIDs.length; k++) {
                 db.doSetGiftee(cachedThis.state.groupID, shuffledCollection[k]);
             }
-            */
           
             //Get Current User
             var currentUserID = firebase.auth().currentUser.uid;
@@ -154,10 +152,11 @@ class ViewGroupPage extends React.Component {
             
                 gdivs.push(
                   <Grid gkey={'child'+ j} container alignItems={'center'} 
-                   justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                    <Button gid={gids[j]} type='button' variant='contained' color="primary" size="large" onClick={cachedThis.handleSubmit}>
-                      <span gid={gids[j]} >{gnameList[j]}</span>
-                      <img src={process.env.PUBLIC_URL + '/present.png'} alt="present" style={{ width: 50, height: 50 }} />
+                    justify={'center'} direction={'row'} item style={{ padding: 30 }}>
+                    <Button id={gids[j]} type='button' variant='contained' 
+                      color="primary" size="large" onClick={cachedThis.handleSubmit}>
+                      <span id={gids[j]} >{gnameList[j]}</span>  
+                      <img src={process.env.PUBLIC_URL + '/present.png'} alt="present" style={{ width: 20, height: 20 }} />
                     </Button>
                   </Grid>
                 )
@@ -166,9 +165,9 @@ class ViewGroupPage extends React.Component {
             gdivs.push(
               <Grid gkey={'child'+ j} container alignItems={'center'} 
                 justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                <Button gid={gids[j]} type='button' variant='contained' color="primary"
+                <Button id={gids[j]} type='button' variant='contained' color="primary"
                   size="large" onClick={cachedThis.handleSubmit}>
-                  <span gid={gids[j]} >{gnameList[j]}</span>
+                  <span id={gids[j]} >{gnameList[j]}</span>
                 </Button>
               </Grid>
             )
