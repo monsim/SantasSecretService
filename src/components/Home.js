@@ -71,6 +71,10 @@ class HomePage extends Component {
     });
   }
 
+  sum(a, b) {
+    return a + b;
+  }
+
   // gets each group name from the list of group IDs and returns an array of group names
   helper(group_list, oldGroupNames, cachedThis) {
     var promise = new Promise(function (resolve, reject) {
@@ -90,7 +94,6 @@ class HomePage extends Component {
   }
 
   render() {
-
     return (
       <form>
         <div style={{ padding: 30 }}>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import * as routes from '../constants/routes';
+//import { Route , withRouter} from 'react-router-dom';
 
 class LandingPage extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class LandingPage extends Component {
       history,
     } = this.props;
     history.push(routes.SIGN_IN);
+   //this.props.history.push('/signin');
   }
 
   toSignUp = (event) => {
@@ -25,11 +27,6 @@ class LandingPage extends Component {
       history,
     } = this.props;
     history.push(routes.SIGN_UP);
-  }
-
-  // test for LandingPage.test.js
-  sum(a, b) {
-    return a + b;
   }
 
   render() {
@@ -41,7 +38,7 @@ class LandingPage extends Component {
               <h1>Santa's Secret Service</h1>
             </Grid>
             <Grid item xs={6} style={{ paddingBottom: 20 }}>
-              <Button variant="contained" color="primary" size="large" type="submit" onClick={this.toLogin}>Login</Button>
+              <Button id="login" className="test" variant="contained" color="primary" size="large" type="submit" onClick={this.toLogin}>Login</Button>
             </Grid>
             <Grid item xs={6}>
               <Button variant="contained" color="primary" size="large" type="submit" onClick={this.toSignUp}>Sign Up</Button>
@@ -57,4 +54,5 @@ class LandingPage extends Component {
 
 }
 
+//export default withRouter(LandingPage);
 export default LandingPage;
