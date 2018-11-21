@@ -27,6 +27,11 @@ class LandingPage extends Component {
     history.push(routes.SIGN_UP);
   }
 
+  // test for LandingPage.test.js
+  sum(a, b) {
+    return a + b;
+  }
+
   render() {
     return (
       <form>
