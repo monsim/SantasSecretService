@@ -13,19 +13,33 @@
 import React, { Component } from 'react';
 import Enzyme, { shallow, mount } from "enzyme";
 import LandingPage from "../components/Landing.js";
-import sinon from "../../node_modules/sinon/pkg/sinon.js";
+import SignInPage from "../components/SignIn.js";
 import Adapter from "enzyme-adapter-react-16";
 
 import Button from '@material-ui/core/Button';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+// Check if toLogin is called
 describe('<Landing Buttons />', () => {
-    it('simulates click events', () => {
-        const mockCallBack = sinon.spy();
-        const button = shallow((<Button onClick={mockCallBack}>Login</Button>));
-    
-        button.find('Button').simulate('click');
-        expect(mockCallBack).toHaveProperty('callCount', 1);
-      });
+    it('calls the toLogin method', () => {
+        // const mockCallBack = sinon.spy();
+        // const wrapper = shallow(<LandingPage />)
+        const login = jest.fn(LandingPage.toLogin)
+        const button = shallow((<Button onClick={login}>Login</Button>))
+        button.trigger('click');
+        expect(login).toHaveBeenCalled()
+    });
 });
+
+// // Check if toSignUp is called
+// describe('<Landing Buttons />', () => {
+//     it('simulates click events', () => {
+//         // const mockCallBack = sinon.spy();
+//         // const wrapper = shallow(<LandingPage />)
+//         const login = jest.fn(LandingPage.toLogin)
+//         const button = shallow((<Button onClick={login}>Login</Button>))
+//         button.find('Button').simulate('click');
+//         expect(login).toHaveBeenCalled()
+//     });
+// });
