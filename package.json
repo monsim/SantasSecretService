@@ -19,6 +19,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --verbose",
+    "test:watch": "jest --watchAll --verbose",
+    "test:coverage": "jest --verbose --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -29,5 +31,11 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.7.0",
+    "jest": "^23.6.0",
+    "sinon": "^7.1.1"
+  }
 }

@@ -88,8 +88,7 @@ class ViewGroupPage extends React.Component {
         //console.log('within then')
         //console.log("ids: " + ids)
         cachedThis.setState({memberIDs: ids})
-        cachedThis.setState({originalMemberList: ids})
-        //console.log("state ids: " + cachedThis.state.memberIDs)
+        //cachedThis.setState({originalMemberList: ids})
 
         //console.log('before helper')
         cachedThis.helper(cachedThis.state.memberIDs).then(function(nameList) {
@@ -205,10 +204,9 @@ class ViewGroupPage extends React.Component {
         <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
           <h4>Group Name</h4>
           <h1>{this.state.groupName}</h1>
-          <h4>PickDate</h4>
-          <h1>{this.state.pickDate}</h1>
-          <h4>CurrentDate</h4>
-          <h1>{this.currentDate()}</h1>
+          <h4>PickDate: {this.state.pickDate}</h4>
+          {/*<h4>CurrentDate</h4>
+      <h1>{this.currentDate()}</h1>*/}
           <h4>Member list</h4>
           {this.changeView(this.state.pickDate)}
         </Grid>
