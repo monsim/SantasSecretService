@@ -13,6 +13,10 @@ class LandingPage extends Component {
 
   /** For the LOGIN and SIGN UP button routing **/
 
+  sum(a, b) {
+    return a + b;
+  }
+
   toLogin = (event) => {
     const {
       history,
@@ -36,7 +40,7 @@ class LandingPage extends Component {
               <h1>Santa's Secret Service</h1>
             </Grid>
             <Grid item xs={6} style={{ paddingBottom: 20 }}>
-              <Button variant="contained" color="primary" size="large" type="submit" onClick={this.toLogin}>Login</Button>
+              <Button name="loginButton" variant="contained" color="primary" size="large" type="submit" onClick={this.toLogin}>Login</Button>
             </Grid>
             <Grid item xs={6}>
               <Button variant="contained" color="primary" size="large" type="submit" onClick={this.toSignUp}>Sign Up</Button>
