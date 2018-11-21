@@ -16,7 +16,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --verbose",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -30,6 +30,8 @@
   ],
   "devDependencies": {
     "enzyme": "^3.7.0",
-    "jest": "^23.6.0"
+    "enzyme-adapter-react-16": "^1.7.0",
+    "jest": "^23.6.0",
+    "sinon": "^7.1.1"
   }
 }
