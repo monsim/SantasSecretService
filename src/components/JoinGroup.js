@@ -14,12 +14,52 @@ class JoinGroupPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      groupID: ''
+      userID: '',
+      grpToJoin: '',
+      userGroupList: [],
+      allGroups: [],
+      error: false,
+      errorMessage: '',
     };
-  this.handleChange = this.handleChange.bind(this);
-  this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    // Get all the groups to state before render
+    var cachedThis = this;
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        // User is signed in.
+        cachedThis.setState({
+          userID: auth.getCurUser().uid
+        })
+
+        db.getAllGroups().then(function (groups) {
+
+          var grpsToSave = [];
+          for (var i = 0; i < groups.length; i++) {
+            grpsToSave.push(groups[i]);
+          }
+          cachedThis.setState({
+            allGroups: grpsToSave
+          })
+        });
+
+        db.doGetUserGroupList(cachedThis.state.userID).then(function (groups) {
+          var grpListToSave = [];
+          for (var i = 0; i < groups.length; i++) {
+            grpListToSave.push(groups[i]);
+          }
+          cachedThis.setState({
+            userGroupList: grpListToSave
+          })
+        });
+      }
+    })
+
+
+  }
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -27,29 +67,53 @@ class JoinGroupPage extends React.Component {
   }
 
   handleSubmit(event) {
+    const {
+      history,
+    } = this.props;
+
     event.preventDefault();
-    var grpID = this.state.groupID;
-    // Backend  here
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-          // User is signed in.
-          var userID = auth.getCurUser().uid;
-          db.doJoinGroup(grpID, userID)
-          console.log(userID + ' added to ' + grpID)
+    var grpID = this.state.grpToJoin;
+    var groupArray = this.state.allGroups;
+    var groupListArray = this.state.userGroupList;
+
+    // If the group does exist
+    if (groupArray.includes(grpID)) {
+      // If user is not already in the group
+      if (!groupListArray.includes(grpID)){
+        db.doJoinGroup(grpID, this.state.userID)
+        history.push(routes.HOME);
       }
-  })
+      else {
+        this.setState({
+          error: true,
+          errorMessage: "You are in this group already",
+        })
+      }
+    }
+    else{
+      this.setState({
+        error: true,
+        errorMessage: "The group does not exist",
+      })
+    }
   }
 
 
+
   render() {
-    
+
     const {
-      groupID
+      userID,
+      grpToJoin,
+      userGroupList,
+      allGroups,
+      error,
+      errorMessage,
     } = this.state
-    
+
     const isInvalid =
-    groupID === '';
-    
+    grpToJoin === '';
+
     return (
       <div style={{ paddingBottom: 20 }}>
         <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
@@ -58,23 +122,25 @@ class JoinGroupPage extends React.Component {
           </Grid>
 
           <TextField
-            name="groupID"
+            name="grpToJoin"
             label="Group ID Number"
             onChange={this.handleChange}
             required
             margin="normal"
           />
 
-          <Button 
+          <Button
             disabled={isInvalid}
             variant="contained"
             color="primary"
             size="large"
             type='submit'
             onClick={this.handleSubmit}>
-            <Link to={routes.HOME}>Join Group</Link>
+            Join Group
           </Button>
+          {error && <p>{errorMessage}</p>}
         </Grid>
+       
       </div>
 
 
