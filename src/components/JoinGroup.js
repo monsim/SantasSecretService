@@ -3,11 +3,9 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 
-import { Link } from 'react-router-dom';
 import * as routes from '../constants/routes';
 import firebase from 'firebase/app';
 import { auth, db } from '../firebase';
-
 
 class JoinGroupPage extends React.Component {
 
@@ -36,7 +34,6 @@ class JoinGroupPage extends React.Component {
         })
 
         db.getAllGroups().then(function (groups) {
-
           var grpsToSave = [];
           for (var i = 0; i < groups.length; i++) {
             grpsToSave.push(groups[i]);
@@ -58,7 +55,6 @@ class JoinGroupPage extends React.Component {
       }
     })
 
-
   }
   handleChange(event) {
     this.setState({
@@ -79,7 +75,7 @@ class JoinGroupPage extends React.Component {
     // If the group does exist
     if (groupArray.includes(grpID)) {
       // If user is not already in the group
-      if (!groupListArray.includes(grpID)){
+      if (!groupListArray.includes(grpID)) {
         db.doJoinGroup(grpID, this.state.userID)
         history.push(routes.HOME);
       }
@@ -90,7 +86,7 @@ class JoinGroupPage extends React.Component {
         })
       }
     }
-    else{
+    else {
       this.setState({
         error: true,
         errorMessage: "The group does not exist",
@@ -112,7 +108,7 @@ class JoinGroupPage extends React.Component {
     } = this.state
 
     const isInvalid =
-    grpToJoin === '';
+      grpToJoin === '';
 
     return (
       <div style={{ paddingBottom: 20 }}>
@@ -140,13 +136,10 @@ class JoinGroupPage extends React.Component {
           </Button>
           {error && <p>{errorMessage}</p>}
         </Grid>
-       
+
       </div>
-
-
     );
   }
-
 }
 
 export default JoinGroupPage;
