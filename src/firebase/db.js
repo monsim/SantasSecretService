@@ -79,6 +79,30 @@ export function doGetGroupNameHelper(theGroupName) {
     return promise;
 }
 
+export const getAllGroups= () => {
+    var promise = new Promise(function (resolve, reject) {
+        var groups = db.ref(`/groups`);
+        getAllGroupsHelper(groups).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function getAllGroupsHelper(groups) {
+    var promise = new Promise(function (resolve, reject) {
+        var list = [];
+        groups.on('value', snapshot => {
+            snapshot.forEach(childSnapshot => {
+                var aGroup = childSnapshot.key;
+                list.push(JSON.parse(JSON.stringify(aGroup)));
+            })
+            resolve(list);
+        })
+    });
+    return promise;
+}
+
 export const onceGetUsers = () =>
     db.ref('users').once('value');
 
