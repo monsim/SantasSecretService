@@ -13,17 +13,26 @@ describe("LandingPage component", () => {
     });
 
     // checking for button click -- doesn't work atm
-    /*
-    it('simulates click events', () => {
-        const app = shallow(<LandingPage />)
-        const instance = app.instance();
-        const spy = jest.spyOn(instance, 'toLogin');
+    // it('simulates click events', () => {
+    //     const app = shallow(<LandingPage />)
+    //     const instance = app.instance();
+    //     const spy = jest.spyOn(instance, 'toLogin');
     
-        instance.forceUpdate();    
+    //     instance.forceUpdate();    
     
-        const p = app.find('#login');
-        p.simulate('click');
-        expect(spy).toHaveBeenCalled();
+    //     const p = app.find('#login');
+    //     p.simulate('click');
+    //     expect(spy).toHaveBeenCalled();
+    // });
+
+    // combining gabriel's method
+    it('calls the toLogin method', () => {
+        // const mockCallBack = sinon.spy();
+        // const wrapper = shallow(<LandingPage />)
+        const login = jest.fn(LandingPage.toLogin)
+        const button = mount(<LandingPage />); //shallow((<Button onClick={login}>Login</Button>))
+        button.find('Button').first().simulate('click');
+        expect(login).toHaveBeenCalled()
     });
-    */
+
 })
