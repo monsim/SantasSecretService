@@ -13,7 +13,7 @@ const AccountPage = () =>
       <div>
         <br />
         <h1>Account: {authUser.email}</h1>
-        <Grid container alignItems={'center'} justify={'center'} direction={'row'}>
+        <Grid container alignItems={'center'} justify={'space-evenly'} direction={'row'}>
           <PasswordForgetForm />
           <PasswordChangeForm />
         </Grid>

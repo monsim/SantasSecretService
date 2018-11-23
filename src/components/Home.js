@@ -119,5 +119,3 @@ class HomePage extends Component {
 const authCondition = (authUser) => !!authUser;
 
 export default withAuthorization(authCondition)(HomePage);
-
-

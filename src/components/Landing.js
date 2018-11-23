@@ -49,7 +49,5 @@ class LandingPage extends Component {
       </form >
     );
   }
-
 }
-
 export default LandingPage;

@@ -65,10 +65,11 @@ class CreateGroupForm extends Component {
       var userID = auth.getCurUser().uid;
       var memberID = userID
       //alert(userID);
-      var grpID = db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, '');
+      var grpID = db.doCreateGroup(groupName, userID, maxPrice, pickDate, archiveDate, '', '');
 //                console.log('here we ARE')
       console.log(grpID)
       db.doJoinGroup(grpID, memberID)
+      //db.doJoinGroup(grpID, memberID, giftee)
 //                console.log('here we goooooo')
                 //Display Unique Group ID
                 //In db.js createUser has params(id,name,email), do we need params(groupId, groupName, ...) for createGroup?
@@ -96,13 +97,14 @@ class CreateGroupForm extends Component {
       <form onSubmit={this.onSubmit}>
       <div style={{ padding: 30 }}>
       <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
-        <Grid item style={{ paddingBottom: 40 }}>
+        <Grid item style={{ paddingTop: 40 }}>
           <h1>Create A Group</h1>
         </Grid>
         <TextField
           value={groupName}
           label="Group Name"
           onChange={event => this.setState(byPropKey('groupName', event.target.value))}
+          required
           type="text"
           margin="normal"
         />
@@ -115,18 +117,19 @@ class CreateGroupForm extends Component {
           margin="normal"
         />
         <br />
+        <p> End of Pick date </p>
         <TextField
           value={pickDate}
           onChange={event => this.setState(byPropKey('pickDate', event.target.value))}
+          required
           type="date"
-          placeholder="End of Pick date"
           />
         <br />
+        <p> Date to archive </p>
         <TextField
           value={archiveDate}
           onChange={event => this.setState(byPropKey('archiveDate', event.target.value))}
           type="date"
-          placeholder="Date to archive"
           />
         <br />
         <Button 
