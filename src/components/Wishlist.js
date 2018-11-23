@@ -32,6 +32,7 @@ const INITIAL_STATE = {
   wishlist: [],   //array of names of items
   oldWishlistDivs: [], //array of divs from wishlist in firebase
   addButtonDiv: [],
+  saveButtonDiv: [],
 };
 
 // const byPropKey = (propertyName, value) => () => ({
@@ -58,6 +59,7 @@ class ViewWishlistPage extends React.Component {
     var oldDivs = this.state.oldWishlistDivs;
     var cachedThis = this;
     var oldButtonDiv = this.state.addButtonDiv;
+    var oldSaveDiv = this.state.saveButtonDiv;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // alert(cachedThis.props.location.state.memberID)
@@ -70,12 +72,18 @@ class ViewWishlistPage extends React.Component {
 
         if (memberID == currentUserID) {  //user clicked on own wishlist, display add buttons
           oldButtonDiv.push(
-            <Button variant="fab" color="primary" mini onClick={this.handleSubmitAdd} aria-label="Add" >
+            <Button variant="fab" color="primary" mini onClick={cachedThis.handleSubmitAdd} aria-label="Add" >
             <AddIcon />
           </Button>
           )
+
+          oldSaveDiv.push(
+            <Button variant="contained" color="primary" size="large" type='submit' onClick={cachedThis.handleSubmit} ><Link to={routes.HOME}>Save Wishlist</Link> </Button>
+          )
+
           cachedThis.setState({
-            addButtonDiv: oldButtonDiv
+            addButtonDiv: oldButtonDiv,
+            saveButtonDiv: oldSaveDiv
           });
         }
 
@@ -207,7 +215,7 @@ class ViewWishlistPage extends React.Component {
             {this.state.wishlistDivs}
           </div>
           <br />
-          <Button variant="contained" color="primary" size="large" type='submit' onClick={this.handleSubmit} ><Link to={routes.HOME}>Save Wishlist</Link> </Button>
+          {this.state.saveButtonDiv}
           <br />
             {this.state.addButtonDiv}
         </Grid>
