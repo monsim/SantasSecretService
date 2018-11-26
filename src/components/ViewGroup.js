@@ -18,7 +18,7 @@ class ViewGroupPage extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
-        groupID: '-LRfZ80uQWlJA9IlaHm_',
+        groupID: this.props.location.state.groupID,
         groupName: '',
         currentUserID: '',
         members: {},
