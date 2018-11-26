@@ -26,7 +26,7 @@ describe("View component", () => {
     });
 
     //Check if Console Contains Gifter and Giftee Names 
-    test("console log contains shuffled list of names", () => {
+    test("console log contains Gifter and Giftee", () => {
         console["log"] = jest.fn(storeLog);
         require("../components/ViewGroup.js");
         expect(outputData).toContain("Gifter Name");
@@ -34,13 +34,10 @@ describe("View component", () => {
     });
 
     //Check if X Buttons Appear Based on Group Members
-    test('renders buttons dependning on amount of members', () => {
+    test('renders buttons depending on amount of members', () => {
         const wrapper = shallow(<ViewGroupPage />);
         expect(wrapper.find(Button)).toHaveLength(6);
     });
-
-    
-
 
 
 })

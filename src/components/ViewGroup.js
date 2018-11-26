@@ -22,12 +22,13 @@ class ViewGroupPage extends React.Component {
         groupName: '',
         currentUserID: '',
         members: {},
-        originalMemberList: [],
         memberIDs: [],
+        originalList: [],
         memberNamesHTML: [],
         gifteeIDs: [],
         gifteeNamesHTML: [],
         pickDate: '',
+        maxPrice: '',
         //currentDate: '',
       };
 
@@ -66,7 +67,7 @@ class ViewGroupPage extends React.Component {
        //Change View According to The PickDay
        changeView(pickDate) {
         if (pickDate==this.currentDate() || pickDate<this.currentDate()) {
-          console.log('PickDate + ' + pickDate + ' , CurrentDate : ' + this.currentDate())
+          //console.log('PickDate + ' + pickDate + ' , CurrentDate : ' + this.currentDate())
           return <div>{this.state.gifteeNamesHTML}</div>;
         }
         return <div>{this.state.memberNamesHTML}</div>;
@@ -83,11 +84,17 @@ class ViewGroupPage extends React.Component {
         cachedThis.setState({pickDate: pDate})
       })
 
+      db.doGetPrice(cachedThis.state.groupID).then(function(price) {
+        cachedThis.setState({maxPrice: price})
+      })
+
       console.log('before componentDidMount')
       db.doGetGroupMember(this.state.groupID).then(function(ids) {
         //console.log('within then')
         //console.log("ids: " + ids)
         cachedThis.setState({memberIDs: ids})
+        cachedThis.setState({originalList: ids})
+        console.log('Before Shuffle IDs: ' + ids);
         //cachedThis.setState({originalMemberList: ids})
 
         //console.log('before helper')
@@ -109,12 +116,9 @@ class ViewGroupPage extends React.Component {
             )
           }
           cachedThis.setState({memberNamesHTML: divs})
-
-          //Shuffle 
-          var shuffle = require('shuffle-array'), collection = cachedThis.state.memberIDs;
-          var shuffledCollection = shuffle(collection);
+          
+          //console.log('Shuffled = ' + shuffledCollection);
           /*
-          console.log('Shuffled = ' + shuffledCollection);
           console.log('Length of collection = ' + shuffledCollection.length);
           for(var w = 0; w < shuffledCollection.length; w++) {
             console.log('collection[' + w + '] = ' + shuffledCollection[w]);
@@ -129,22 +133,63 @@ class ViewGroupPage extends React.Component {
             console.log('Shuffled Names - in Giftee : ' + gnameList)
             
             //Setting Giftee in Firebase According to the Shuffled Collection
-            
-            for (var k = 0; k < cachedThis.state.memberIDs.length; k++) {
+            //console.log('Length: ' + gids.length)
+              
+            if (cachedThis.state.memberIDs.length > gids.length) {
+
+              //Shuffle 
+              var shuffle = require('shuffle-array'), collection = cachedThis.state.memberIDs;
+              var shuffledCollection = shuffle(collection);
+
+              for (var w = 0; w < gids.length; w++) {
+                db.doRemoveGiftee(cachedThis.state.groupID);
+              }
+
+              gids = '';
+
+              for (var k = 0; k < cachedThis.state.memberIDs.length; k++) {
                 db.doSetGiftee(cachedThis.state.groupID, shuffledCollection[k]);
-            }
-          
+              }
+              console.log('Inside Shuffle Loop - IDS: ' + ids + ' , GIDS:' + gids);
+
+              var e = true;
+              while(e) {
+                for(var a = 0; a < ids.length; a++) {
+                  for(var b = 0; b < gids.length; b++) {
+                    if (ids[a] === gids[b]) {
+                      for (var w = 0; w < gids.length; w++) {
+                        db.doRemoveGiftee(cachedThis.state.groupID);
+                      }
+      
+                      gids = '';
+      
+                      for (var k = 0; k < cachedThis.state.memberIDs.length; k++) {
+                        db.doSetGiftee(cachedThis.state.groupID, shuffledCollection[k]);
+                      }
+                    }
+                    if (ids[a] != gids[b]) {
+                      a++;
+                      b++;
+                    }
+                    if (a = ids.length) {
+                      e = false;
+                    }
+                  }
+                }
+              }
+            } 
+
+            
             //Get Current User
             var currentUserID = firebase.auth().currentUser.uid;
             console.log('currentuserID : ' + currentUserID);
-            console.log('IDs: ' + ids);
           
             //Assigning Current User to Giftee and displaying
             var gdivs = cachedThis.state.gifteeNamesHTML
-            for (var j = 0; j < cachedThis.state.memberIDs.length; j++) {
+            for (var j = 0; j < cachedThis.state.originalList.length; j++) {
               //IF Current User , Check the corresponding Shuffled Member
-              if(currentUserID == ids[j]) {
-                console.log(currentUserID + ' , ' + cachedThis.state.originalMemberList[j]);
+              if(currentUserID === ids[j]) {
+                console.log(currentUserID + ' , ' + cachedThis.state.originalList[j]);
                 console.log('equal at ' + j);
                 console.log('UnShuffled Index ' + j + ' Gifter Name: ' + nameList[j]);
                 console.log('Shuffled Index ' + j + ' Giftee Name: ' + gnameList[j]);
@@ -205,8 +250,7 @@ class ViewGroupPage extends React.Component {
           <h4>Group Name</h4>
           <h1>{this.state.groupName}</h1>
           <h4>PickDate: {this.state.pickDate}</h4>
-          {/*<h4>CurrentDate</h4>
-      <h1>{this.currentDate()}</h1>*/}
+          <h4>Try Not To Pass ${this.state.maxPrice} :)</h4>
           <h4>Member list</h4>
           {this.changeView(this.state.pickDate)}
         </Grid>

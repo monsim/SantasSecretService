@@ -13,6 +13,7 @@ class LandingPage extends Component {
 
   /** For the LOGIN and SIGN UP button routing **/
 
+
   toLogin = (event) => {
     const {
       history,

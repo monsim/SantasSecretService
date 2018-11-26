@@ -41,6 +41,9 @@ export const doJoinGroup = (groupID, memberID) => {
 export const doSetGiftee = (groupID,gifteeID) => {
     db.ref(`/groups/${groupID}/giftee`).push(gifteeID);
 }
+export const doRemoveGiftee = (groupID) => {
+    db.ref(`/groups/${groupID}/giftee`).remove();
+}
 
 export const addWishlistItem = (memberID, wishlistItem) => {
     db.ref(`/users/${memberID}/wishlist`).push(wishlistItem);
@@ -258,6 +261,27 @@ export const onceGetUsers = () =>
             thePickDate.on('value', snapshot => {
                 thepDate = snapshot.val();
                 resolve(thepDate)
+            })
+        });
+        return promise;
+    }
+
+    export const doGetPrice = (groupID) => {
+        var promise = new Promise(function (resolve, reject) {
+            var thePrice = db.ref(`/groups/${groupID}/maxPrice`);
+            doGetPriceHelper(thePrice).then(function (result) {
+                resolve (result)
+            })
+        });
+        return promise;
+    }
+    
+    export function doGetPriceHelper(thePrice) {
+        var promise = new Promise(function (resolve, reject) {
+            var price = '';
+            thePrice.on('value', snapshot => {
+                price = snapshot.val();
+                resolve(price)
             })
         });
         return promise;
