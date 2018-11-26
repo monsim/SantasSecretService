@@ -117,7 +117,9 @@ import * as routes from '../constants/routes';
     render() {
       
       return (
-        <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
+        <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 30 }}>
+          <h4>Group ID</h4>
+          <h2>{this.state.groupID}</h2>
           <h4>Group Name</h4>
           <h1>{this.state.groupName}</h1>
           <Grid key='price' container alignItems={'center'} justify={'space-evenly'} direction={'row'}>
