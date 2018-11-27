@@ -215,7 +215,7 @@ class ViewGroupPage extends React.Component {
 
     return (
       <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
-        <h4>Group Name</h4>
+        <h4>Group ID</h4>
         <h2>{this.state.memberIDs}</h2>
         <h4>Group Name</h4>
         <h1>{this.state.groupName}</h1>
