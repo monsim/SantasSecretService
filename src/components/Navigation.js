@@ -26,7 +26,6 @@ const NavigationAuth = () =>
       <TabContainer><Link to={routes.ACCOUNT}><Tab label="Account" /></Link></TabContainer>
       <TabContainer><Link to={routes.CREATE_GROUP}><Tab label="Create Group" /></Link></TabContainer>
       <TabContainer><Link to={routes.JOIN_GROUP}><Tab label="Join Group" /></Link></TabContainer>
-      <TabContainer><Link to={routes.VIEW_GROUP}><Tab label="View Group" /></Link></TabContainer>
       <TabContainer><Link to={routes.VIEW_WISHLIST}><Tab label="View Wishlist" /></Link></TabContainer>
       <TabContainer><SignOutButton /></TabContainer>
     </Tabs>
@@ -37,6 +36,7 @@ const NavigationNonAuth = () =>
     <Tabs>
       <TabContainer><Link to={routes.LANDING}><Tab label="Landing" /></Link></TabContainer>
       <TabContainer><Link to={routes.SIGN_IN}><Tab label="Sign In" /></Link></TabContainer>
+      <TabContainer><Link to={routes.SIGN_UP}><Tab label="Sign Up" /></Link></TabContainer>
     </Tabs>
   </AppBar>
 

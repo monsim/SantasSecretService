@@ -8,4 +8,5 @@ export const CREATE_GROUP = '/create-group';
 export const JOIN_GROUP = '/join-group';
 export const VIEW_GROUP = '/view-group';
 export const VIEW_GROUP_LIST = '/view-group-list';
-export const VIEW_WISHLIST = '/my-wishlist';
+export const VIEW_WISHLIST = '/view-wishlist';
+export const WISHLIST = '/wishlist';

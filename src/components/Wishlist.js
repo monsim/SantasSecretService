@@ -8,7 +8,7 @@ import Input from '@material-ui/core/Input';
 // import Icon from '@material-ui/core/Icon';
 // import AuthUserContext from './AuthUserContext';
 import {
-  Link,
+  // Link,
   // withRouter,
 } from 'react-router-dom';
 
@@ -31,6 +31,9 @@ const INITIAL_STATE = {
   item: '', //most recently added items
   wishlist: [],   //array of names of items
   oldWishlistDivs: [], //array of divs from wishlist in firebase
+  addButtonDiv: [],
+  saveButtonDiv: [],
+  refreshed: false,
 };
 
 // const byPropKey = (propertyName, value) => () => ({
@@ -39,7 +42,6 @@ const INITIAL_STATE = {
 
 
 class ViewWishlistPage extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -50,17 +52,58 @@ class ViewWishlistPage extends React.Component {
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleItemSubmit = this.handleItemSubmit.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
+    
   }
+
+  /*
+  handleSaveWishlist(event) {
+    const {
+      history,
+    } = this.props;
+    history.push(routes.)
+  }
+  */
+
+  // componentWillMount() {
+  //   // window.location.reload();
+  // }
 
   componentDidMount() {
     console.log('in componentWillMount')
+    this.setState({ ...INITIAL_STATE });
     var oldDivs = this.state.oldWishlistDivs;
     var cachedThis = this;
+    var oldButtonDiv = this.state.addButtonDiv;
+    var oldSaveDiv = this.state.saveButtonDiv;
+    var memberID;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // alert(cachedThis.props.location.state.memberID)
-        var memberID = cachedThis.props.location.state.memberID//firebase.auth().currentUser.uid;
-        // alert(memberID)
+        var currentUserID = firebase.auth().currentUser.uid;
+        if (cachedThis.props.location.state === undefined) { //user clicks on "view wishlist" in nav bar
+          memberID = currentUserID;
+        } else {
+          memberID = cachedThis.props.location.state.memberID//firebase.auth().currentUser.uid;
+        }
+
+        if (memberID === currentUserID) {  //user clicked on own wishlist, display add buttons
+          oldButtonDiv.push(
+            <Button variant="fab" color="primary" mini onClick={cachedThis.handleSubmitAdd} aria-label="Add" >
+            <AddIcon />
+          </Button>
+          )
+
+          oldSaveDiv.push(
+            <Button variant="contained" color="primary" size="large" type='submit' onClick={cachedThis.handleSubmit} >Save Wishlist </Button>
+          )
+
+          cachedThis.setState({
+            addButtonDiv: oldButtonDiv,
+            saveButtonDiv: oldSaveDiv
+          });
+        }
+
+        //alert(memberID)
         console.log('before in wishlist')
         db.getWishlist(memberID).then(function (result) {
           console.log("its done! in wishlist");
@@ -131,6 +174,11 @@ class ViewWishlistPage extends React.Component {
     console.log('handle submit');
     console.log("wishlist in final submit: " + this.state.wishlist)
 
+    const {
+      history,
+    } = this.props;
+    history.push(routes.HOME);
+
     var finalWishlist = this.state.wishlist;
 
     firebase.auth().onAuthStateChanged(function (user) {
@@ -179,7 +227,7 @@ class ViewWishlistPage extends React.Component {
         <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
           <Grid item style={{ paddingBottom: 40 }}>
 
-            <h1>Your Wishlist</h1>
+            <h1>Wishlist</h1>
           </Grid>
           <div>
             {this.state.oldWishlistDivs}
@@ -188,11 +236,9 @@ class ViewWishlistPage extends React.Component {
             {this.state.wishlistDivs}
           </div>
           <br />
-          <Button variant="contained" color="primary" size="large" type='submit' onClick={this.handleSubmit} ><Link to={routes.HOME}>Save Wishlist</Link> </Button>
+          {this.state.saveButtonDiv}
           <br />
-          <Button variant="fab" color="primary" mini onClick={this.handleSubmitAdd} aria-label="Add" >
-            <AddIcon />
-          </Button>
+            {this.state.addButtonDiv}
         </Grid>
       </div>
 

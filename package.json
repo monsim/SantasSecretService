@@ -7,8 +7,10 @@
     "@material-ui/icons": "^3.0.1",
     "firebase": "^5.5.7",
     "firebase-admin": "^6.1.0",
+    "material-ui-icons": "^1.0.0-beta.36",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
+    "react-randomizer": "^1.0.6",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.0"
   },
@@ -16,6 +18,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --verbose",
+    "test:watch": "jest --watchAll --verbose",
+    "test:coverage": "jest --verbose --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -31,6 +35,7 @@
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "jest": "^23.6.0",
+    "shuffle-array": "^1.0.1",
     "sinon": "^7.1.1"
   }
 }

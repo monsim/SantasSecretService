@@ -17,11 +17,31 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      group_ids: [],
       group_names: [],
       group_name_divs: [],
-      users: null,
     };
-    this.helper = this.helper.bind(this)
+    // we need to manually bind 'this' to the constructor to access this class's functions in a promise in componentDidMount
+    this.helper = this.helper.bind(this);
+    this.handleGroupClick = this.handleGroupClick.bind(this);
+  }
+
+  // For handling the submit route redirection when clicking a specific group on the homepage
+  handleGroupClick(event) {
+    const {
+      history,
+    } = this.props;
+    // pass the groupID props of View Group component to get redirected to a specific group
+    const clickedGroupID = event.currentTarget.id; 
+    history.push({
+      pathname: routes.VIEW_GROUP,
+      state: {
+        groupID : clickedGroupID,
+        homeRedirect : true,
+      }
+    })
+    console.log("All the group IDs : " + this.state.group_ids);
+    console.log("The ID we just clicked on : " + clickedGroupID);
   }
 
   /** For the CREATE GROUP and JOIN GROUP button routing **/
@@ -48,21 +68,27 @@ class HomePage extends Component {
       var oldGroupNames = cachedThis.state.group_names;
       // for each groupID in group_list, call db.doGetGroupName to get their group names
       // and add them to another array, group_names
+      cachedThis.setState({group_ids : group_list});
       cachedThis.helper(group_list, oldGroupNames, cachedThis).then(function (result) {
-        console.log(cachedThis.state.group_names)
+        //console.log(cachedThis.state.group_names)   // test for printing out the group names
         var oldDivs = cachedThis.state.group_name_divs;
         for (var i = 0; i < cachedThis.state.group_names.length; i++) {
+          //console.log("id in the loop: " + cachedThis.state.group_ids[i]);
           oldDivs.push(
-            <div>
-              <h2>Group {i + 1}</h2>
-              <ListItem id={cachedThis.state.group_names[i]} button onClick={cachedThis.handleSubmit}>
-                <ListItemText primary={cachedThis.state.group_names[i]} />
-                <ListItemIcon><PlayArrowIcon /></ListItemIcon>
+            <div style={{width: "100%"}} >
+              {/* <h2>Group {i + 1}</h2> */}
+              <h3>Group {i + 1}</h3>
+              <Divider />
+              <ListItem button name="groupButton" onClick={cachedThis.handleGroupClick} id={cachedThis.state.group_ids[i]}>
+                <ListItemText primary={cachedThis.state.group_names[i]} style={{ float : "left" }}/>
+                <ListItemIcon style={{ float : "right" }}><PlayArrowIcon /></ListItemIcon>
               </ListItem>
               <Divider />
+              &nbsp;
             </div>
           )
         }
+        cachedThis.setState({group_ids : group_list});
         cachedThis.setState({
           group_name_divs: oldDivs
         })
@@ -74,17 +100,17 @@ class HomePage extends Component {
   // gets each group name from the list of group IDs and returns an array of group names
   helper(group_list, oldGroupNames, cachedThis) {
     var promise = new Promise(function (resolve, reject) {
-    var promises = [];
-    for (var i = 0; i < group_list.length; i++) {
-      promises.push(db.doGetGroupName(group_list[i]));
-    }
-    Promise.all(promises).then(function (values) {
-      console.log(values)
-      resolve(values)
-      cachedThis.setState({
-        group_names: values
-      })
-    });
+      var promises = [];
+      for (var i = 0; i < group_list.length; i++) {
+        promises.push(db.doGetGroupName(group_list[i]));
+      }
+      Promise.all(promises).then(function (values) {
+        //console.log(values)   // prints the names of the groups the user is in
+        resolve(values)
+        cachedThis.setState({
+          group_names: values
+        })
+      });
     });
     return promise;
   }
@@ -102,11 +128,9 @@ class HomePage extends Component {
               <div>{this.state.group_name_divs}</div>
             </Grid>
             < Grid item style={{ paddingTop: 20 }}>
-              <Button variant="contained" color="primary" size="medium" 
-                type="submit" onClick={this.toCreateGroup} style={{ float: 'left' }}>Create Group</Button>
+              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.toCreateGroup} style={{ float: "left" }}>Create Group</Button>
               &nbsp;&nbsp;
-              <Button variant="contained" color="primary" size="medium" 
-                type="submit" onClick={this.toJoinGroup} style={{ float: 'right' }}>Join Group</Button>
+              <Button variant="contained" color="primary" size="medium" type="submit" onClick={this.toJoinGroup} style={{ float: "right" }}>Join Group</Button>
             </Grid>
             <Grid item style={{ paddingTop: 50 }}>
               <img src={process.env.PUBLIC_URL + '/hushhush.png'} alt="logo" style={{ width: 200, height: 200 }} />
@@ -121,5 +145,3 @@ class HomePage extends Component {
 const authCondition = (authUser) => !!authUser;
 
 export default withAuthorization(authCondition)(HomePage);
-
-
