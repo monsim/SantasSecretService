@@ -125,13 +125,6 @@ class CreateGroupForm extends Component {
           type="date"
           />
         <br />
-        <p> Date to archive </p>
-        <TextField
-          value={archiveDate}
-          onChange={event => this.setState(byPropKey('archiveDate', event.target.value))}
-          type="date"
-          />
-        <br />
         <Button 
           variant="contained"
           color="primary"
