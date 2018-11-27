@@ -112,8 +112,8 @@ class ViewGroupPage extends React.Component {
         cachedThis.setState({ memberNamesHTML: divs })
 
         //Shuffle 
-        var shuffle = require('shuffle-array'), collection = cachedThis.state.memberIDs;
-        var shuffledCollection = shuffle(collection);
+        // var shuffle = require('shuffle-array'), collection = cachedThis.state.memberIDs;
+        // var shuffledCollection = shuffle(collection);
         /*
         console.log('Shuffled = ' + shuffledCollection);
         console.log('Length of collection = ' + shuffledCollection.length);
@@ -122,63 +122,84 @@ class ViewGroupPage extends React.Component {
         }
         */
 
-        db.doGetGiftee(cachedThis.state.groupID).then(function (gids) {
-          //console.log("Giftee ids: " + gids)
-          cachedThis.setState({ gifteeIDs: gids })
-          //console.log("Giftee state ids: " + cachedThis.state.gifteeIDs)
-          cachedThis.helper(cachedThis.state.gifteeIDs).then(function (gnameList) {
-            console.log('Shuffled Names - in Giftee : ' + gnameList)
-
-            //Setting Giftee in Firebase According to the Shuffled Collection
-
+       db.doGetGiftee(cachedThis.state.groupID).then(function (gids) {
+        //console.log("Giftee ids: " + gids)
+        cachedThis.setState({ gifteeIDs: gids })
+        //console.log("Giftee state ids: " + cachedThis.state.gifteeIDs)
+        cachedThis.helper(cachedThis.state.gifteeIDs).then(function (gnameList) {
+          console.log('Shuffled Names - in Giftee : ' + gnameList)
+          //Setting Giftee in Firebase According to the Shuffled Collection
+          if (cachedThis.state.memberIDs.length > gids.length) {
+            //Shuffle 
+            var shuffle = require('shuffle-array'), collection = cachedThis.state.memberIDs;
+            var shuffledCollection = shuffle(collection);
+            for (var w = 0; w < gids.length; w++) {
+              db.doRemoveGiftee(cachedThis.state.groupID);
+            }
             for (var k = 0; k < cachedThis.state.memberIDs.length; k++) {
               db.doSetGiftee(cachedThis.state.groupID, shuffledCollection[k]);
             }
-
-            //Get Current User
-            var currentUserID = firebase.auth().currentUser.uid;
-            console.log('currentuserID : ' + currentUserID);
-            console.log('IDs: ' + ids);
-
-            //Assigning Current User to Giftee and displaying
-            var gdivs = cachedThis.state.gifteeNamesHTML
-            for (var j = 0; j < cachedThis.state.memberIDs.length; j++) {
-              //IF Current User , Check the corresponding Shuffled Member
-              if (currentUserID === ids[j]) {
-                console.log(currentUserID + ' , ' + cachedThis.state.originalMemberList[j]);
-                console.log('equal at ' + j);
-                console.log('UnShuffled Index ' + j + ' Name: ' + nameList[j]);
-                console.log('Shuffled Index ' + j + ' Name: ' + gnameList[j]);
-
-                gdivs.push(
-                  <Grid gkey={'child' + j} container alignItems={'center'}
-                    justify={'center'} direction={'row'} item style={{ padding: 30 }}>
-                    <Button id={gids[j]} type='button' variant='contained'
-                      color="primary" size="large" onClick={cachedThis.handleSubmit}>
-                      <span id={gids[j]} >{gnameList[j]}</span>
-                      <img src={process.env.PUBLIC_URL + '/present.png'} alt="present" style={{ width: 20, height: 20 }} />
-                    </Button>
-                  </Grid>
-                )
-                j++
-              } else {
-                gdivs.push(
-                  <Grid gkey={'child' + j} container alignItems={'center'}
-                    justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                    <Button id={gids[j]} type='button' variant='contained' color="primary"
-                      size="large" onClick={cachedThis.handleSubmit}>
-                      <span id={gids[j]} >{gnameList[j]}</span>
-                    </Button>
-                  </Grid>
-                )
+            //console.log('Inside Shuffle Loop - IDS: ' + ids + ' , GIDS:' + gids); 
+          }
+          if (cachedThis.state.memberIDs.length === gids.length) {
+            for (var a = 0; a < ids.length; a++) {
+                if (ids[a] === gids[a]) {
+                  var shuffle = require('shuffle-array'), collection = cachedThis.state.memberIDs;
+                  var shuffledCollection = shuffle(collection);
+                  db.doRemoveGiftee(cachedThis.state.groupID)
+                  for (var k = 0; k < cachedThis.state.memberIDs.length; k++) {
+                    db.doSetGiftee(cachedThis.state.groupID, shuffledCollection[k]);
+                  }
+                  a = 0;
+                }
               }
             }
-            cachedThis.setState({ gifteeNamesHTML: gdivs })
+        
+          console.log('Length: ' + gids.length);
+          console.log('GIDs: ' + gids);
+          //Get Current User
+          var currentUserID = firebase.auth().currentUser.uid;
+          //console.log('currentuserID : ' + currentUserID);
+          console.log('IDs: ' + ids);
+          //Assigning Current User to Giftee and displaying
+          var gdivs = cachedThis.state.gifteeNamesHTML
+          for (var j = 0; j < cachedThis.state.memberIDs.length; j++) {
+            //IF Current User , Check the corresponding Shuffled Member
+            if (currentUserID === ids[j]) {
+              console.log(currentUserID + ' , ' + cachedThis.state.originalMemberList[j]);
+              console.log('equal at ' + j);
+              console.log('UnShuffled Index ' + j + ' Name: ' + nameList[j]);
+              console.log('Shuffled Index ' + j + ' Name: ' + gnameList[j]);
+              gdivs.push(
+                <Grid gkey={'child' + j} container alignItems={'center'}
+                  justify={'center'} direction={'row'} item style={{ padding: 30 }}>
+                  <Button id={gids[j]} type='button' variant='contained'
+                    color="primary" size="large" onClick={cachedThis.handleSubmit}>
+                    <span id={gids[j]} >{gnameList[j]}</span>
+                    <img src={process.env.PUBLIC_URL + '/present.png'} alt="present" style={{ width: 20, height: 20 }} />
+                  </Button>
+                </Grid>
+              )
+              j++
+            } else {
+              gdivs.push(
+                <Grid gkey={'child' + j} container alignItems={'center'}
+                  justify={'center'} direction={'column'} item style={{ padding: 30 }}>
+                  <Button id={gids[j]} type='button' variant='contained' color="primary"
+                    size="large" onClick={cachedThis.handleSubmit}>
+                    <span id={gids[j]} >{gnameList[j]}</span>
+                  </Button>
+                </Grid>
+              )
+            }
           }
-          )
-          //console.log("state gids outside didmount: " + cachedThis.state.names)
-          //console.log('after componentDidMount')
-        })
+          cachedThis.setState({ gifteeNamesHTML: gdivs })
+        }
+        )
+        //console.log("state gids outside didmount: " + cachedThis.state.names)
+        //console.log('after componentDidMount')
+      })
+      
       })
     })
 

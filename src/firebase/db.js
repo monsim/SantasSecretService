@@ -42,6 +42,11 @@ export const doSetGiftee = (groupID,gifteeID) => {
     db.ref(`/groups/${groupID}/giftee`).push(gifteeID);
 }
 
+export const doRemoveGiftee = (groupID) => {
+    db.ref(`/groups/${groupID}/giftee`).remove();
+  }
+  
+
 export const addWishlistItem = (memberID, wishlistItem) => {
     db.ref(`/users/${memberID}/wishlist`).push(wishlistItem);
 }
@@ -149,14 +154,6 @@ export function doGetGroupNameHelper(theGroupName) {
     return promise;
 }
 
-
-
-
-
-
-
-
-
 export const getAllGroups= () => {
     var promise = new Promise(function (resolve, reject) {
         var groups = db.ref(`/groups`);
@@ -208,10 +205,6 @@ export function doGetGroupMemberHelper(members) {
     });
     return promise;
 }
-
-
-
-
 
 export const doGetGiftee = (groupID) => {
     var promise = new Promise(function (resolve, reject) {
