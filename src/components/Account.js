@@ -2,6 +2,7 @@ import React from 'react';
 
 import AuthUserContext from './AuthUserContext';
 // import { PasswordForgetForm } from './PasswordForget';
+import SignOutButton from './SignOut';
 import PasswordChangeForm from './PasswordChange';
 import withAuthorization from './withAuthorization';
 
@@ -13,9 +14,10 @@ const AccountPage = () =>
       <div>
         <br />
         <h1><center>Account: {authUser.email}</center></h1>
-        <Grid container alignItems={'center'} justify={'space-evenly'} direction={'row'}>
+        <Grid container alignItems={'center'} justify={'space-evenly'} direction={'column'}>
           {/*<PasswordForgetForm />*/}
           <PasswordChangeForm />
+          <SignOutButton />
         </Grid>
       </div>
     }
