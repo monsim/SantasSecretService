@@ -36,6 +36,7 @@ const NavigationNonAuth = () =>
     <Tabs>
       <TabContainer><Link to={routes.LANDING}><Tab label="Landing" /></Link></TabContainer>
       <TabContainer><Link to={routes.SIGN_IN}><Tab label="Sign In" /></Link></TabContainer>
+      <TabContainer><Link to={routes.SIGN_UP}><Tab label="Sign Up" /></Link></TabContainer>
     </Tabs>
   </AppBar>
 

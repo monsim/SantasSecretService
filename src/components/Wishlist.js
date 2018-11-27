@@ -55,6 +55,14 @@ class ViewWishlistPage extends React.Component {
     
   }
 
+  /*
+  handleSaveWishlist(event) {
+    const {
+      history,
+    } = this.props;
+    history.push(routes.)
+  }
+  */
 
   // componentWillMount() {
   //   // window.location.reload();
@@ -85,7 +93,7 @@ class ViewWishlistPage extends React.Component {
           )
 
           oldSaveDiv.push(
-            <Button variant="contained" color="primary" size="large" type='submit' onClick={cachedThis.handleSubmit} ><Link to={routes.HOME}>Save Wishlist</Link> </Button>
+            <Button variant="contained" color="primary" size="large" type='submit' onClick={cachedThis.handleSubmit} >Save Wishlist </Button>
           )
 
           cachedThis.setState({
@@ -164,6 +172,11 @@ class ViewWishlistPage extends React.Component {
   handleSubmit(event) {
     console.log('handle submit');
     console.log("wishlist in final submit: " + this.state.wishlist)
+
+    const {
+      history,
+    } = this.props;
+    history.push(routes.HOME);
 
     var finalWishlist = this.state.wishlist;
 
