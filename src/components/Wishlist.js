@@ -33,6 +33,7 @@ const INITIAL_STATE = {
   oldWishlistDivs: [], //array of divs from wishlist in firebase
   addButtonDiv: [],
   saveButtonDiv: [],
+  refreshed: false,
 };
 
 // const byPropKey = (propertyName, value) => () => ({
@@ -41,7 +42,6 @@ const INITIAL_STATE = {
 
 
 class ViewWishlistPage extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -52,10 +52,17 @@ class ViewWishlistPage extends React.Component {
     this.handleSubmitAdd = this.handleSubmitAdd.bind(this);
     this.handleItemSubmit = this.handleItemSubmit.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
+    
   }
+
+
+  // componentWillMount() {
+  //   // window.location.reload();
+  // }
 
   componentDidMount() {
     console.log('in componentWillMount')
+    this.state = { ...INITIAL_STATE };
     var oldDivs = this.state.oldWishlistDivs;
     var cachedThis = this;
     var oldButtonDiv = this.state.addButtonDiv;
@@ -87,7 +94,7 @@ class ViewWishlistPage extends React.Component {
           });
         }
 
-        alert(memberID)
+        //alert(memberID)
         console.log('before in wishlist')
         db.getWishlist(memberID).then(function (result) {
           console.log("its done! in wishlist");
@@ -206,7 +213,7 @@ class ViewWishlistPage extends React.Component {
         <Grid container alignItems={'center'} justify={'center'} direction={'column'}>
           <Grid item style={{ paddingBottom: 40 }}>
 
-            <h1>Your Wishlist</h1>
+            <h1>Wishlist</h1>
           </Grid>
           <div>
             {this.state.oldWishlistDivs}

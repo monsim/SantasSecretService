@@ -75,29 +75,17 @@ export function getWishlist(userID) {
 
 export function helper(groups) {
     var promise = new Promise(function (resolve, reject) {
-        console.log('within helper')
         var list = [];
         groups.once('value')
         .then(function(snapshot) {
-            console.log('here0')
             snapshot.forEach(childSnapshot => {
-                console.log('here')
                 var item = childSnapshot.val();
-                console.log('here1')
                 console.log(JSON.parse(JSON.stringify(item)))
-                console.log('here2')
                 list.push(JSON.parse(JSON.stringify(item)));
-                console.log('here3')
-                return true
             })
-            console.log('before resolve')
             console.log(list)
             resolve(list)
-            console.log('after resolve')
         })
-        console.log('after foreach line 75')
-        console.log('line 76 list ' + list)
-        
     });
     return promise;
 }
@@ -275,29 +263,50 @@ export function doGetUserNameHelper(memberName) {
     return promise;
 }
 
+export const doGetMaxPrice= (groupID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var maxPrice = db.ref(`/groups/${groupID}/maxPrice`);
+        doGetMaxPriceHelper(maxPrice).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetMaxPriceHelper(maxPrice) {
+    var promise = new Promise(function (resolve, reject) {
+        var price = '';
+        maxPrice.on('value', snapshot => {
+            price = snapshot.val();
+            resolve(price)
+        })
+    });
+    return promise;
+}
+
+export const doGetPickDate= (groupID) => {
+    var promise = new Promise(function (resolve, reject) {
+        var pickDate = db.ref(`/groups/${groupID}/pickDate`);
+        doGetPickDateHelper(pickDate).then(function (result) {
+            resolve(result)
+        })
+    });
+    return promise;
+}
+
+export function doGetPickDateHelper(pickDate) {
+    var promise = new Promise(function (resolve, reject) {
+        var date = '';
+        pickDate.on('value', snapshot => {
+            date = snapshot.val();
+            resolve(date)
+        })
+    });
+    return promise;
+}
+
 export const onceGetUsers = () =>
     db.ref('users').once('value');
-
-    export const doGetPickDate = (groupID) => {
-        var promise = new Promise(function (resolve, reject) {
-            var thePickDate = db.ref(`/groups/${groupID}/pickDate`);
-            doGetPickDateHelper(thePickDate).then(function (result) {
-                resolve(result)
-            })
-        });
-        return promise;
-    }
-    
-    export function doGetPickDateHelper(thePickDate) {
-        var promise = new Promise(function (resolve, reject) {
-            var thepDate = '';
-            thePickDate.on('value', snapshot => {
-                thepDate = snapshot.val();
-                resolve(thepDate)
-            })
-        });
-        return promise;
-    }
 
 
 // Other Entity APIs ...
