@@ -8,7 +8,7 @@ import Input from '@material-ui/core/Input';
 // import Icon from '@material-ui/core/Icon';
 // import AuthUserContext from './AuthUserContext';
 import {
-  Link,
+  // Link,
   // withRouter,
 } from 'react-router-dom';
 
@@ -70,22 +70,23 @@ class ViewWishlistPage extends React.Component {
 
   componentDidMount() {
     console.log('in componentWillMount')
-    this.state = { ...INITIAL_STATE };
+    this.setState({ ...INITIAL_STATE });
     var oldDivs = this.state.oldWishlistDivs;
     var cachedThis = this;
     var oldButtonDiv = this.state.addButtonDiv;
     var oldSaveDiv = this.state.saveButtonDiv;
+    var memberID;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // alert(cachedThis.props.location.state.memberID)
         var currentUserID = firebase.auth().currentUser.uid;
-        if (cachedThis.props.location.state == undefined) { //user clicks on "view wishlist" in nav bar
-          var memberID = currentUserID;
+        if (cachedThis.props.location.state === undefined) { //user clicks on "view wishlist" in nav bar
+          memberID = currentUserID;
         } else {
-          var memberID = cachedThis.props.location.state.memberID//firebase.auth().currentUser.uid;
+          memberID = cachedThis.props.location.state.memberID//firebase.auth().currentUser.uid;
         }
 
-        if (memberID == currentUserID) {  //user clicked on own wishlist, display add buttons
+        if (memberID === currentUserID) {  //user clicked on own wishlist, display add buttons
           oldButtonDiv.push(
             <Button variant="fab" color="primary" mini onClick={cachedThis.handleSubmitAdd} aria-label="Add" >
             <AddIcon />

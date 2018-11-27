@@ -8,8 +8,8 @@ import {
   // Link,
 } from 'react-router-dom';
 import * as routes from '../constants/routes';
-import firebase, { database } from 'firebase/app';
-import { deflateRawSync } from 'zlib';
+import firebase, { /*database*/ } from 'firebase/app';
+// import { deflateRawSync } from 'zlib';
 
 // Front end
 // const ViewGroupPage = (groupID) => {
@@ -29,7 +29,6 @@ class ViewGroupPage extends React.Component {
       gifteeNamesHTML: [],
       pickDate: '',
       maxPrice: '',
-      pickDate: '',
       //currentDate: '',
     };
 
@@ -67,7 +66,7 @@ class ViewGroupPage extends React.Component {
 
   //Change View According to The PickDay
   changeView(pickDate) {
-    if (pickDate == this.currentDate() || pickDate < this.currentDate()) {
+    if (pickDate === this.currentDate() || pickDate < this.currentDate()) {
       console.log('PickDate + ' + pickDate + ' , CurrentDate : ' + this.currentDate())
       return <div>{this.state.gifteeNamesHTML}</div>;
     }
@@ -145,7 +144,7 @@ class ViewGroupPage extends React.Component {
             var gdivs = cachedThis.state.gifteeNamesHTML
             for (var j = 0; j < cachedThis.state.memberIDs.length; j++) {
               //IF Current User , Check the corresponding Shuffled Member
-              if (currentUserID == ids[j]) {
+              if (currentUserID === ids[j]) {
                 console.log(currentUserID + ' , ' + cachedThis.state.originalMemberList[j]);
                 console.log('equal at ' + j);
                 console.log('UnShuffled Index ' + j + ' Name: ' + nameList[j]);

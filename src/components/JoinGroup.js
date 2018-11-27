@@ -99,10 +99,10 @@ class JoinGroupPage extends React.Component {
   render() {
 
     const {
-      userID,
+      // userID,
       grpToJoin,
-      userGroupList,
-      allGroups,
+      // userGroupList,
+      // allGroups,
       error,
       errorMessage,
     } = this.state
