@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import AuthUserContext from './AuthUserContext';
-import SignOutButton from './SignOut';
+// import SignOutButton from './SignOut';
 import * as routes from '../constants/routes';
 
 import AppBar from '@material-ui/core/AppBar';
@@ -27,7 +27,6 @@ const NavigationAuth = () =>
       <TabContainer><Link to={routes.CREATE_GROUP}><Tab label="Create Group" /></Link></TabContainer>
       <TabContainer><Link to={routes.JOIN_GROUP}><Tab label="Join Group" /></Link></TabContainer>
       <TabContainer><Link to={routes.VIEW_WISHLIST}><Tab label="View Wishlist" /></Link></TabContainer>
-      <TabContainer><SignOutButton /></TabContainer>
     </Tabs>
   </AppBar>
 
