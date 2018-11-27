@@ -162,16 +162,17 @@ class ViewGroupPage extends React.Component {
                   </Grid>
                 )
                 j++
+              } else {
+                gdivs.push(
+                  <Grid gkey={'child' + j} container alignItems={'center'}
+                    justify={'center'} direction={'column'} item style={{ padding: 30 }}>
+                    <Button id={gids[j]} type='button' variant='contained' color="primary"
+                      size="large" onClick={cachedThis.handleSubmit}>
+                      <span id={gids[j]} >{gnameList[j]}</span>
+                    </Button>
+                  </Grid>
+                )
               }
-              gdivs.push(
-                <Grid gkey={'child' + j} container alignItems={'center'}
-                  justify={'center'} direction={'column'} item style={{ padding: 30 }}>
-                  <Button id={gids[j]} type='button' variant='contained' color="primary"
-                    size="large" onClick={cachedThis.handleSubmit}>
-                    <span id={gids[j]} >{gnameList[j]}</span>
-                  </Button>
-                </Grid>
-              )
             }
             cachedThis.setState({ gifteeNamesHTML: gdivs })
           }
@@ -181,14 +182,14 @@ class ViewGroupPage extends React.Component {
         })
       })
     })
-    
-    db.doGetMaxPrice(cachedThis.state.groupID).then(function(price) {
+
+    db.doGetMaxPrice(cachedThis.state.groupID).then(function (price) {
       console.log(price)
-      cachedThis.setState({maxPrice: price})
+      cachedThis.setState({ maxPrice: price })
     })
-    db.doGetPickDate(cachedThis.state.groupID).then(function(date) {
+    db.doGetPickDate(cachedThis.state.groupID).then(function (date) {
       console.log(date)
-      cachedThis.setState({pickDate: date})
+      cachedThis.setState({ pickDate: date })
     })
 
     //console.log("state ids outside didmount: " + cachedThis.state.names)
@@ -215,13 +216,15 @@ class ViewGroupPage extends React.Component {
     return (
       <Grid key='main' container alignItems={'center'} justify={'center'} direction={'column'} item style={{ padding: 50 }}>
         <h4>Group Name</h4>
+        <h2>{this.state.memberIDs}</h2>
+        <h4>Group Name</h4>
         <h1>{this.state.groupName}</h1>
         <Grid key='price' container alignItems={'center'} justify={'space-evenly'} direction={'row'}>
-            <h4>Price Limit</h4><h1>${this.state.maxPrice}</h1>
-          </Grid>
-          <Grid key='date' container alignItems={'center'} justify={'space-evenly'} direction={'row'}>
-            <h4>Pick Date</h4><h1>{this.state.pickDate}</h1>
-          </Grid>
+          <h4>Price Limit</h4><h1>${this.state.maxPrice}</h1>
+        </Grid>
+        <Grid key='date' container alignItems={'center'} justify={'space-evenly'} direction={'row'}>
+          <h4>Pick Date</h4><h1>{this.state.pickDate}</h1>
+        </Grid>
         {/*<h4>CurrentDate</h4>
       <h1>{this.currentDate()}</h1>*/}
         <h4>Member list</h4>
