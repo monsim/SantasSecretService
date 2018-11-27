@@ -71,10 +71,10 @@ class ViewWishlistPage extends React.Component {
   componentDidMount() {
     console.log('in componentWillMount')
     this.setState({ ...INITIAL_STATE });
-    var oldDivs = this.state.oldWishlistDivs;
+    var oldDivs = [];
     var cachedThis = this;
-    var oldButtonDiv = this.state.addButtonDiv;
-    var oldSaveDiv = this.state.saveButtonDiv;
+    var oldButtonDiv = [];
+    var oldSaveDiv = [];
     var memberID;
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
