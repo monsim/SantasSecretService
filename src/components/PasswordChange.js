@@ -54,7 +54,7 @@ class PasswordChangeForm extends Component {
         <TextField
           id={passwordOne}
           label="New Password"
-          type="password1"
+          type="password"
           autoComplete="new password"
           margin="normal"
           onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
@@ -62,7 +62,7 @@ class PasswordChangeForm extends Component {
         <TextField
           id={passwordTwo}
           label="Confirm Password"
-          type="password2"
+          type="password"
           autoComplete="Confirm Password"
           margin="normal"
           onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}

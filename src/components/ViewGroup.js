@@ -180,7 +180,6 @@ class ViewGroupPage extends React.Component {
                   </Button>
                 </Grid>
               )
-              j++
             } else {
               gdivs.push(
                 <Grid gkey={'child' + j} container alignItems={'center'}
@@ -199,7 +198,7 @@ class ViewGroupPage extends React.Component {
         //console.log("state gids outside didmount: " + cachedThis.state.names)
         //console.log('after componentDidMount')
       })
-      
+
       })
     })
 
